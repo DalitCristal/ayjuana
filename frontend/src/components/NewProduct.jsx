@@ -9,7 +9,7 @@ const NewProduct = () => {
     const dataFormu = new FormData(formuRef.current);
     const data = Object.fromEntries(dataFormu);
     const token = getCookiesByName("jwtCookie");
-    console.log(token);
+
     const response = await fetch("http://localhost:8080/api/products", {
       method: "POST",
       headers: {

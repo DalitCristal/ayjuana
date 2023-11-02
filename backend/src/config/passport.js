@@ -54,11 +54,17 @@ const initializePassport = () => {
           return done(null, false, { message: "Correo electrónico no válido" });
         }
 
+        if (password.length < 6) {
+          return done(null, false, {
+            message: "La contraseña debe tener al menos 6 caracteres",
+          });
+        }
+
         try {
           const user = await userModel.findOne({ email: email });
 
           if (user) {
-            return done(null, false, { message: "Usuario existente" });
+            return done(null, false, { message: "Usuario ya existente" });
           }
 
           const passwordHash = encryptPassword(password);

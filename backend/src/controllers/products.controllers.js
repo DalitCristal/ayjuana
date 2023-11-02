@@ -27,7 +27,7 @@ productCtrls.getProductById = async (req, res) => {
     } else {
       res.status(404).send({
         respuesta: "Error en consultar Producto",
-        mensaje: "Not Found",
+        mensaje: "No encontrado",
       });
     }
   } catch (error) {
@@ -82,7 +82,7 @@ productCtrls.putProduct = async (req, res) => {
     } else {
       res.status(404).send({
         respuesta: "Error en actualizar producto",
-        mensaje: "Not Found",
+        mensaje: "No encontrado",
       });
     }
   } catch (error) {
@@ -103,7 +103,7 @@ productCtrls.deleteProduct = async (req, res) => {
     } else {
       res.status(404).send({
         respuesta: "Error en borrar producto",
-        mensaje: "Not Found",
+        mensaje: "No encontrado",
       });
     }
   } catch (error) {

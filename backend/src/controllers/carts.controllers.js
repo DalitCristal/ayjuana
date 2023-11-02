@@ -11,7 +11,7 @@ cartsCtrls.getCartById = async (req, res) => {
     else
       res.status(404).send({
         respuesta: "Error en consultar Carrito",
-        mensaje: "Not Found",
+        mensaje: "No encontrado",
       });
   } catch (error) {
     res
@@ -41,13 +41,13 @@ cartsCtrls.postAddProd = async (req, res) => {
       } else {
         res.status(404).send({
           respuesta: "Error en agregar producto Carrito",
-          mensaje: "Produt Not Found",
+          mensaje: "Producto no encontrado",
         });
       }
     } else {
       res.status(404).send({
         respuesta: "Error en agregar producto Carrito",
-        mensaje: "Cart Not Found",
+        mensaje: "carrito no encontrado",
       });
     }
   } catch (error) {
@@ -77,13 +77,13 @@ cartsCtrls.deleteProd = async (req, res) => {
       } else {
         res.status(404).send({
           respuesta: "Error en eliminar producto Carrito",
-          mensaje: "Produt Not Found",
+          mensaje: "Producto no encontrado",
         });
       }
     } else {
       res.status(404).send({
         respuesta: "Error en eliminar producto Carrito",
-        mensaje: "Cart Not Found",
+        mensaje: "carrito no encontrado",
       });
     }
   } catch (error) {
@@ -143,13 +143,13 @@ cartsCtrls.putQuantity = async (req, res) => {
       } else {
         res.status(404).send({
           respuesta: "Error en actualizar cantidad de producto Carrito",
-          mensaje: "Produt Not Found",
+          mensaje: "Producto no encontrado",
         });
       }
     } else {
       res.status(404).send({
         respuesta: "Error en actualizar cantidad de producto Carrito",
-        mensaje: "Cart Not Found",
+        mensaje: "carrito no encontrado",
       });
     }
   } catch (error) {

@@ -1,5 +1,8 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+//STYLES
+import "../components/GlobalStyles/Formularios.css";
 
 const Login = () => {
   const formuRef = useRef(null);
@@ -24,14 +27,13 @@ const Login = () => {
         Date.now() + 1 * 24 * 60 * 60 * 1000
       ).toUTCString()}; path=/;`;
       navigate("/products");
-      console.log(datos.token);
     } else {
       console.log(response);
     }
   };
 
   return (
-    <div>
+    <div className="pageBox">
       <h1 className="titleFormu">Iniciar sesión</h1>
       <form onSubmit={handleSubmit} ref={formuRef} className="containerFormu">
         <input
@@ -55,6 +57,9 @@ const Login = () => {
           Iniciar sesión
         </button>
       </form>
+      <Link to={"/register"} className="linkFormu">
+        Registrarse
+      </Link>
     </div>
   );
 };

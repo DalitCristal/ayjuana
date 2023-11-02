@@ -24,7 +24,9 @@ usersCtrls.renderUserByID = async (req, res) => {
     if (user) {
       res.status(200).send({ respuesta: "OK", mensaje: user });
     } else {
-      res.status(404).send({ respuesta: "Error", mensaje: "User not Found" });
+      res
+        .status(404)
+        .send({ respuesta: "Error", mensaje: "Usuario no encontrado" });
     }
   } catch (error) {
     res.status(400).send({ respuesta: "Error", mensaje: error });
@@ -69,7 +71,9 @@ usersCtrls.renderUpdateUser = async (req, res) => {
     if (user) {
       res.status(200).send({ respuesta: "OK", mensaje: user });
     } else {
-      res.status(404).send({ respuesta: "Error", mensaje: "User not Found" });
+      res
+        .status(404)
+        .send({ respuesta: "Error", mensaje: "Usuario no encontrado" });
     }
   } catch (error) {
     res.status(400).send({ respuesta: "Error", mensaje: error });
@@ -84,7 +88,9 @@ usersCtrls.renderDeleteUser = async (req, res) => {
     if (user) {
       res.status(200).send({ respuesta: "OK", mensaje: user });
     } else {
-      res.status(404).send({ respuesta: "Error", mensaje: "User not Found" });
+      res
+        .status(404)
+        .send({ respuesta: "Error", mensaje: "Usuario no encontrado" });
     }
   } catch (error) {
     res.status(400).send({ respuesta: "Error", mensaje: error });

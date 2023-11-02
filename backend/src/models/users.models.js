@@ -2,24 +2,27 @@ import "dotenv/config";
 import { Schema, model } from "mongoose";
 import { cartModel } from "./carts.models.js";
 import paginate from "mongoose-paginate-v2";
-import "dotenv/config";
 
 const userSchema = new Schema({
   first_name: {
     type: String,
+    trim: true,
     required: true,
   },
   last_name: {
     type: String,
+    trim: true,
     required: true,
     index: true,
   },
   age: {
     type: Number,
     required: true,
+    trim: true,
   },
   email: {
     type: String,
+    trim: true,
     unique: true,
     required: true,
   },
