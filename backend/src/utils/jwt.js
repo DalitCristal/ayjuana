@@ -5,9 +5,9 @@ export const generateToken = (user) => {
   const token = jwt.sign({ user }, process.env.JWT_SECRET, {
     expiresIn: "12h",
   });
+
   return token;
 };
-console.log("jwt", process.env.JWT_SECRET);
 
 export const authToken = (req, res, next) => {
   const authHeader = req.headers.Authorization;
@@ -17,15 +17,17 @@ export const authToken = (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
+  console.log(`jwt token: ${token}`);
 
   jwt.sign(token, process.env.JWT_SECRET, (error, credential) => {
     if (error) {
       return res
         .status(403)
-        .send({ error: "Usuario no autorizado, token invalido" });
+        .send({ error: "Usuario no autorizado, token inválido" });
     }
-  });
 
-  req.user = credential.user;
-  next();
+    // Usuario válido
+    req.user = decoded.user;
+    next();
+  });
 };

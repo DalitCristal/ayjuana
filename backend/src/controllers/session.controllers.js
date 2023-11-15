@@ -1,7 +1,9 @@
 import { generateToken } from "../utils/jwt.js";
+import "dotenv/config";
+import jwt from "jsonwebtoken";
+
 const sessionsCtrls = {};
 
-/*************************************** API ***************************************/
 sessionsCtrls.postLogin = async (req, res) => {
   try {
     if (!req.user) {
@@ -44,6 +46,24 @@ sessionsCtrls.getGithubCallback = async (req, res) => {
 
 sessionsCtrls.getUser = (req, res) => {
   res.send(req.user);
+};
+
+sessionsCtrls.verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.send(false);
+
+  jwt.verify(token, process.env.JWT_SECRET, async (error, user) => {
+    if (error) return res.sendStatus(401);
+
+    const userFound = await user.findById(user.id);
+    if (!userFound) return res.sendStatus(401);
+
+    return res.json({
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
+    });
+  });
 };
 
 export default sessionsCtrls;

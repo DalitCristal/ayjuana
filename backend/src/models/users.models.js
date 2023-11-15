@@ -41,6 +41,7 @@ const userSchema = new Schema({
 });
 
 userSchema.plugin(paginate);
+
 userSchema.pre("save", async function (next) {
   try {
     const newCart = await cartModel.create({});

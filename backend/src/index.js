@@ -30,6 +30,7 @@ const corsOptions = {
       callback(new Error("Acceso denegado"));
     }
   },
+  credentials: true,
 };
 
 //INICIALIZACION

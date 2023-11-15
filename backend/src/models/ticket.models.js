@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
-import { userModel } from "./users.models.js";
-import { cartModel } from "./carts.models.js";
-cartModel;
 
 const ticketSchema = new mongoose.Schema({
   code: {
     type: String,
-    trim: true,
     unique: true,
+    required: true,
+    default: function () {
+      const timestamp = new Date().getTime();
+      const randomValue = Math.random().toString(36).substr(2, 5);
+      return `${timestamp}-${randomValue}`;
+    },
   },
   purchase_datetime: {
     type: Date,
@@ -15,21 +17,15 @@ const ticketSchema = new mongoose.Schema({
   },
   amount: {
     type: Number,
-    ref: "carts",
+    required: true,
+    default: 0,
   },
   purchaser: {
-    type: Schema.Types.email,
-    ref: "users",
+    type: String,
+    required: true,
   },
 });
 
-ticketSchema.pre("save", async function (next) {
-  try {
-    const email = await userModel.findOne();
-    this.purchaser = email._id;
-  } catch (error) {
-    next(error);
-  }
-});
+const Ticket = mongoose.model("Ticket", ticketSchema);
 
-export default mongoose.model("Ticket", ticketSchema);
+export default Ticket;

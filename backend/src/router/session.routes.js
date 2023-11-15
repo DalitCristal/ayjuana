@@ -44,4 +44,6 @@ sessionRouter.get(
   sessionsCtrls.getUser
 );
 
+sessionRouter.get("/api/session/verify", sessionsCtrls.verifyToken);
+
 export default sessionRouter;

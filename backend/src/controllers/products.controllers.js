@@ -2,8 +2,6 @@ import { productModel } from "../models/products.models.js";
 
 const productCtrls = {};
 
-/************************************** API ***************************************/
-
 productCtrls.getProducts = async (req, res) => {
   const { limit } = req.query;
   try {

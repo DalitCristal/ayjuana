@@ -9,14 +9,13 @@ import { userModel } from "../models/users.models.js";
 //Estrategia
 const LocalStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
-const ExtractJWT = jwt.ExtractJwt;
-console.log("passport", process.env.JWT_SECRET);
+const ExtractJWT = jwt.ExtractJwt; //Extrar de las cookies el token
 
 const initializePassport = () => {
   //Verificación de token
   const cookieExtractor = (req) => {
     console.log(req.headers.authorization);
-    const token = req.headers.authorization ? req.headers.authorization : {};
+    const token = req.cookies.jwtCookie ? req.cookies.jwtCookie : {};
 
     return token;
   };
@@ -26,10 +25,11 @@ const initializePassport = () => {
     "jwt",
     new JWTStrategy(
       {
-        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]), //El token va a venir desde cookieExtractor
         secretOrKey: process.env.JWT_SECRET,
       },
       async (jwt_payload, done) => {
+        //jwt_payload = info del token (en este caso, datos del cliente)
         try {
           console.log("JWT", jwt_payload);
           return done(null, jwt_payload);
