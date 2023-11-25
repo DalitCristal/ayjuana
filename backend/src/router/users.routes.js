@@ -15,27 +15,27 @@ userRouter.get(
   passportError("jwt"),
   authorization("admin"),
   usersCtrls.renderApiAllUsers
-); /*  */
+);
 //Un usuario
 userRouter.get(
   "/api/users/:id",
   passportError("jwt"),
   authorization("admin"),
   usersCtrls.renderUserByID
-); /*  */
+);
 //Edita un usuario
 userRouter.put(
   "/api/users/:id",
   passportError("jwt"),
-  authorization("admin"),
+  authorization("user"),
   usersCtrls.renderUpdateUser
-); /*  */
+);
 //Elimina un usuario
 userRouter.delete(
   "/api/users/:id",
   passportError("jwt"),
-  authorization("admin"),
+  authorization("user"),
   usersCtrls.renderDeleteUser
-); /*  */
+);
 
 export default userRouter;

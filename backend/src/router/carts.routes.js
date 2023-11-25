@@ -11,7 +11,12 @@ cartRouter.get(
   cartsCtrls.getCartById
 );
 
-cartRouter.post("/api/carts/:cid/products/:pid", cartsCtrls.postAddProd);
+cartRouter.post(
+  "/api/carts/:cid/products/:pid",
+  passportError("jwt"),
+  authorization("user"),
+  cartsCtrls.postAddProd
+);
 
 cartRouter.delete(
   "/api/carts/:cid/products/:pid",
@@ -29,8 +34,8 @@ cartRouter.put(
 
 cartRouter.put(
   "/api/carts/:cid/products/:pid",
-  /* passportError("jwt"),
-  authorization("user"), */
+  passportError("jwt"),
+  authorization("user"),
   cartsCtrls.putQuantity
 );
 
@@ -40,10 +45,19 @@ cartRouter.delete(
   authorization("user"),
   cartsCtrls.deleteProds
 );
-{
-}
-cartRouter.get("/api/total-price-carts/:cid", cartsCtrls.getTotalPrice);
 
-cartRouter.put("/api/:cid/purchase", cartsCtrls.finalizarCompra);
+cartRouter.get(
+  "/api/total-price-carts/:cid",
+  passportError("jwt"),
+  authorization("user"),
+  cartsCtrls.getTotalPrice
+);
+
+cartRouter.put(
+  "/api/:cid/purchase",
+  passportError("jwt"),
+  authorization("user"),
+  cartsCtrls.finalizarCompra
+);
 
 export default cartRouter;

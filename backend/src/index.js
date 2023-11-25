@@ -2,23 +2,20 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import userRouter from "./router/users.routes.js";
-import productRouter from "./router/products.routes.js";
-import cartRouter from "./router/carts.routes.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import { messageModel } from "../src/models/messages.models.js";
 import path from "path";
 import { _dirname } from "./path.js";
-import homeRouter from "./router/home.routes.js";
+import router from "./router/index.routes.js";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import initializePassport from "./config/passport.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import sessionRouter from "./router/session.routes.js";
 import methodOverride from "method-override";
 import flash from "connect-flash";
+import nodemailer from "nodemailer";
 
 const whiteList = ["http://localhost:5173"];
 
@@ -114,11 +111,42 @@ io.on("connection", (socket) => {
     }
   });
 });
+/* MAIL */
+let transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "dalitcristal25@gmail.com",
+    pass: process.env.CONTRASENA_NODEMAILER,
+    authMethod: "LOGIN",
+  },
+});
+/* franciscopugh3@gmail.com */
+app.get("/mail", async (req, res) => {
+  const resultado = await transporter.sendMail({
+    from: "TEST Dala dalitcristal25@gmail.com",
+    to: "dalacristal25@gmail.com",
+    subject: "Prueba",
+    html: `
+      <div>
+        <h1>Hola Mundo</h1>
+      </div>
+    `,
+    attachments: [
+      {
+        filename: "criadero-ovejeros-alemanes-cordoba-capilla-del-monte.jpg",
+        path:
+          _dirname +
+          "/image/criadero-ovejeros-alemanes-cordoba-capilla-del-monte.jpg",
+        cid: "criadero-ovejeros-alemanes-cordoba-capilla-del-monte.jpg",
+      },
+    ],
+  });
+  console.log(resultado);
+  res.send("Mail enviado");
+});
+/* FIN MAIL */
 
 //RUTAS
-
-app.use("/", homeRouter);
-app.use("/", cartRouter);
-app.use("/", productRouter);
-app.use("/", userRouter);
-app.use("/", sessionRouter);
+app.use("/", router);

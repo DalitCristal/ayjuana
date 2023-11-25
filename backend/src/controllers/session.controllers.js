@@ -44,10 +44,6 @@ sessionsCtrls.getGithubCallback = async (req, res) => {
   res.status(200).send({ mensaje: "Usuario logueado" });
 };
 
-sessionsCtrls.getUser = (req, res) => {
-  res.send(req.user);
-};
-
 sessionsCtrls.verifyToken = async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.send(false);

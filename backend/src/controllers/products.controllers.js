@@ -37,8 +37,16 @@ productCtrls.getProductById = async (req, res) => {
 
 // ------ Crear un nuevo producto ------
 productCtrls.postProduct = async (req, res) => {
-  const { title, description, price, stock, code, thumbnail, category } =
-    req.body;
+  const {
+    title,
+    description,
+    price,
+    stock,
+    category,
+    status,
+    code,
+    thumbnail,
+  } = req.body;
 
   try {
     const prod = await productModel.create({
@@ -46,8 +54,9 @@ productCtrls.postProduct = async (req, res) => {
       description,
       price,
       stock,
-      code,
       category,
+      status,
+      code,
     });
     res.status(200).send({ respuesta: "OK", mensaje: prod });
   } catch (error) {

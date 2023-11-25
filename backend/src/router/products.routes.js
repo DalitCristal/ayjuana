@@ -14,20 +14,32 @@ productRouter.get("/api/products", productCtrls.getProducts);
 productRouter.get("/api/products/:id", productCtrls.getProductById);
 
 //Crear nuevo producto
-productRouter.post(
+/* productRouter.post(
   "/api/products",
   passportError("jwt"),
   authorization("admin"),
   validateSchema(createProductSchema),
   productCtrls.postProduct
+); */
+productRouter.post(
+  "/api/products",
+  passportError("jwt"),
+  authorization("admin"),
+  productCtrls.postProduct
 );
 
 //Editar producto
-productRouter.put(
+/* productRouter.put(
   "/api/products/:id",
   passportError("jwt"),
   authorization("admin"),
   validateSchema(createProductSchema),
+  productCtrls.putProduct
+); */
+productRouter.put(
+  "/api/products/:id",
+  passportError("jwt"),
+  authorization("admin"),
   productCtrls.putProduct
 );
 

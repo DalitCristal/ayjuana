@@ -11,7 +11,7 @@ export const passportError = (strategy) => {
       if (!user) {
         return res
           .status(401)
-          .send({ error: info.messages ? "info.messages" : info.toString() });
+          .send({ error: info.messages ? info.messages : info.toString() });
       }
 
       req.user = user;

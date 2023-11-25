@@ -38,10 +38,20 @@ sessionRouter.get(
 );
 
 sessionRouter.get(
+  "/api/session/testJWT",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.send(req.user);
+  }
+);
+
+sessionRouter.get(
   "/api/session/current",
   passportError("jwt"),
-  authorization("user"),
-  sessionsCtrls.getUser
+  authorization("admin"),
+  (req, res) => {
+    res.send(req.user);
+  }
 );
 
 sessionRouter.get("/api/session/verify", sessionsCtrls.verifyToken);
