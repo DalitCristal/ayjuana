@@ -2,8 +2,6 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 //STYLES
 import "../components/GlobalStyles/Formularios.css";
-//CONTEXT
-import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 
 const Registerr = () => {

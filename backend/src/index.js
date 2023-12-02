@@ -15,7 +15,6 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import methodOverride from "method-override";
 import flash from "connect-flash";
-import nodemailer from "nodemailer";
 
 const whiteList = ["http://localhost:5173"];
 
@@ -111,41 +110,7 @@ io.on("connection", (socket) => {
     }
   });
 });
-/* MAIL */
-let transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: "dalitcristal25@gmail.com",
-    pass: process.env.CONTRASENA_NODEMAILER,
-    authMethod: "LOGIN",
-  },
-});
-/* franciscopugh3@gmail.com */
-app.get("/mail", async (req, res) => {
-  const resultado = await transporter.sendMail({
-    from: "TEST Dala dalitcristal25@gmail.com",
-    to: "dalacristal25@gmail.com",
-    subject: "Prueba",
-    html: `
-      <div>
-        <h1>Hola Mundo</h1>
-      </div>
-    `,
-    attachments: [
-      {
-        filename: "criadero-ovejeros-alemanes-cordoba-capilla-del-monte.jpg",
-        path:
-          _dirname +
-          "/image/criadero-ovejeros-alemanes-cordoba-capilla-del-monte.jpg",
-        cid: "criadero-ovejeros-alemanes-cordoba-capilla-del-monte.jpg",
-      },
-    ],
-  });
-  console.log(resultado);
-  res.send("Mail enviado");
-});
+
 /* FIN MAIL */
 
 //RUTAS

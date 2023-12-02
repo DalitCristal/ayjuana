@@ -1,6 +1,5 @@
 import { generateToken } from "../utils/jwt.js";
 import "dotenv/config";
-import jwt from "jsonwebtoken";
 
 const sessionsCtrls = {};
 
@@ -11,8 +10,12 @@ sessionsCtrls.postLogin = async (req, res) => {
     }
 
     const token = generateToken(req.user);
+    /*  res.cookie("jwtCookie", token, {
+      maxAge: 43200000, //12Horas
+    }); //postman */
 
-    res.status(200).send({ token });
+    //res.status(200).send({ payload: req.user }); //postman
+    res.status(200).send({ token }); //react
   } catch (error) {
     res.status(500).send({ mensaje: `Error al iniciar sesion ${error}` });
   }
@@ -44,7 +47,7 @@ sessionsCtrls.getGithubCallback = async (req, res) => {
   res.status(200).send({ mensaje: "Usuario logueado" });
 };
 
-sessionsCtrls.verifyToken = async (req, res) => {
+/* sessionsCtrls.verifyToken = async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.send(false);
 
@@ -61,5 +64,5 @@ sessionsCtrls.verifyToken = async (req, res) => {
     });
   });
 };
-
+ */
 export default sessionsCtrls;

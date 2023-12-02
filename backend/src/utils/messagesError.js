@@ -34,6 +34,21 @@ export const authorization = (rol) => {
     next();
   };
 };
+//Recibo un rol y establezco su capacidad
+export const authorizationNewPass = (authorization) => {
+  return async (req, res, next) => {
+    console.log(req);
+    if (!req.user) {
+      return res.status(401).send({ error: "Usuario no autorizado" });
+    }
+    if (req.user.userId.authorization != authorization) {
+      return res
+        .status(403)
+        .send({ error: "Usuario no tiene los permisos necesarios" });
+    }
+    next();
+  };
+};
 
 //Verifico que los productos se carguen correctamente
 export const createProductSchema = z.object({

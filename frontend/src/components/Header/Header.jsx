@@ -1,4 +1,4 @@
-import logo from "/ay-juana-logo.jpg";
+import logo from "/ay-juana-logo.png";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
