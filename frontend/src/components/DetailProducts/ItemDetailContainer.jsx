@@ -23,7 +23,6 @@ const ItemDetailContainer = () => {
 
         if (response.ok) {
           const productData = await response.json();
-          console.log(productData.mensaje);
           setProduct(productData.mensaje);
         } else {
           console.error("Error fetching product details:", response.status);

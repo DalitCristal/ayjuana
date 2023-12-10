@@ -1,14 +1,20 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 //PAGES
-import Registerr from "./pages/Registerr.jsx";
+import Register from "./pages/Register.jsx";
 import Login from "./pages/Login/Login.jsx";
+import ForgotPassword from "./pages/Login/ForgotPassword.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Details from "./pages/Details.jsx";
 import Error from "./pages/Error.jsx";
+import Profile from "./pages/Profile.jsx";
 //COMPONENTS
 import Header from "./components/Header/Header.jsx";
-import ForgotPassword from "./pages/Login/ForgotPassword.jsx";
 import EditProfile from "./components/Profile/EditProfile.jsx";
+import ProductsListContainerAdmin from "./components/ProductsAdmin/ProductsListContainerAdmin.jsx";
+import NewProduct from "./components/ProductsAdmin/NewProduct.jsx";
+import EditProduct from "./components/ProductsAdmin/EditProduct.jsx";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
+import DeleteProduct from "./components/ProductsAdmin/DeleteProduct.jsx";
 
 const App = () => {
   return (
@@ -18,16 +24,52 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Registerr />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/product/:id" element={<Details />} />
           <Route path="/login/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/edit-profile/:userId/:token"
-            element={<EditProfile />}
-          />
-
+          <Route path="/edit-profile/:userId" element={<EditProfile />} />
           <Route path="/contact" element={"<Contact />"} />
-          <Route path="/profile" element={"<Profile />"} />
+
+          <Route
+            path="/products"
+            element={
+              <ProtectedRoute role="admin">
+                <ProductsListContainerAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/products/new"
+            element={
+              <ProtectedRoute role="admin">
+                <NewProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/products/edit/:productId"
+            element={
+              <ProtectedRoute role="admin">
+                <EditProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/products/delete/:productId"
+            element={
+              <ProtectedRoute role="admin">
+                <DeleteProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute role="user">
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

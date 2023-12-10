@@ -5,7 +5,6 @@ import sessionsCtrls from "../controllers/session.controllers.js";
 
 const sessionRouter = Router();
 
-/*************************************** API ***************************************/
 //Iniciar sesión
 sessionRouter.post(
   "/api/session/signin",
@@ -53,7 +52,5 @@ sessionRouter.get(
     res.send(req.user);
   }
 );
-
-//sessionRouter.get("/api/session/verify", sessionsCtrls.verifyToken);
 
 export default sessionRouter;

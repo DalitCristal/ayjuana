@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { getCookiesByName } from "../utils/formsUtils.js";
+import { getCookiesByName } from "../../utils/formsUtils.js";
 
 const NewProduct = () => {
   const formuRef = useRef(null);
@@ -13,25 +13,24 @@ const NewProduct = () => {
     const response = await fetch("http://localhost:8080/api/products", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token} `,
+        Authorization: `Bearer ${token}`,
         "Content-type": "application/json",
       },
       body: JSON.stringify(data),
+      credentials: "include",
     });
 
-    if (response.status == 200) {
-      const datos = await response.json();
-      console.log(datos);
+    const responseData = await response.json();
+    if (response.status === 200) {
+      console.log("Solicitud exitosa:", responseData);
     } else {
-      const datos = await response.json();
-
-      console.log(datos);
+      console.log("Error en la solicitud:", responseData);
     }
   };
 
   return (
     <div>
-      <h1 className="titleFormu">Creación de nuevo producto</h1>
+      <h1 className="titleFormu">Crear nuevo producto</h1>
       <form onSubmit={handleSubmit} ref={formuRef} className="containerFormu">
         <input
           type="text"

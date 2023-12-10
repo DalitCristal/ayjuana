@@ -10,7 +10,7 @@ productCtrls.getProducts = async (req, res) => {
     const statusProd = status ?? true;
     const limitProd = limit ?? 10;
     const pageProd = page ?? 1;
-    const order = sort ?? "desc";
+    const order = sort ?? "asc";
     let productsFromDB;
     let productsToShow;
     let nextPage;
@@ -91,18 +91,6 @@ productCtrls.getProducts = async (req, res) => {
   }
 };
 
-/* productCtrls.getProducts = async (req, res) => {
-  const { limit } = req.query;
-  try {
-    const prods = await productModel.find().limit(limit);
-    res.status(200).send({ respuesta: "OK", mensaje: prods });
-  } catch (error) {
-    res
-      .status(400)
-      .send({ respuesta: "Error en consultar productos", mensaje: error });
-  }
-}; */
-
 // ------ Buscar producto por ID ------
 productCtrls.getProductById = async (req, res) => {
   const { id } = req.params;
@@ -158,29 +146,34 @@ productCtrls.postProduct = async (req, res) => {
 // ------ Actualizar un producto ------
 productCtrls.putProduct = async (req, res) => {
   const { id } = req.params;
-  const { title, description, price, stock, code, thumbnail, category } =
+  const { title, description, price, stock, code, thumbnails, category } =
     req.body;
 
   try {
-    const prod = await productModel.findByIdAndUpdate(id, {
-      title,
-      description,
-      price,
-      stock,
-      code,
-      thumbnail,
-      category,
-    });
-    if (prod) {
-      res
-        .status(200)
-        .send({ respuesta: "OK", mensaje: "Producto Actualizado" });
-    } else {
-      res.status(404).send({
+    const prod = await productModel.findById(id);
+
+    if (!prod) {
+      return res.status(404).send({
         respuesta: "Error en actualizar producto",
         mensaje: "No encontrado",
       });
     }
+
+    prod.title = title;
+    prod.description = description;
+    prod.price = price;
+    prod.stock = stock;
+    prod.code = code;
+    prod.thumbnails = thumbnails;
+    prod.category = category;
+
+    //guardar en bdd
+    const updatedProduct = await prod.save();
+
+    res.status(200).send({
+      respuesta: "Producto actualizado con éxito",
+      mensaje: updatedProduct,
+    });
   } catch (error) {
     res
       .status(400)

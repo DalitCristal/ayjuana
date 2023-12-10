@@ -1,5 +1,5 @@
 import Carrousel from "../../components/Carrousel/Carrousel.jsx";
-import ProductsListContainer from "../../components/Products/ProductsListContainer.jsx";
+import ProductsListContainer from "../../components/ProductsUser/ProductsListContainer.jsx";
 
 const Home = () => {
   return (

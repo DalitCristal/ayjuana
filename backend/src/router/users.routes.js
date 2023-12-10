@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  passportError,
-  authorization,
-  authorizationNewPass,
-} from "../utils/messagesError.js";
+import { passportError, authorization } from "../utils/messagesError.js";
 import usersCtrls from "../controllers/users.controllers.js";
 const userRouter = Router();
 
@@ -12,7 +8,6 @@ const userRouter = Router();
 // EDITAR UN USUARIO
 //ELIMINAR UN USUARIO
 
-/************************************** API ***************************************/
 //Todos los usuarios
 userRouter.get(
   "/api/users",
@@ -29,7 +24,11 @@ userRouter.get(
 );
 //Edita un usuario
 userRouter.post("/api/users/mail", usersCtrls.postMail);
-userRouter.put(`/api/users/:userId/:token`, usersCtrls.putUser);
+userRouter.put(`/api/users/:userId`, usersCtrls.putUser);
+userRouter.post(
+  `/api/validate-reset-token/:userId`,
+  usersCtrls.verifyEmailToken
+);
 
 //Elimina un usuario
 userRouter.delete(

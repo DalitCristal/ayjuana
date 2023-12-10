@@ -1,8 +1,9 @@
 import { userModel } from "../models/users.models.js";
-import { encryptPassword } from "../utils/bcrypt.js";
+import { encryptPassword, validatePassword } from "../utils/bcrypt.js";
 import "dotenv/config";
 import nodemailer from "nodemailer";
 import { generateEmailToken } from "../utils/emailToken.js";
+import jwt from "jsonwebtoken";
 
 const usersCtrls = {};
 
@@ -10,7 +11,7 @@ const usersCtrls = {};
 //TRAER UN USUARIO
 // EDITAR UN USUARIO
 //ELIMINAR UN USUARIO
-/************************************** API ***************************************/
+
 //Todos los usuarios
 usersCtrls.renderApiAllUsers = async (req, res) => {
   try {
@@ -34,38 +35,84 @@ usersCtrls.renderUserByID = async (req, res) => {
         .send({ respuesta: "Error", mensaje: "Usuario no encontrado" });
     }
   } catch (error) {
-    res.status(400).send({ respuesta: "Error", mensaje: error });
+    res.status(400).send({ mensaje: "Error", respuesta: error });
   }
+};
+
+//verificar email token
+usersCtrls.verifyEmailToken = (req, res) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(403).json({ mensaje: "Token no proporcionado" });
+  }
+
+  jwt.verify(token, process.env.EMAIL_SECRET, (err, user) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        // Token expirado
+        return res.status(403).json({ mensaje: "Token expirado" });
+      } else {
+        // Otro error en la verificación
+        console.error("Error en la verificación del token:", err);
+        return res.status(403).json({ mensaje: "No autorizado" });
+      }
+    }
+
+    try {
+      // Verificar que la acción del token sea la especificada
+      if (user.action !== "resetPassword") {
+        return res.status(400).json({ mensaje: "Acción no válida" });
+      }
+      // Validar el tiempo de expiración
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (user.exp && user.exp < currentTime) {
+        return res.status(400).json({ mensaje: "Token expirado" });
+      }
+      // Validar que el Id del token sea igual al Id de los query params
+      const userIdFromToken = user.userId;
+      const userIdFromParams = req.params.userId;
+      if (userIdFromToken !== userIdFromParams) {
+        return res.status(400).json({ mensaje: "Id no válido" });
+      }
+
+      res.status(200).json({ mensaje: "Ok", user });
+    } catch (error) {
+      console.error("Error en la verificación del token:", error);
+      res.status(500).json({ mensaje: "Error interno del servidor" });
+    }
+  });
 };
 
 //Edita un usuario
 usersCtrls.putUser = async (req, res) => {
-  const { id, token } = req.params;
+  const { userId } = req.params;
   const { first_name, last_name, age, email, password } = req.body;
 
-  const emailTokenVerification = verifyEmailToken(token);
+  // Validar que la nueva contraseña no sea igual a la contraseña actual
+  const userPassword = await userModel.findById(userId);
 
-  if (!emailTokenVerification.valid) {
-    return res.status(400).send({
-      respuesta: "Error",
-      mensaje: emailTokenVerification.reason,
+  if (validatePassword(password, userPassword.password)) {
+    return res.status(400).json({
+      mensaje: "La nueva contraseña no puede ser igual a la contraseña actual",
     });
   }
 
-  const newPassword = encryptPassword(password);
+  const bcryptPassword = encryptPassword(password, process.env.SALT);
 
   try {
-    const user = await userModel.findByIdAndUpdate(id, {
+    const user = await userModel.findByIdAndUpdate(userId, {
       first_name,
       last_name,
       age,
       email,
-      password: newPassword,
+      password: bcryptPassword,
     });
+
     if (user) {
+      res.clearCookie("token");
       res.status(200).send({
-        respuesta: "Contraseña actualizada exitosamente",
-        mensaje: user,
+        mensaje: "Contraseña actualizada exitosamente",
+        respuesta: user,
       });
     } else {
       res
@@ -109,18 +156,14 @@ let transporter = nodemailer.createTransport({
 usersCtrls.postMail = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log(email);
 
     let emailExistente = await userModel.findOne({ email });
-    console.log("email existente", emailExistente);
 
     const userId = emailExistente.id;
     const userEmail = emailExistente.email;
     const action = "resetPassword";
 
-    console.log(userId);
     const emailToken = generateEmailToken(userId, userEmail, action);
-    //console.log(emailToken);
 
     if (emailExistente) {
       const resultado = await transporter.sendMail({
@@ -131,12 +174,13 @@ usersCtrls.postMail = async (req, res) => {
         <div>
           <h1>Recuperación de Contraseña</h1>
           <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-          <a href='http://localhost:5173/edit-profile/${userId}/${emailToken}'>Restablecer Contraseña</a>
+          <a href='http://localhost:5173/edit-profile/${userId}'>Restablecer Contraseña</a>
         </div>
       `,
       });
-      //console.log(resultado);
-      res.status(200).json({ respuesta: "email enviando con exito" });
+      res
+        .status(200)
+        .json({ respuesta: "email enviando con exito", mensaje: emailToken });
     } else {
       console.log("Usuario no existente");
     }

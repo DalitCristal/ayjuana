@@ -1,11 +1,7 @@
 import { Router } from "express";
 import { passportError, authorization } from "../utils/messagesError.js";
 import productCtrls from "../controllers/products.controllers.js";
-import { validateSchema } from "../config/validator.midleware.js";
-import { createProductSchema } from "../utils/messagesError.js";
 const productRouter = Router();
-
-/************************************** API ***************************************/
 
 //Obtener todos los productos
 productRouter.get("/api/products", productCtrls.getProducts);
@@ -14,13 +10,6 @@ productRouter.get("/api/products", productCtrls.getProducts);
 productRouter.get("/api/products/:id", productCtrls.getProductById);
 
 //Crear nuevo producto
-/* productRouter.post(
-  "/api/products",
-  passportError("jwt"),
-  authorization("admin"),
-  validateSchema(createProductSchema),
-  productCtrls.postProduct
-); */
 productRouter.post(
   "/api/products",
   passportError("jwt"),
@@ -29,13 +18,6 @@ productRouter.post(
 );
 
 //Editar producto
-/* productRouter.put(
-  "/api/products/:id",
-  passportError("jwt"),
-  authorization("admin"),
-  validateSchema(createProductSchema),
-  productCtrls.putProduct
-); */
 productRouter.put(
   "/api/products/:id",
   passportError("jwt"),

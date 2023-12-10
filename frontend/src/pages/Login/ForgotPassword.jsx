@@ -18,14 +18,18 @@ const ForgotPassword = () => {
         body: JSON.stringify({ email }),
       });
 
-      if (response.status == 200) {
-        setMessage("Se ha enviado un correo electrónico con instrucciones.");
-      } else {
-        setMessage("Hubo un problema al enviar el correo electrónico.");
+      if (!response.ok) {
+        throw new Error("Hubo un problema al enviar el correo electrónico.");
       }
+
+      const data = await response.json();
+      document.cookie = `token=${data.mensaje}; max-age=${
+        +1 * 60 * 60 * 1000
+      }; path=/; samesite=strict`;
+
+      setMessage("Se ha enviado un correo electrónico con instrucciones.");
     } catch (error) {
-      console.error("Error:", error);
-      setMessage("Hubo un error en el proceso.");
+      setMessage(error.message || "Hubo un error en el proceso.");
     } finally {
       setLoading(false);
     }

@@ -13,9 +13,7 @@ const ExtractJWT = jwt.ExtractJwt;
 
 const initializePassport = () => {
   const cookieExtractor = (req) => {
-    const token = req.cookies.jwtCookie ? req.cookies.jwtCookie : {};
-
-    //console.log("cookieExtractor", token);
+    const token = req.cookies.jwtCookie || null;
 
     return token;
   };
@@ -31,7 +29,6 @@ const initializePassport = () => {
       async (jwt_payload, done) => {
         //jwt_payload = info del token (en este caso, datos del cliente)
         try {
-          console.log("JWT", jwt_payload);
           return done(null, jwt_payload);
         } catch (error) {
           return done(error);
@@ -125,9 +122,6 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log(accessToken);
-          console.log(refreshToken);
-          console.log(profile._json);
           const user = await userModel.findOne({ email: profile._json.email });
           if (user) {
             done(null, false);

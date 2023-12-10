@@ -12,8 +12,6 @@ cartsCtrls.getCartById = async (req, res) => {
   const user = req.user;
 
   try {
-    console.log("Usuario autenticado:", user);
-
     const cart = await cartModel.findById(id);
 
     if (cart) res.status(200).send({ respuesta: "OK", mensaje: cart });
@@ -60,7 +58,7 @@ cartsCtrls.postAddProd = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res
       .status(400)
       .send({ respuesta: "Error en agregar producto Carrito", mensaje: error });
@@ -141,14 +139,12 @@ cartsCtrls.putQuantity = async (req, res) => {
         const indice = cart.products.findIndex(
           (item) => item.id_prod._id == pid
         );
-        //console.log(indice);
         if (indice != -1) {
           cart.products[indice].quantity = quantity;
         } else {
           cart.products.push({ id_prod: pid, quantity: quantity });
         }
-        console.log("cid" + cid);
-        console.log("carrito= " + cart);
+
         const respuesta = await cartModel.findByIdAndUpdate(cid, cart);
         res.status(200).send({ respuesta: "OK", mensaje: respuesta });
       } else {

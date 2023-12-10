@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 //COMPONENT
-import ProductCard from "./ProductCard.jsx";
+import ProductCard from "./ProductCardAdmin.jsx";
 
-const ProductsList = ({ products }) => {
-  //console.log(products);
+const ProductsListAdmin = ({ products }) => {
   return (
-    <div className="listGroup">
+    <div className="product-list">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
@@ -13,7 +12,7 @@ const ProductsList = ({ products }) => {
   );
 };
 
-ProductsList.propTypes = {
+ProductsListAdmin.propTypes = {
   products: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -26,4 +25,4 @@ ProductsList.propTypes = {
   ).isRequired,
 };
 
-export default ProductsList;
+export default ProductsListAdmin;

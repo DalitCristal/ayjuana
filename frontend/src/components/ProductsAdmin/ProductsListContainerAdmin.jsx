@@ -1,10 +1,10 @@
-import NavBar from "../Navigation/NavBar.jsx";
 import { useState, useEffect } from "react";
-import ProductsList from "./ProductsList.jsx";
-import getProducts from "./getProducts.jsx";
-import "./ProductsListContainer.css";
+import { Link } from "react-router-dom";
+import ProductsList from "./ProductsListAdmin.jsx";
+import getProducts from "./getProductsAdmin.jsx";
+import "./ProductsListContainerAdmin.css";
 
-const ProductsListContainer = () => {
+const ProductsListContainerAdmin = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,8 +30,8 @@ const ProductsListContainer = () => {
 
   return (
     <div>
-      <NavBar />
       <h1 className="title-page-products">Lista de Productos</h1>
+      <Link to={`/products/new`}>Crear nuevo producto</Link>
       <ProductsList products={products} />
 
       <div className="pagination">
@@ -50,4 +50,4 @@ const ProductsListContainer = () => {
   );
 };
 
-export default ProductsListContainer;
+export default ProductsListContainerAdmin;
