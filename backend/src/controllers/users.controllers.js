@@ -182,7 +182,7 @@ usersCtrls.postMail = async (req, res) => {
         .status(200)
         .json({ respuesta: "email enviando con exito", mensaje: emailToken });
     } else {
-      console.log("Usuario no existente");
+      res.status(404).send({ mensaje: "Usuario No encontrado" });
     }
   } catch (error) {
     console.error("Error:", error);

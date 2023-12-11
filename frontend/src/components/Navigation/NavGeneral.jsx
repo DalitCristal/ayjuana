@@ -12,7 +12,7 @@ const NavGeneral = () => {
       </NavLink>
 
       <NavLink
-        to={`/category/coats`}
+        to={`/category/coat`}
         className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
       >
         Abrigos
@@ -24,7 +24,7 @@ const NavGeneral = () => {
         Pantalones
       </NavLink>
       <NavLink
-        to={`/category/t-shirts`}
+        to={`/category/t-shirt`}
         className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
       >
         Remeras

@@ -31,7 +31,6 @@ const ProductsListContainerAdmin = () => {
     <div>
       <h1 className="title-page-products">Lista de Productos</h1>
       <ProductsList products={products} />
-
       <div className="pagination">
         {currentPage > 1 && (
           <button onClick={() => handlePageChange(currentPage - 1)}>
@@ -42,7 +41,6 @@ const ProductsListContainerAdmin = () => {
           Siguiente
         </button>
       </div>
-
       {loading ? "Cargando..." : null}
     </div>
   );

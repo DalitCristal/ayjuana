@@ -6,9 +6,9 @@ productCtrls.getProducts = async (req, res) => {
   try {
     let { category, status, limit, page, sort } = req.query;
 
-    const cat = category ?? "virtual";
+    const cat = category;
     const statusProd = status ?? true;
-    const limitProd = limit ?? 10;
+    const limitProd = limit ?? 12;
     const pageProd = page ?? 1;
     const order = sort ?? "asc";
     let productsFromDB;
@@ -32,7 +32,8 @@ productCtrls.getProducts = async (req, res) => {
           status: prod.status,
           code: prod.code,
           thumbnails: prod.thumbnails,
-          id: prod._id,
+          id: prod._id.toString(),
+          owner: prod._id.toString(),
         };
         productsToShow.push(prodRendered);
       }
@@ -63,7 +64,8 @@ productCtrls.getProducts = async (req, res) => {
           status: prod.status,
           code: prod.code,
           thumbnails: prod.thumbnails,
-          id: prod._id,
+          id: prod._id.toString(),
+          owner: prod._id.toString(),
         };
         productsToShow.push(prodRendered);
       }
@@ -127,7 +129,7 @@ productCtrls.postProduct = async (req, res) => {
 
   try {
     const userIdFromToken = req.user.user._id;
-    console.log(userIdFromToken);
+
     const prod = await productModel.create({
       title,
       description,
@@ -188,15 +190,35 @@ productCtrls.putProduct = async (req, res) => {
 // ------ Borrar un producto ------
 productCtrls.deleteProduct = async (req, res) => {
   const { id } = req.params;
+  const userRole = req.user.user.role;
+  const userIdFromToken = req.user.user._id;
 
   try {
-    const prod = await productModel.findByIdAndDelete(id);
+    let deletedProduct;
+
+    // Verificar si el usuario premium tiene permisos
+    const prod = await productModel.findOne({
+      _id: id,
+      owner: userIdFromToken,
+    });
+
     if (prod) {
+      // Tiene permisos para borrar su propio producto
+      deletedProduct = await productModel.findByIdAndDelete(id);
+    }
+
+    // Verificar si el usuario es un admin
+    if (userRole === "admin") {
+      // Admin tiene permisos para borrar cualquier producto
+      deletedProduct = await productModel.findByIdAndDelete(id);
+    }
+
+    if (deletedProduct) {
       res.status(200).send({ respuesta: "OK", mensaje: "Producto Borrado" });
     } else {
-      res.status(404).send({
+      res.status(403).send({
         respuesta: "Error en borrar producto",
-        mensaje: "No encontrado",
+        mensaje: "No tienes permisos para borrar este producto o no encontrado",
       });
     }
   } catch (error) {

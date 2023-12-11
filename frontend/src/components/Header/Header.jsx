@@ -53,7 +53,7 @@ const Header = () => {
           </NavLink>
         </ul>
       </div>
-      <Navbar userRole={userRole} />
+      <Navbar userRole={userRole || "user"} />
     </>
   );
 };

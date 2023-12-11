@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import ProductCard from "./ProductCard.jsx";
 
 const ProductsList = ({ products }) => {
-  //console.log(products);
   return (
     <div className="product-list">
       {products.map((product) => (

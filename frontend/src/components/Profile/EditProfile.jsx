@@ -47,7 +47,6 @@ const EditProfile = () => {
   const handleSavePassword = async (e) => {
     e.preventDefault();
 
-    // Validaciones
     if (password.length < 6) {
       setError("La contraseña debe tener al menos 6 caracteres");
       return;
@@ -57,7 +56,6 @@ const EditProfile = () => {
       setError("Las contraseñas no coinciden");
       return;
     }
-    // Fin de Validaciones
 
     try {
       const response = await fetch(

@@ -9,7 +9,6 @@ const ProtectedRoute = ({ role, children }) => {
   const userRole = getUserRole();
   const token = getCookiesByName("jwtCookie");
 
-  // isAuthorized es una función interna que no cambia después de la primera renderización
   const isAuthorized = () => {
     return Array.isArray(role) ? role.includes(userRole) : role === userRole;
   };
