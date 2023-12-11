@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import ProductsList from "./ProductsListAdmin.jsx";
 import getProducts from "./getProductsAdmin.jsx";
 import "./ProductsListContainerAdmin.css";
@@ -31,7 +30,6 @@ const ProductsListContainerAdmin = () => {
   return (
     <div>
       <h1 className="title-page-products">Lista de Productos</h1>
-      <Link to={`/products/new`}>Crear nuevo producto</Link>
       <ProductsList products={products} />
 
       <div className="pagination">

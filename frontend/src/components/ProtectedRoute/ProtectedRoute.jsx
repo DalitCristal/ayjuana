@@ -1,33 +1,40 @@
+// ProtectedRoute.jsx
 import PropTypes from "prop-types";
-import { obtenerRolDelUsuario } from "./rolDelUsuario";
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getCookiesByName, getUserRole } from "./rolDelUsuario";
 
-const ProtectedRoute = ({ children, role }) => {
-  const isAuthenticated = document.cookie.includes("jwtCookie=");
+const ProtectedRoute = ({ role, children }) => {
+  const navigate = useNavigate();
+  const userRole = getUserRole();
+  const token = getCookiesByName("jwtCookie");
 
-  // Obtener el rol del usuario
-  const rolDelUsuario = obtenerRolDelUsuario();
+  // isAuthorized es una función interna que no cambia después de la primera renderización
+  const isAuthorized = () => {
+    return Array.isArray(role) ? role.includes(userRole) : role === userRole;
+  };
 
-  // Verificar si se pudo obtener el rol del usuario
-  if (rolDelUsuario) {
-    if (isAuthenticated && rolDelUsuario === role) {
-      return children;
-    } else {
-      return <Navigate to="/login" />;
+  useEffect(() => {
+    if (!token) {
+      // Si no hay token
+      navigate("/login", { replace: true });
+    } else if (!isAuthorized()) {
+      // Si el usuario no está autorizado
+      navigate("/unauthorized", { replace: true });
     }
-  } else {
-    console.log("No se pudo obtener el rol del usuario.");
-  }
 
-  return <Navigate to="/login" />;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, userRole, navigate]);
+
+  return isAuthorized() ? <>{children}</> : null;
 };
 
 ProtectedRoute.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-  role: PropTypes.string.isRequired,
+  role: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;

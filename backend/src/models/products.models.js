@@ -33,11 +33,11 @@ const productSchema = new Schema({
     unique: true,
   },
   thumbnails: [],
-  /*   owner: {
+  owner: {
     type: Schema.Types.ObjectId,
     ref: "users",
     default: "admin",
-  }, */
+  },
 });
 
 productSchema.plugin(paginate);

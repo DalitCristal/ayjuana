@@ -13,7 +13,7 @@ productRouter.get("/api/products/:id", productCtrls.getProductById);
 productRouter.post(
   "/api/products",
   passportError("jwt"),
-  authorization("admin"),
+  authorization(["admin", "premium"]),
   productCtrls.postProduct
 );
 
@@ -21,7 +21,7 @@ productRouter.post(
 productRouter.put(
   "/api/products/:id",
   passportError("jwt"),
-  authorization("admin"),
+  authorization(["admin", "premium"]),
   productCtrls.putProduct
 );
 
@@ -29,7 +29,7 @@ productRouter.put(
 productRouter.delete(
   "/api/products/:id",
   passportError("jwt"),
-  authorization("admin"),
+  authorization(["admin", "premium"]),
   productCtrls.deleteProduct
 );
 

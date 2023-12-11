@@ -1,49 +1,39 @@
-//REACT ROUTER DOM
-import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 //STYLES
 import "./NavBar.css";
+//COMPONENTS
+import NavGeneral from "./NavGeneral";
+import ProductActionsDropdown from "./ProductActionsDropdown";
 
-const NavBar = () => {
+const Navbar = ({ userRole }) => {
   return (
-    <>
-      <nav className="navBar">
-        <ul className="buttonsNav">
-          <NavLink
-            to={"/"}
-            className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-          >
-            Inicio
-          </NavLink>
+    <nav className="navBar">
+      {userRole === "admin" && (
+        <>
+          {/* Menú para admin */}
+          <NavGeneral />
+          <ProductActionsDropdown />
+        </>
+      )}
 
-          <NavLink
-            to={`/category/coats`}
-            className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-          >
-            Abrigos
-          </NavLink>
-          <NavLink
-            to={`/category/pants`}
-            className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-          >
-            Pantalones
-          </NavLink>
-          <NavLink
-            to={`/category/t-shirts`}
-            className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-          >
-            Remeras
-          </NavLink>
+      {userRole === "premium" && (
+        <>
+          {/* Menú para premium */}
+          <NavGeneral />
+          <ProductActionsDropdown />
+        </>
+      )}
 
-          <NavLink
-            to={"/contact"}
-            className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-          >
-            Contacto
-          </NavLink>
-        </ul>
-      </nav>
-    </>
+      {userRole !== "admin" && userRole !== "premium" && (
+        /* Menú para usuarios regulares */
+        <NavGeneral />
+      )}
+    </nav>
   );
 };
 
-export default NavBar;
+Navbar.propTypes = {
+  userRole: PropTypes.string.isRequired,
+};
+
+export default Navbar;

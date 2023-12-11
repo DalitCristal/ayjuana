@@ -126,6 +126,8 @@ productCtrls.postProduct = async (req, res) => {
   } = req.body;
 
   try {
+    const userIdFromToken = req.user.user._id;
+    console.log(userIdFromToken);
     const prod = await productModel.create({
       title,
       description,
@@ -134,6 +136,8 @@ productCtrls.postProduct = async (req, res) => {
       category,
       status,
       code,
+      thumbnail,
+      owner: userIdFromToken,
     });
     res.status(200).send({ respuesta: "OK", mensaje: prod });
   } catch (error) {

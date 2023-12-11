@@ -19,9 +19,31 @@ export const passportError = (strategy) => {
   };
 };
 
-//Recibo un rol y establezco su capacidad
-export const authorization = (rol) => {
+//Recibo 2 roles y establezco su capacidad
+export const authorization = (roles) => {
   return async (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).send({ error: "Usuario no autorizado" });
+    }
+
+    if (!Array.isArray(roles)) {
+      roles = [roles];
+    }
+
+    if (!roles.includes(req.user.user.rol)) {
+      return res
+        .status(403)
+        .send({ error: "Usuario no tiene los permisos necesarios" });
+    }
+
+    next();
+  };
+};
+
+//Recibo un rol y establezco su capacidad
+/* export const authorization = (rol) => {
+  return async (req, res, next) => {
+    console.log("authorization tuta back", rol);
     if (!req.user) {
       return res.status(401).send({ error: "Usuario no autorizado" });
     }
@@ -33,4 +55,4 @@ export const authorization = (rol) => {
     }
     next();
   };
-};
+}; */

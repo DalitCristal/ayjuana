@@ -15,6 +15,7 @@ import NewProduct from "./components/ProductsAdmin/NewProduct.jsx";
 import EditProduct from "./components/ProductsAdmin/EditProduct.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import DeleteProduct from "./components/ProductsAdmin/DeleteProduct.jsx";
+import Unauthorized from "./components/ProtectedRoute/Unauthorized.jsx";
 
 const App = () => {
   return (
@@ -33,15 +34,15 @@ const App = () => {
           <Route
             path="/products"
             element={
-              <ProtectedRoute role="admin">
+              <ProtectedRoute role={["admin", "premium"]}>
                 <ProductsListContainerAdmin />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/products/new"
+            path="/products/create"
             element={
-              <ProtectedRoute role="admin">
+              <ProtectedRoute role={["admin", "premium"]}>
                 <NewProduct />
               </ProtectedRoute>
             }
@@ -49,7 +50,7 @@ const App = () => {
           <Route
             path="/products/edit/:productId"
             element={
-              <ProtectedRoute role="admin">
+              <ProtectedRoute role={["admin", "premium"]}>
                 <EditProduct />
               </ProtectedRoute>
             }
@@ -70,6 +71,8 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
