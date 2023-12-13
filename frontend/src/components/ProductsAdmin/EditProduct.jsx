@@ -15,7 +15,7 @@ const EditProduct = () => {
     stock: 0,
     code: "",
     status: true,
-    thumbnail: "",
+    thumbnails: [],
     category: "",
   });
 
@@ -37,10 +37,20 @@ const EditProduct = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
-    setProductData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? e.target.checked : value,
-    }));
+
+    // Manejar cambios en el array de thumbnails
+    if (name === "thumbnails") {
+      const thumbnailsArray = value.split(",");
+      setProductData((prevData) => ({
+        ...prevData,
+        [name]: thumbnailsArray,
+      }));
+    } else {
+      setProductData((prevData) => ({
+        ...prevData,
+        [name]: type === "checkbox" ? e.target.checked : value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -130,25 +140,16 @@ const EditProduct = () => {
           />
         </label>
         <label className="labelEditProduct">
-          Estado:
-          <input
-            type="checkbox"
+          Habilitado para e-commerce:
+          <select
             name="status"
-            checked={productData.status}
-            onChange={handleInputChange}
-          />
-          Activo
-        </label>
-
-        <label className="labelEditProduct">
-          URL de la imagen (Thumbnail):
-          <input
-            type="text"
-            name="thumbnail"
-            value={productData.thumbnail}
+            value={productData.status ? "true" : "false"}
             onChange={handleInputChange}
             className="inputEditProduct"
-          />
+          >
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
         </label>
         <label className="labelEditProduct">
           Categoría:
@@ -160,6 +161,17 @@ const EditProduct = () => {
             className="inputEditProduct"
           />
         </label>
+        <label className="labelEditProduct">
+          URL de las imágenes (separadas por comas):
+          <input
+            type="text"
+            name="thumbnails"
+            value={productData.thumbnails.join(", ")}
+            onChange={handleInputChange}
+            className="inputEditProduct"
+          />
+        </label>
+
         <button type="submit" className="btnEditProduct">
           Guardar Cambios
         </button>

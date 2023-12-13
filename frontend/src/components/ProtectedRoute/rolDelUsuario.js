@@ -8,6 +8,7 @@ export const getUserRole = () => {
   if (token) {
     try {
       const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      //console.log("rol de usuario:", decodedToken);
 
       return decodedToken.user.rol;
     } catch (error) {
@@ -15,16 +16,5 @@ export const getUserRole = () => {
     }
   }
 
-  return null;
-};
-
-export const getCookiesByName = (name) => {
-  const cookies = document.cookie.split(";");
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith(name + "=")) {
-      return cookie.substring(name.length + 1);
-    }
-  }
   return null;
 };

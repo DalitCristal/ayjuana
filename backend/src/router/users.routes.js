@@ -16,12 +16,7 @@ userRouter.get(
   usersCtrls.renderApiAllUsers
 );
 //Un usuario
-userRouter.get(
-  "/api/users/:id",
-  passportError("jwt"),
-  authorization("admin"),
-  usersCtrls.renderUserByID
-);
+userRouter.get("/api/users/:id", usersCtrls.getUserById);
 //Edita un usuario
 userRouter.post("/api/users/mail", usersCtrls.postMail);
 userRouter.put(`/api/users/:userId`, usersCtrls.putUser);

@@ -2,7 +2,8 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookiesByName, getUserRole } from "./rolDelUsuario";
+import { getUserRole } from "./rolDelUsuario";
+import { getCookiesByName } from "../../utils/formsUtils";
 
 const ProtectedRoute = ({ role, children }) => {
   const navigate = useNavigate();

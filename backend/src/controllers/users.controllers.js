@@ -23,7 +23,7 @@ usersCtrls.renderApiAllUsers = async (req, res) => {
 };
 
 //Un usuario
-usersCtrls.renderUserByID = async (req, res) => {
+usersCtrls.getUserById = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await userModel.findById(id);

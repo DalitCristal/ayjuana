@@ -9,7 +9,6 @@ const ProductActionsDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // Cierra el menú cuando se cambia la ruta
   useEffect(() => {
     setIsDropdownOpen(false);
   }, [location.pathname]);

@@ -19,7 +19,7 @@ productRouter.post(
 
 //Editar producto
 productRouter.put(
-  "/api/products/:id",
+  "/api/products/:productId",
   passportError("jwt"),
   authorization(["admin", "premium"]),
   productCtrls.putProduct

@@ -32,7 +32,10 @@ const productSchema = new Schema({
     required: true,
     unique: true,
   },
-  thumbnails: [],
+  thumbnails: {
+    type: Array,
+    default: [],
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "users",

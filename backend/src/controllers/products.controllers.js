@@ -33,7 +33,7 @@ productCtrls.getProducts = async (req, res) => {
           code: prod.code,
           thumbnails: prod.thumbnails,
           id: prod._id.toString(),
-          owner: prod._id.toString(),
+          owner: prod.owner.toString(),
         };
         productsToShow.push(prodRendered);
       }
@@ -65,7 +65,7 @@ productCtrls.getProducts = async (req, res) => {
           code: prod.code,
           thumbnails: prod.thumbnails,
           id: prod._id.toString(),
-          owner: prod._id.toString(),
+          owner: prod.owner.toString(),
         };
         productsToShow.push(prodRendered);
       }
@@ -151,46 +151,63 @@ productCtrls.postProduct = async (req, res) => {
 
 // ------ Actualizar un producto ------
 productCtrls.putProduct = async (req, res) => {
-  const { id } = req.params;
+  const { productId } = req.params;
   const { title, description, price, stock, code, thumbnails, category } =
     req.body;
 
   try {
-    const prod = await productModel.findById(id);
-
-    if (!prod) {
+    // Verificar si el usuario premium tiene los permisos
+    const existingProduct = await productModel.findById(productId);
+    if (!existingProduct) {
       return res.status(404).send({
         respuesta: "Error en actualizar producto",
         mensaje: "No encontrado",
       });
     }
 
-    prod.title = title;
-    prod.description = description;
-    prod.price = price;
-    prod.stock = stock;
-    prod.code = code;
-    prod.thumbnails = thumbnails;
-    prod.category = category;
+    if (
+      req.user.user.rol === "premium" &&
+      existingProduct.owner.toString() !== req.user.user._id
+    ) {
+      return res.status(403).send({
+        respuesta: "Error en actualizar producto",
+        mensaje: "No tienes permisos para editar este producto",
+      });
+    }
 
-    //guardar en bdd
-    const updatedProduct = await prod.save();
+    const thumbnailsArray = thumbnails.split(", ").map((url) => url.trim());
+
+    // Actualizar el producto
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      productId,
+      {
+        title,
+        description,
+        price,
+        stock,
+        code,
+        thumbnailsArray,
+        category,
+      },
+      { new: true, runValidators: true }
+    );
 
     res.status(200).send({
       respuesta: "Producto actualizado con éxito",
       mensaje: updatedProduct,
     });
   } catch (error) {
-    res
-      .status(400)
-      .send({ respuesta: "Error en actualizar un producto", mensaje: error });
+    res.status(400).send({
+      respuesta: "Error en actualizar un producto",
+      mensaje: error.message || error,
+    });
   }
 };
 
 // ------ Borrar un producto ------
 productCtrls.deleteProduct = async (req, res) => {
   const { id } = req.params;
-  const userRole = req.user.user.role;
+  const userRole = req.user.user.rol;
   const userIdFromToken = req.user.user._id;
 
   try {
@@ -203,13 +220,8 @@ productCtrls.deleteProduct = async (req, res) => {
     });
 
     if (prod) {
-      // Tiene permisos para borrar su propio producto
       deletedProduct = await productModel.findByIdAndDelete(id);
-    }
-
-    // Verificar si el usuario es un admin
-    if (userRole === "admin") {
-      // Admin tiene permisos para borrar cualquier producto
+    } else if (userRole === "admin") {
       deletedProduct = await productModel.findByIdAndDelete(id);
     }
 

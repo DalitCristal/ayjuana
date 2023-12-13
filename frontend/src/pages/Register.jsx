@@ -10,7 +10,6 @@ const Register = () => {
     e.preventDefault();
     const datForm = new FormData(formRef.current);
     const data = Object.fromEntries(datForm);
-
     const response = await fetch("http://localhost:8080/api/session/signup", {
       method: "POST",
       headers: {
