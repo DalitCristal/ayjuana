@@ -19,6 +19,8 @@ const ProductActionsDropdown = () => {
       display: "inline-block",
     },
     dropdownButton: {
+      fontSize: "16px",
+      textTransform: "uppercase",
       backgroundColor: "#ce5b83",
       color: "#ffffff",
       border: "none",

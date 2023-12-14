@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import "./NavBar.css";
 //COMPONENTS
 import NavGeneral from "./NavGeneral";
-import ProductActionsDropdown from "./ProductActionsDropdown";
+import NavPremium from "./NavPremium";
+import NavAdmin from "./NavAdmin";
 
 const Navbar = ({ userRole }) => {
   return (
@@ -11,16 +12,14 @@ const Navbar = ({ userRole }) => {
       {userRole === "admin" && (
         <>
           {/* Menú para admin */}
-          <NavGeneral />
-          <ProductActionsDropdown />
+          <NavAdmin />
         </>
       )}
 
       {userRole === "premium" && (
         <>
           {/* Menú para premium */}
-          <NavGeneral />
-          <ProductActionsDropdown />
+          <NavPremium />
         </>
       )}
 

@@ -13,13 +13,32 @@ userRouter.get(
   "/api/users",
   passportError("jwt"),
   authorization("admin"),
-  usersCtrls.renderApiAllUsers
+  usersCtrls.getApiAllUsers
 );
+
 //Un usuario
-userRouter.get("/api/users/:id", usersCtrls.getUserById);
-//Edita un usuario
+userRouter.get(
+  "/api/users/:id",
+  passportError("jwt"),
+  authorization("admin"),
+  usersCtrls.getUserById
+);
+
+//Crear un usuario
 userRouter.post("/api/users/mail", usersCtrls.postMail);
-userRouter.put(`/api/users/:userId`, usersCtrls.putUser);
+
+//Restablecer contraseña de usuario
+userRouter.put(`/api/users/:userId`, usersCtrls.putPasswordUser);
+
+//Edita rol de un usuario
+userRouter.put(
+  `/api/users/premium/:uid`,
+  passportError("jwt"),
+  authorization("admin"),
+  usersCtrls.putRolUser
+);
+
+//validar email token
 userRouter.post(
   `/api/validate-reset-token/:userId`,
   usersCtrls.verifyEmailToken
@@ -29,8 +48,8 @@ userRouter.post(
 userRouter.delete(
   "/api/users/:id",
   passportError("jwt"),
-  authorization("user"),
-  usersCtrls.renderDeleteUser
+  authorization("admin"),
+  usersCtrls.deleteUser
 );
 
 export default userRouter;

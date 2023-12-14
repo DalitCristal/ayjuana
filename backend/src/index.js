@@ -15,6 +15,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import methodOverride from "method-override";
 import flash from "connect-flash";
+import { addLogger } from "./config/logger.js";
 
 const whiteList = ["http://localhost:5173"];
 
@@ -71,6 +72,8 @@ app.use(
   })
 );
 app.use(methodOverride("_method"));
+app.use(addLogger);
+
 /* Passport */
 initializePassport();
 app.use(passport.initialize());
@@ -110,8 +113,6 @@ io.on("connection", (socket) => {
     }
   });
 });
-
-/* FIN MAIL */
 
 //RUTAS
 app.use("/", router);

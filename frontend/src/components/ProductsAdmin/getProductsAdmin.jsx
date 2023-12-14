@@ -1,4 +1,4 @@
-const getProducts = async (page) => {
+const getProductsAdmin = async (page) => {
   try {
     const response = await fetch(
       `http://localhost:8080/api/products?page=${page}`
@@ -13,4 +13,4 @@ const getProducts = async (page) => {
   }
 };
 
-export default getProducts;
+export default getProductsAdmin;

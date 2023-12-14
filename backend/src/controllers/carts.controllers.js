@@ -58,7 +58,7 @@ cartsCtrls.postAddProd = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error(error);
+    req.logger.error(error);
     res
       .status(400)
       .send({ respuesta: "Error en agregar producto Carrito", mensaje: error });
@@ -160,7 +160,7 @@ cartsCtrls.putQuantity = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    req.logger.error(error);
     res.status(400).send({
       respuesta: "Error en actualizar cantidad de producto Carrito",
       mensaje: error,
@@ -235,7 +235,10 @@ cartsCtrls.finalizarCompra = async (req, res) => {
 
           await productoQueActualizar.save();
         } else {
-          console.error("No se encontro el productoQueActualizar" + error);
+          req.logger.error(
+            "No se encontro el producto que quiere actualizar",
+            error
+          );
         }
 
         //Precio total de la compra

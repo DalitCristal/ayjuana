@@ -17,6 +17,9 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import DeleteProduct from "./components/ProductsAdmin/DeleteProduct.jsx";
 import Unauthorized from "./components/ProtectedRoute/Unauthorized.jsx";
 import ProductsByCategory from "./components/ProductsUser/ProductsByCategory.jsx";
+import UsersListContainer from "./components/UsersAdmin/UsersListContainer.jsx";
+import EditUser from "./components/UsersAdmin/EditUser.jsx";
+import DeleteUser from "./components/UsersAdmin/DeleteUser.jsx";
 
 const App = () => {
   return (
@@ -65,6 +68,30 @@ const App = () => {
             element={
               <ProtectedRoute role={["admin", "premium"]}>
                 <DeleteProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute role={"admin"}>
+                <UsersListContainer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/edit/:id"
+            element={
+              <ProtectedRoute role={"admin"}>
+                <EditUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/delete/:userId"
+            element={
+              <ProtectedRoute role={"admin"}>
+                <DeleteUser />
               </ProtectedRoute>
             }
           />

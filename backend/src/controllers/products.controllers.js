@@ -88,8 +88,8 @@ productCtrls.getProducts = async (req, res) => {
       prev: prevPage,
     });
   } catch (error) {
-    console.error("Error fetching and processing products:", error);
-    res.status(500).send({ error: "Internal Server Error" });
+    req.logger.error("Error al obtener y procesar los productos:", error);
+    res.status(500).send({ error: "Error interno del servidor" });
   }
 };
 

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { fetchUserData } from "../Profile/fetchUserData";
+import { fetchUserData } from "../../utils/fetchUserData";
 
 const ProductCardAdmin = ({ product }) => {
   const {

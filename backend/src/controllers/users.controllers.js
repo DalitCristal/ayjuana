@@ -7,13 +7,8 @@ import jwt from "jsonwebtoken";
 
 const usersCtrls = {};
 
-//TRAER TODOS LOS USUARIOS
-//TRAER UN USUARIO
-// EDITAR UN USUARIO
-//ELIMINAR UN USUARIO
-
 //Todos los usuarios
-usersCtrls.renderApiAllUsers = async (req, res) => {
+usersCtrls.getApiAllUsers = async (req, res) => {
   try {
     const users = await userModel.find();
     res.status(200).send({ respuesta: "OK", mensaje: users });
@@ -53,7 +48,7 @@ usersCtrls.verifyEmailToken = (req, res) => {
         return res.status(403).json({ mensaje: "Token expirado" });
       } else {
         // Otro error en la verificación
-        console.error("Error en la verificación del token:", err);
+        req.logger.error("Error en la verificación del token:", err);
         return res.status(403).json({ mensaje: "No autorizado" });
       }
     }
@@ -77,14 +72,14 @@ usersCtrls.verifyEmailToken = (req, res) => {
 
       res.status(200).json({ mensaje: "Ok", user });
     } catch (error) {
-      console.error("Error en la verificación del token:", error);
+      req.logger.error("Error en la verificación del token:", error);
       res.status(500).json({ mensaje: "Error interno del servidor" });
     }
   });
 };
 
 //Edita un usuario
-usersCtrls.putUser = async (req, res) => {
+usersCtrls.putPasswordUser = async (req, res) => {
   const { userId } = req.params;
   const { first_name, last_name, age, email, password } = req.body;
 
@@ -124,8 +119,33 @@ usersCtrls.putUser = async (req, res) => {
   }
 };
 
+//Editar rol de usuario
+usersCtrls.putRolUser = async (req, res) => {
+  const { uid } = req.params;
+  const { rol } = req.body;
+
+  try {
+    const user = await userModel.findByIdAndUpdate(uid, {
+      rol,
+    });
+
+    if (user) {
+      res.status(200).send({
+        mensaje: "Usuario actualizado exitosamente",
+        respuesta: user,
+      });
+    } else {
+      res
+        .status(404)
+        .send({ respuesta: "Error", mensaje: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    res.status(400).send({ respuesta: error });
+  }
+};
+
 //Elimina un usuario
-usersCtrls.renderDeleteUser = async (req, res) => {
+usersCtrls.deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await userModel.findByIdAndDelete(id);
@@ -185,11 +205,12 @@ usersCtrls.postMail = async (req, res) => {
       res.status(404).send({ mensaje: "Usuario No encontrado" });
     }
   } catch (error) {
-    console.error("Error:", error);
+    req.logger.error("Error:", error);
     res
       .status(500)
       .json({ message: "Ocurrió un error al enviar el correo electrónico." });
   }
 };
+/* FIN MAIL */
 
 export default usersCtrls;
