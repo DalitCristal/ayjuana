@@ -32,7 +32,7 @@ const EditProfile = () => {
           }
         );
 
-        if (!response.ok) {
+        if (!response.status === 200) {
           setTokenValid(false);
         }
       } catch (error) {
@@ -69,7 +69,7 @@ const EditProfile = () => {
         }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         console.log("Contraseña actualizada exitosamente");
         navigate("/login");
       } else {

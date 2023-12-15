@@ -33,8 +33,11 @@ $sendMessage.addEventListener("click", async () => {
       socket.emit("mensaje", mensajeAlternativo);
       $textToSend.value = "";
     }
-  } catch {
-    console.log("Ocurrió un error mandando los datos a la BDD");
+  } catch (error) {
+    req.logger.error(
+      "Ocurrió un error mandando los datos a la base de datos",
+      error
+    );
   }
 });
 

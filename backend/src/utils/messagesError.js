@@ -39,20 +39,3 @@ export const authorization = (roles) => {
     next();
   };
 };
-
-//Recibo un rol y establezco su capacidad
-/* export const authorization = (rol) => {
-  return async (req, res, next) => {
-    console.log("authorization tuta back", rol);
-    if (!req.user) {
-      return res.status(401).send({ error: "Usuario no autorizado" });
-    }
-
-    if (req.user.user.rol != rol) {
-      return res
-        .status(403)
-        .send({ error: "Usuario no tiene los permisos necesarios" });
-    }
-    next();
-  };
-}; */

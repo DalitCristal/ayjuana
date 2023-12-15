@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { getCookiesByName } from "../../utils/formsUtils.js";
+import "./NewProduct.css";
 
 const NewProduct = () => {
   const formuRef = useRef(null);
@@ -29,66 +30,90 @@ const NewProduct = () => {
   };
 
   return (
-    <div>
+    <>
       <h1 className="titleFormu">Crear nuevo producto</h1>
       <form onSubmit={handleSubmit} ref={formuRef} className="containerFormu">
-        <input
-          type="text"
-          id="title"
-          name="title"
-          placeholder="Titulo"
-          className="inputFormu"
-          required
-        />
+        <label className="labelNewProduct">
+          Título:
+          <input
+            type="text"
+            id="title"
+            name="title"
+            className="inputNewProduct"
+            required
+          />
+        </label>
+        <label className="textareaNewProduct">
+          Descripción:
+          <textarea
+            type="text"
+            id="description"
+            name="description"
+            className="textareaNewProduct"
+            required
+          />
+        </label>
+        <label className="labelNewProduct">
+          Categoría:
+          <input
+            type="text"
+            id="category"
+            name="category"
+            className="inputNewProduct"
+            required
+          />
+        </label>
+        <label className="labelNewProduct">
+          Código:
+          <input
+            type="text"
+            id="code"
+            name="code"
+            className="inputNewProduct"
+            required
+          />
+        </label>
+        <label className="labelNewProduct">
+          Precio:
+          <input
+            type="number"
+            id="price"
+            name="price"
+            className="inputNewProduct"
+            required
+          />
+        </label>
+        <label className="labelNewProduct">
+          Stock:
+          <input
+            type="number"
+            id="stock"
+            name="stock"
+            className="inputNewProduct"
+            required
+          />
+        </label>
+        <label className="labelNewProduct">
+          Habilitado para e-commerce:
+          <select name="status" className="inputNewProduct">
+            <option value={true}>Sí</option>
+            <option value={false}>No</option>
+          </select>
+        </label>
+        <label className="labelNewProduct">
+          URL de las imágenes (separadas por comas):
+          <textarea
+            type="text"
+            name="thumbnails"
+            className="textareaNewProduct"
+          />
+        </label>
 
-        <input
-          type="text"
-          id="description"
-          name="description"
-          placeholder="Descripción"
-          className="inputFormu"
-          required
-        />
-
-        <input
-          type="text"
-          id="category"
-          name="category"
-          placeholder="Categoría"
-          className="inputFormu"
-          required
-        />
-        <input
-          type="text"
-          id="code"
-          name="code"
-          placeholder="Código"
-          className="inputFormu"
-          required
-        />
-
-        <input
-          type="number"
-          id="price"
-          name="price"
-          placeholder="Precio"
-          className="inputFormu"
-          required
-        />
-
-        <input
-          type="number"
-          id="stock"
-          name="stock"
-          placeholder="Stock"
-          className="inputFormu"
-          required
-        />
         <button type="submit" className="btnFormu">
           Crear Producto
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

@@ -24,7 +24,7 @@ const ProductCardAdmin = ({ product }) => {
         const user = await fetchUserData(owner);
         setUserData(user);
       } catch (error) {
-        console.error("Error fetching user data:", error.message);
+        console.error("Error fetching user data:", error);
       }
     };
 
@@ -46,9 +46,9 @@ const ProductCardAdmin = ({ product }) => {
         {userData ? (
           <>
             <p>
-              Titular: {userData.first_name} {userData.last_name}
+              Titular: {userData.data.first_name} {userData.data.last_name}
             </p>
-            <p>Rol: {userData.rol}</p>
+            <p>Rol: {userData.data.rol}</p>
           </>
         ) : null}
       </div>

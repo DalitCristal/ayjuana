@@ -1,6 +1,7 @@
 import { getCookiesByName } from "./formsUtils";
 
-// Función para obtener los detalles del usuario por ID
+// Función para obtener los detalles del usuario por Id
+//TITULAR Y ROL
 export const fetchUserData = async (id) => {
   try {
     const token = getCookiesByName("jwtCookie");
@@ -16,19 +17,21 @@ export const fetchUserData = async (id) => {
 
     if (response.status === 200) {
       const data = await response.json();
-      //console.log("Datos del usuario", data);
-      return { data: data.mensaje }; // Datos del usuario
+
+      return { data: data.mensaje };
     } else {
       const errorData = await response.json();
+      console.error("Error al obtener datos del usuario:", errorData.mensaje);
+
       return { error: errorData.mensaje };
     }
   } catch (error) {
-    console.error("Error fetching user data:", error.message);
+    console.error("Error en la solicitud de datos del usuario:", error.message);
     return { error: error.message };
   }
 };
 
-// Función para actualizar los detalles del usuario por ID
+// Actualizar el rol del usuario
 export const updateUser = async (id, updatedUserData) => {
   try {
     const token = getCookiesByName("jwtCookie");
@@ -46,15 +49,14 @@ export const updateUser = async (id, updatedUserData) => {
       }
     );
 
-    if (response.ok) {
+    if (response.status === 200) {
       const data = await response.json();
-      return data; // Puede que quieras retornar algo específico de la respuesta
+      return data;
     } else {
       const errorData = await response.json();
-      throw new Error(errorData.mensaje);
+      console.error(errorData.mensaje);
     }
   } catch (error) {
-    console.error("Error updating user data:", error.message);
-    throw error;
+    console.error("Error al actualizar los datos del usuario:", error.message);
   }
 };

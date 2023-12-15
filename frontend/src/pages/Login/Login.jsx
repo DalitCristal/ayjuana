@@ -19,7 +19,7 @@ const Login = () => {
       body: JSON.stringify(data),
     });
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       const datos = await response.json();
       document.cookie = `jwtCookie=${datos.token}; expires=${new Date(
         Date.now() + 24 * 60 * 60 * 1000

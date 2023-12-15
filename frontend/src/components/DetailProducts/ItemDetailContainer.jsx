@@ -21,7 +21,7 @@ const ItemDetailContainer = () => {
           `http://localhost:8080/api/products/${id}`
         );
 
-        if (response.ok) {
+        if (response.status === 200) {
           const productData = await response.json();
           setProduct(productData.mensaje);
         } else {

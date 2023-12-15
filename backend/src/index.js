@@ -109,7 +109,7 @@ io.on("connection", (socket) => {
       allMessages.push(modelMessage);
       socket.emit("todosLosMensajes", allMessages);
     } catch (e) {
-      console.error(e);
+      req.logger.error(e);
     }
   });
 });

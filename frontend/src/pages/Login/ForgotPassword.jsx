@@ -18,8 +18,8 @@ const ForgotPassword = () => {
         body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) {
-        throw new Error("Hubo un problema al enviar el correo electrónico.");
+      if (!response.status === 200) {
+        console.error("Hubo un problema al enviar el correo electrónico.");
       }
 
       const data = await response.json();

@@ -27,8 +27,6 @@ const DeleteProduct = () => {
       );
 
       if (response.status === 200) {
-        const responseData = await response.json();
-        console.log(responseData);
         navigate("/products");
       } else {
         const errorData = await response.json();

@@ -152,9 +152,27 @@ productCtrls.postProduct = async (req, res) => {
 // ------ Actualizar un producto ------
 productCtrls.putProduct = async (req, res) => {
   const { productId } = req.params;
-  const { title, description, price, stock, code, thumbnails, category } =
-    req.body;
-
+  const {
+    title,
+    description,
+    price,
+    stock,
+    code,
+    thumbnails,
+    category,
+    status,
+  } = req.body;
+  console.log(
+    "lo que recibe back",
+    title,
+    description,
+    price,
+    stock,
+    code,
+    thumbnails,
+    category,
+    status
+  );
   try {
     // Verificar si el usuario premium tiene los permisos
     const existingProduct = await productModel.findById(productId);
@@ -176,7 +194,7 @@ productCtrls.putProduct = async (req, res) => {
     }
 
     const thumbnailsArray = thumbnails.split(", ").map((url) => url.trim());
-
+    console.log(thumbnailsArray);
     // Actualizar el producto
     const updatedProduct = await productModel.findByIdAndUpdate(
       productId,
@@ -186,8 +204,9 @@ productCtrls.putProduct = async (req, res) => {
         price,
         stock,
         code,
-        thumbnailsArray,
+        thumbnails: thumbnailsArray,
         category,
+        status,
       },
       { new: true, runValidators: true }
     );

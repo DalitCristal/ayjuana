@@ -22,6 +22,7 @@ usersCtrls.getUserById = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await userModel.findById(id);
+
     if (user) {
       res.status(200).send({ respuesta: "OK", mensaje: user });
     } else {

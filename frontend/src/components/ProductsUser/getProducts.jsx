@@ -23,7 +23,7 @@ const getProducts = async ({
 
     const response = await fetch(apiUrl);
 
-    if (response.ok) {
+    if (response.status === 200) {
       const responseData = await response.json();
       const productsArray = responseData.mensaje;
 

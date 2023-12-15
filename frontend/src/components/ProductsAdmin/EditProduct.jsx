@@ -7,6 +7,7 @@ const EditProduct = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const formuRef = useRef(null);
+  const [message, setMessage] = useState(null);
 
   const [productData, setProductData] = useState({
     title: "",
@@ -40,10 +41,9 @@ const EditProduct = () => {
 
     // Manejar cambios en el array de thumbnails
     if (name === "thumbnails") {
-      const thumbnailsArray = value.split(",");
       setProductData((prevData) => ({
         ...prevData,
-        [name]: thumbnailsArray,
+        [name]: value.split(","),
       }));
     } else {
       setProductData((prevData) => ({
@@ -73,22 +73,27 @@ const EditProduct = () => {
         }
       );
 
-      if (response.ok) {
-        const updatedProduct = await response.json();
-        console.log("Producto actualizado:", updatedProduct);
+      if (response.status === 200) {
+        localStorage.setItem("updateMessage", "Producto actualizado");
         navigate("/products");
       } else {
         const errorData = await response.json();
-        console.error("Error en la actualización:", errorData);
+        setMessage(`Error en la actualización: ${errorData.mensaje}`);
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
+      setMessage(`Error en la solicitud: ${error.message}`);
     }
   };
 
   return (
     <div className="containerEditProduct">
       <h1 className="titleEditProduct">Editar Producto</h1>
+      {message && (
+        <div className="message-error-container">
+          <p>{message}</p>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} ref={formuRef} className="formEditProduct">
         <label className="labelEditProduct">
           Título:
@@ -143,12 +148,12 @@ const EditProduct = () => {
           Habilitado para e-commerce:
           <select
             name="status"
-            value={productData.status ? "true" : "false"}
+            value={productData.status}
             onChange={handleInputChange}
             className="inputEditProduct"
           >
-            <option value="true">Sí</option>
-            <option value="false">No</option>
+            <option value={true}>Sí</option>
+            <option value={false}>No</option>
           </select>
         </label>
         <label className="labelEditProduct">
@@ -163,12 +168,12 @@ const EditProduct = () => {
         </label>
         <label className="labelEditProduct">
           URL de las imágenes (separadas por comas):
-          <input
+          <textarea
             type="text"
             name="thumbnails"
-            value={productData.thumbnails.join(", ")}
+            value={productData.thumbnails}
             onChange={handleInputChange}
-            className="inputEditProduct"
+            className="textareaEditProduct"
           />
         </label>
 

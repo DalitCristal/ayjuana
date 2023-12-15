@@ -3,11 +3,6 @@ import { passportError, authorization } from "../utils/messagesError.js";
 import usersCtrls from "../controllers/users.controllers.js";
 const userRouter = Router();
 
-//TRAER TODOS LOS USUARIOS
-//TRAER UN USUARIO
-// EDITAR UN USUARIO
-//ELIMINAR UN USUARIO
-
 //Todos los usuarios
 userRouter.get(
   "/api/users",
@@ -20,7 +15,7 @@ userRouter.get(
 userRouter.get(
   "/api/users/:id",
   passportError("jwt"),
-  authorization("admin"),
+  authorization(["admin", "premium"]),
   usersCtrls.getUserById
 );
 

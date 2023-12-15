@@ -14,7 +14,6 @@ const EditUser = () => {
     const fetchUser = async () => {
       try {
         const response = await fetchUserData(id);
-        //console.log("RESPUESTA", response.data);
 
         if (response.data) {
           setUserData(response.data);
