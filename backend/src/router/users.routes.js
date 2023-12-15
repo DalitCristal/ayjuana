@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { passportError, authorization } from "../utils/messagesError.js";
 import usersCtrls from "../controllers/users.controllers.js";
+import { addLogger } from "../config/logger.js";
+
 const userRouter = Router();
+userRouter.use(addLogger);
 
 //Todos los usuarios
 userRouter.get(

@@ -162,17 +162,7 @@ productCtrls.putProduct = async (req, res) => {
     category,
     status,
   } = req.body;
-  console.log(
-    "lo que recibe back",
-    title,
-    description,
-    price,
-    stock,
-    code,
-    thumbnails,
-    category,
-    status
-  );
+
   try {
     // Verificar si el usuario premium tiene los permisos
     const existingProduct = await productModel.findById(productId);

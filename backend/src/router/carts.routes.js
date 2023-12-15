@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { passportError, authorization } from "../utils/messagesError.js";
 import cartsCtrls from "../controllers/carts.controllers.js";
+import { addLogger } from "../config/logger.js";
 
 const cartRouter = Router();
+cartRouter.use(addLogger);
 
 cartRouter.get(
   "/api/carts/:id",

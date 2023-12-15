@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { passportError, authorization } from "../utils/messagesError.js";
 import productCtrls from "../controllers/products.controllers.js";
+import { addLogger } from "../config/logger.js";
+
 const productRouter = Router();
+productRouter.use(addLogger);
 
 //Obtener todos los productos
 productRouter.get("/api/products", productCtrls.getProducts);
