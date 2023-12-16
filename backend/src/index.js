@@ -16,6 +16,21 @@ import MongoStore from "connect-mongo";
 import methodOverride from "method-override";
 import flash from "connect-flash";
 import { addLogger } from "./config/logger.js";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.1.0",
+    info: {
+      title: "Documentación de la tienda Ay Juana",
+      description: "API AyJuana",
+    },
+  },
+  apis: [`${_dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJsdoc(swaggerOptions);
 
 const whiteList = ["http://localhost:5173"];
 
@@ -73,6 +88,7 @@ app.use(
 );
 app.use(methodOverride("_method"));
 app.use(addLogger);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 /* Passport */
 initializePassport();

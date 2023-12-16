@@ -199,6 +199,7 @@ usersCtrls.postMail = async (req, res) => {
         </div>
       `,
       });
+      req.logger.info("Success:", resultado);
       res
         .status(200)
         .json({ respuesta: "email enviando con exito", mensaje: emailToken });

@@ -14,8 +14,9 @@ cartsCtrls.getCartById = async (req, res) => {
   try {
     const cart = await cartModel.findById(id);
 
-    if (cart) res.status(200).send({ respuesta: "OK", mensaje: cart });
-    else
+    if (cart) {
+      res.status(200).send({ respuesta: "OK", mensaje: cart });
+    } else
       res.status(404).send({
         respuesta: "Error en consultar Carrito",
         mensaje: "No encontrado",

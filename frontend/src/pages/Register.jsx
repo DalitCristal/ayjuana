@@ -18,7 +18,7 @@ const Register = () => {
       body: JSON.stringify(data),
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       navigate("/login");
     } else {
       console.log(response);
