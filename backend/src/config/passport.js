@@ -43,21 +43,23 @@ const initializePassport = () => {
     new LocalStrategy(
       { passReqToCallback: true, usernameField: "email" },
       async (req, username, password, done) => {
-        const { first_name, last_name, age, email } = req.body;
-
-        const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!validateEmail.test(email)) {
-          return done(null, false, { message: "Correo electrónico no válido" });
-        }
-
-        if (password.length < 6) {
-          return done(null, false, {
-            message: "La contraseña debe tener al menos 6 caracteres",
-          });
-        }
-
         try {
+          const { first_name, last_name, age, email } = req.body;
+
+          const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          if (!validateEmail.test(email)) {
+            return done(null, false, {
+              message: "Correo electrónico no válido",
+            });
+          }
+
+          if (password.length < 6) {
+            return done(null, false, {
+              message: "La contraseña debe tener al menos 6 caracteres",
+            });
+          }
+
           const user = await userModel.findOne({ email: email });
 
           if (user) {

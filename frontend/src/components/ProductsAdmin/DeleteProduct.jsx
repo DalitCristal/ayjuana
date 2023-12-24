@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils.js";
+import Header from "../Header/Header.jsx";
 import "./DeleteProduct.css";
 
 const DeleteProduct = () => {
@@ -40,22 +41,25 @@ const DeleteProduct = () => {
   };
 
   return (
-    <div className="boxDeleteProduct">
-      <p className="textDeleteProduct">
-        ¿Estás seguro que deseas eliminar el producto? Esta acción no se puede
-        deshacer.
-      </p>
-      <button
-        onClick={handleDelete}
-        disabled={loading}
-        className="btnDeleteProduct"
-      >
-        {loading ? "Eliminando..." : "Eliminar Producto"}
-      </button>
-      <Link to={"/products"} className="btnCancel">
-        Cancelar
-      </Link>
-    </div>
+    <>
+      <Header />
+      <div className="boxDeleteProduct">
+        <p className="textDeleteProduct">
+          ¿Estás seguro que deseas eliminar el producto? Esta acción no se puede
+          deshacer.
+        </p>
+        <button
+          onClick={handleDelete}
+          disabled={loading}
+          className="btnDeleteProduct"
+        >
+          {loading ? "Eliminando..." : "Eliminar Producto"}
+        </button>
+        <Link to={"/products"} className="btnCancel">
+          Cancelar
+        </Link>
+      </div>
+    </>
   );
 };
 

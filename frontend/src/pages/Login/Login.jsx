@@ -1,10 +1,27 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../components/GlobalStyles/Formularios.css";
+import Header from "../../components/Header/Header";
+import "./Login.css";
 
 const Login = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Obtener el mensaje de éxito desde localStorage
+    const registerMessage = localStorage.getItem("registerMessage");
+    if (registerMessage) {
+      setMessage(registerMessage);
+      const timeoutId = setTimeout(() => {
+        setMessage("");
+        localStorage.removeItem("registerMessage");
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,40 +48,47 @@ const Login = () => {
   };
 
   return (
-    <div className="pageBox">
-      <h1 className="titleFormu">Iniciar sesión</h1>
+    <>
+      <Header />
+      <div className="pageBox">
+        <h1 className="titleFormu">Iniciar sesión</h1>
+        {message && (
+          <div className="registerMessageContainer">
+            <p>{message}</p>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} ref={formRef} className="containerFormu">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Correo Electrónico"
+            className="inputFormu"
+          />
 
-      <form onSubmit={handleSubmit} ref={formRef} className="containerFormu">
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Correo Electrónico"
-          className="inputFormu"
-        />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Contraseña"
+            className="inputFormu"
+          />
 
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Contraseña"
-          className="inputFormu"
-        />
-
-        <button type="submit" className="btnFormu">
-          Iniciar sesión
-        </button>
-      </form>
-      <div className="pieFormLogin">
-        <p>¿No tienes una cuenta aun?</p>
-        <Link to={"/register"} className="linkFormu">
-          Registrarse
-        </Link>
-        <p>
-          <Link to="/login/forgot-password">Olvidé mi contraseña</Link>
-        </p>
+          <button type="submit" className="btnFormu">
+            Iniciar sesión
+          </button>
+        </form>
+        <div className="pieFormLogin">
+          <p>¿No tienes una cuenta aun?</p>
+          <Link to={"/register"} className="linkFormu">
+            Registrarse
+          </Link>
+          <p>
+            <Link to="/login/forgot-password">Olvidé mi contraseña</Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

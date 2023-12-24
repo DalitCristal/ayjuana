@@ -6,7 +6,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "testProduct": "mocha test/Products.test.js",
+    "testUser": "mocha test/User.test.js",
+    "testChai": "mocha test/UserChai.test.js",
+    "supertest": "mocha test/supertest.test.js"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +41,9 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3",
     "nodemon": "^3.0.1"
   }
 }

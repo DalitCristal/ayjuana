@@ -1,22 +1,30 @@
 import logo from "/ay-juana-logo.png";
 import PersonIcon from "@mui/icons-material/Person";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import Navbar from "../Navigation/NavBar.jsx";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUserRole } from "../ProtectedRoute/rolDelUsuario.js";
+import { getUserRole, getUserId } from "../ProtectedRoute/rolDelUsuario.js";
+import CartWidget from "../Cart/CartWidget.jsx";
 //STYLES
 import "./Header.css";
 
 const Header = () => {
   const [userRole, setUserRole] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const roleFromCookies = getUserRole();
 
     setUserRole(roleFromCookies);
   }, []);
+
+  useEffect(() => {
+    const idFromCookies = getUserId();
+
+    setUserId(idFromCookies);
+  }, []);
+
   return (
     <>
       <div className="headerContainer">
@@ -35,22 +43,28 @@ const Header = () => {
           </button>
         </form>
         <ul className="buttonsHeader">
-          <NavLink
-            to={"/login"}
-            className={({ isActive }) =>
-              isActive ? "ActiveOptionH" : "OptionH"
-            }
-          >
-            <PersonIcon />
-          </NavLink>
-          <NavLink
-            to={"/cart"}
-            className={({ isActive }) =>
-              isActive ? "ActiveOptionH" : "OptionH"
-            }
-          >
-            <ShoppingCartIcon />
-          </NavLink>
+          {userRole ? (
+            <>
+              <li>
+                <Link to={`/profile/${userId}`}>
+                  <PersonIcon />
+                </Link>
+              </li>
+              <li>
+                <Link to="/logout">Cerrar Sesión</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/login">Iniciar Sesión</Link>
+              </li>
+              <li>
+                <Link to="/register">Registrarse</Link>
+              </li>
+            </>
+          )}
+          <CartWidget />
         </ul>
       </div>
       <Navbar userRole={userRole || "user"} />

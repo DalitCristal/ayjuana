@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils";
+import Header from "../Header/Header";
 import "./EditProduct.css";
 
 const EditProduct = () => {
@@ -86,102 +87,109 @@ const EditProduct = () => {
   };
 
   return (
-    <div className="containerEditProduct">
-      <h1 className="titleEditProduct">Editar Producto</h1>
-      {message && (
-        <div className="message-error-container">
-          <p>{message}</p>
-        </div>
-      )}
+    <>
+      <Header />
+      <div className="containerEditProduct">
+        <h1 className="titleEditProduct">Editar Producto</h1>
+        {message && (
+          <div className="message-error-container">
+            <p>{message}</p>
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} ref={formuRef} className="formEditProduct">
-        <label className="labelEditProduct">
-          Título:
-          <input
-            type="text"
-            name="title"
-            value={productData.title}
-            onChange={handleInputChange}
-            className="inputEditProduct"
-          />
-        </label>
-        <label className="labelEditProduct">
-          Descripción:
-          <textarea
-            name="description"
-            value={productData.description}
-            onChange={handleInputChange}
-            className="textareaEditProduct"
-          />
-        </label>
-        <label className="labelEditProduct">
-          Precio:
-          <input
-            type="number"
-            name="price"
-            value={productData.price}
-            onChange={handleInputChange}
-            className="inputEditProduct"
-          />
-        </label>
-        <label className="labelEditProduct">
-          Stock:
-          <input
-            type="number"
-            name="stock"
-            value={productData.stock}
-            onChange={handleInputChange}
-            className="inputEditProduct"
-          />
-        </label>
-        <label className="labelEditProduct">
-          Código:
-          <input
-            type="text"
-            name="code"
-            value={productData.code}
-            onChange={handleInputChange}
-            className="inputEditProduct"
-          />
-        </label>
-        <label className="labelEditProduct">
-          Habilitado para e-commerce:
-          <select
-            name="status"
-            value={productData.status}
-            onChange={handleInputChange}
-            className="inputEditProduct"
-          >
-            <option value={true}>Sí</option>
-            <option value={false}>No</option>
-          </select>
-        </label>
-        <label className="labelEditProduct">
-          Categoría:
-          <input
-            type="text"
-            name="category"
-            value={productData.category}
-            onChange={handleInputChange}
-            className="inputEditProduct"
-          />
-        </label>
-        <label className="labelEditProduct">
-          URL de las imágenes (separadas por comas):
-          <textarea
-            type="text"
-            name="thumbnails"
-            value={productData.thumbnails}
-            onChange={handleInputChange}
-            className="textareaEditProduct"
-          />
-        </label>
+        <form
+          onSubmit={handleSubmit}
+          ref={formuRef}
+          className="formEditProduct"
+        >
+          <label className="labelEditProduct">
+            Título:
+            <input
+              type="text"
+              name="title"
+              value={productData.title}
+              onChange={handleInputChange}
+              className="inputEditProduct"
+            />
+          </label>
+          <label className="labelEditProduct">
+            Descripción:
+            <textarea
+              name="description"
+              value={productData.description}
+              onChange={handleInputChange}
+              className="textareaEditProduct"
+            />
+          </label>
+          <label className="labelEditProduct">
+            Precio:
+            <input
+              type="number"
+              name="price"
+              value={productData.price}
+              onChange={handleInputChange}
+              className="inputEditProduct"
+            />
+          </label>
+          <label className="labelEditProduct">
+            Stock:
+            <input
+              type="number"
+              name="stock"
+              value={productData.stock}
+              onChange={handleInputChange}
+              className="inputEditProduct"
+            />
+          </label>
+          <label className="labelEditProduct">
+            Código:
+            <input
+              type="text"
+              name="code"
+              value={productData.code}
+              onChange={handleInputChange}
+              className="inputEditProduct"
+            />
+          </label>
+          <label className="labelEditProduct">
+            Habilitado para e-commerce:
+            <select
+              name="status"
+              value={productData.status}
+              onChange={handleInputChange}
+              className="inputEditProduct"
+            >
+              <option value={true}>Sí</option>
+              <option value={false}>No</option>
+            </select>
+          </label>
+          <label className="labelEditProduct">
+            Categoría:
+            <input
+              type="text"
+              name="category"
+              value={productData.category}
+              onChange={handleInputChange}
+              className="inputEditProduct"
+            />
+          </label>
+          <label className="labelEditProduct">
+            URL de las imágenes (separadas por comas):
+            <textarea
+              type="text"
+              name="thumbnails"
+              value={productData.thumbnails}
+              onChange={handleInputChange}
+              className="textareaEditProduct"
+            />
+          </label>
 
-        <button type="submit" className="btnEditProduct">
-          Guardar Cambios
-        </button>
-      </form>
-    </div>
+          <button type="submit" className="btnEditProduct">
+            Guardar Cambios
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 

@@ -119,6 +119,44 @@ usersCtrls.putPasswordUser = async (req, res) => {
     res.status(400).send({ respuesta: "Error", mensaje: "Token no válido" });
   }
 };
+//Editar todos los campos de usuario
+usersCtrls.putUser = async (req, res) => {
+  const { userId } = req.params;
+  const { first_name, last_name, age, email, password } = req.body;
+
+  console.log("first_name", first_name);
+  // Validar que la nueva contraseña no sea igual a la contraseña actual
+  const userPassword = await userModel.findById(userId);
+
+  if (!userPassword) {
+    return res.status(404).json({
+      mensaje: "Usuario no encontrado",
+    });
+  }
+
+  try {
+    const user = await userModel.findByIdAndUpdate(userId, {
+      first_name,
+      last_name,
+      age,
+      email,
+      password,
+    });
+
+    if (user) {
+      res.status(200).send({
+        mensaje: "Usuario actualizado exitosamente",
+        respuesta: user,
+      });
+    } else {
+      res
+        .status(404)
+        .send({ respuesta: "Error", mensaje: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    res.status(400).send({ respuesta: "Error", mensaje: "Token no válido" });
+  }
+};
 
 //Editar rol de usuario
 usersCtrls.putRolUser = async (req, res) => {
@@ -147,10 +185,11 @@ usersCtrls.putRolUser = async (req, res) => {
 
 //Elimina un usuario
 usersCtrls.deleteUser = async (req, res) => {
-  const { id } = req.params;
+  const { userId } = req.params;
   try {
-    const user = await userModel.findByIdAndDelete(id);
+    const user = await userModel.findByIdAndDelete(userId);
     if (user) {
+      res.clearCookie("jwtCookie");
       res.status(200).send({ respuesta: "OK", mensaje: user });
     } else {
       res

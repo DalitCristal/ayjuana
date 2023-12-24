@@ -2,8 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-  const { id, title, description, price, stock, category, code, thumbnail } =
-    product;
+  const { id, title, description, price, thumbnail } = product;
 
   return (
     <div className="product-card">
@@ -12,9 +11,6 @@ const ProductCard = ({ product }) => {
         <h2>TITULO: {title}</h2>
         <p>{description}</p>
         <p>Price: ${price}</p>
-        <p>Stock: {stock}</p>
-        <p>Category: {category}</p>
-        <p>Code: {code}</p>
       </div>
       <Link to={`/product/${id}`} className="option">
         Más detalles
@@ -29,9 +25,6 @@ ProductCard.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    stock: PropTypes.number.isRequired,
-    category: PropTypes.string.isRequired,
-    code: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
   }).isRequired,
 };

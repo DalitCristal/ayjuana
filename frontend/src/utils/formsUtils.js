@@ -6,5 +6,6 @@ export const getCookiesByName = (name) => {
       return cookie.substring(name.length + 1);
     }
   }
+
   return null;
 };

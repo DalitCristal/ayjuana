@@ -1,3 +1,4 @@
+import Header from "../Header/Header";
 const Unauthorized = () => {
   const style = {
     titulo: {
@@ -6,7 +7,12 @@ const Unauthorized = () => {
       marginTop: "50px",
     },
   };
-  return <h1 style={style.titulo}>Usuario no autorizado</h1>;
+  return (
+    <>
+      <Header />
+      <h1 style={style.titulo}>Usuario no autorizado</h1>
+    </>
+  );
 };
 
 export default Unauthorized;

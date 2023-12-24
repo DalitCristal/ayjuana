@@ -9,14 +9,14 @@ cartRouter.use(addLogger);
 cartRouter.get(
   "/api/carts/:id",
   passportError("jwt"),
-  authorization("user"),
+  authorization(["admin", "user"]),
   cartsCtrls.getCartById
 );
 
 cartRouter.post(
   "/api/carts/:cid/products/:pid",
   passportError("jwt"),
-  authorization("user"),
+  authorization(["admin", "user"]),
   cartsCtrls.postAddProd
 );
 

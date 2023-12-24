@@ -34,7 +34,7 @@ const NavPremium = () => {
       >
         Contacto
       </NavLink>
-      <ProductActionsDropdown />;
+      <ProductActionsDropdown />
     </ul>
   );
 };

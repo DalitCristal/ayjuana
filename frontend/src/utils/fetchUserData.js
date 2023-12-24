@@ -14,10 +14,8 @@ export const fetchUserData = async (id) => {
       },
       credentials: "include",
     });
-
     if (response.status === 200) {
       const data = await response.json();
-
       return { data: data.mensaje };
     } else {
       const errorData = await response.json();

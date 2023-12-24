@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils";
+import Header from "../Header/Header";
 import "./DeleteUser.css";
 
 const DeleteUser = () => {
@@ -45,25 +46,28 @@ const DeleteUser = () => {
   };
 
   return (
-    <div className="delete-user-container">
-      <h1>Eliminar Usuario</h1>
-      <p>
-        ¿Estás seguro que deseas eliminar este usuario? Esta acción no se puede
-        deshacer.
-      </p>
-      <div className="buttons-container">
-        <button
-          onClick={handleDelete}
-          disabled={loading}
-          className="delete-button"
-        >
-          {loading ? "Eliminando..." : "Eliminar Usuario"}
-        </button>
-        <button onClick={handleCancel} className="cancel-button">
-          Cancelar
-        </button>
+    <>
+      <Header />
+      <div className="delete-user-container">
+        <h1>Eliminar Usuario</h1>
+        <p>
+          ¿Estás seguro que deseas eliminar este usuario? Esta acción no se
+          puede deshacer.
+        </p>
+        <div className="buttons-container">
+          <button
+            onClick={handleDelete}
+            disabled={loading}
+            className="delete-button"
+          >
+            {loading ? "Eliminando..." : "Eliminar Usuario"}
+          </button>
+          <button onClick={handleCancel} className="cancel-button">
+            Cancelar
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

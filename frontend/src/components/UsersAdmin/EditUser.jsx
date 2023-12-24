@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchUserData, updateUser } from "../../utils/fetchUserData.js";
+import Header from "../Header/Header.jsx";
 import "./EditUser.css";
 
 const EditUser = () => {
@@ -53,28 +54,31 @@ const EditUser = () => {
   };
 
   return (
-    <div className="containerEditUser">
-      <h1 className="tituloEditUser">Editar Usuario</h1>
-      <div>
-        <p className="textoEditUser">Nombre: {userData.first_name}</p>
-        <p className="textoEditUser">Apellido: {userData.last_name}</p>
-        <p className="textoEditUser">Email: {userData.email}</p>
-        <label className="labelEditUser">
-          Rol:
-          <select
-            value={selectedRole}
-            onChange={handleRoleChange}
-            className="selectEditUser"
-          >
-            <option value="user">Usuario</option>
-            <option value="premium">Premium</option>
-          </select>
-        </label>
+    <>
+      <Header />
+      <div className="containerEditUser">
+        <h1 className="tituloEditUser">Editar Usuario</h1>
+        <div>
+          <p className="textoEditUser">Nombre: {userData.first_name}</p>
+          <p className="textoEditUser">Apellido: {userData.last_name}</p>
+          <p className="textoEditUser">Email: {userData.email}</p>
+          <label className="labelEditUser">
+            Rol:
+            <select
+              value={selectedRole}
+              onChange={handleRoleChange}
+              className="selectEditUser"
+            >
+              <option value="user">Usuario</option>
+              <option value="premium">Premium</option>
+            </select>
+          </label>
+        </div>
+        <button onClick={handleSaveChanges} className="btnEditUser">
+          Guardar Cambios
+        </button>
       </div>
-      <button onClick={handleSaveChanges} className="btnEditUser">
-        Guardar Cambios
-      </button>
-    </div>
+    </>
   );
 };
 

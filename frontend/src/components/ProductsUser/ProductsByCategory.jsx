@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import getProducts from "./getProducts";
 import ProductCard from "./ProductCard";
+import Header from "../Header/Header";
 
 const ProductsByCategory = () => {
   const { categoryName } = useParams();
@@ -38,27 +39,30 @@ const ProductsByCategory = () => {
   }, [currentPage, categoryName]);
 
   return (
-    <div>
-      <h2>Categoria {categoryName}</h2>
-      <ul>
-        {products.map((product) => (
-          <ProductCard key={product.code} product={product} />
-        ))}
-      </ul>
-      <div className="pagination">
-        {currentPage > 1 && (
-          <button onClick={() => handlePageChange(currentPage - 1)}>
-            Anterior
-          </button>
-        )}
-        {hasMore && (
-          <button onClick={() => handlePageChange(currentPage + 1)}>
-            Siguiente
-          </button>
-        )}
+    <>
+      <Header />
+      <div>
+        <h2>Categoria {categoryName}</h2>
+        <ul>
+          {products.map((product) => (
+            <ProductCard key={product.code} product={product} />
+          ))}
+        </ul>
+        <div className="pagination">
+          {currentPage > 1 && (
+            <button onClick={() => handlePageChange(currentPage - 1)}>
+              Anterior
+            </button>
+          )}
+          {hasMore && (
+            <button onClick={() => handlePageChange(currentPage + 1)}>
+              Siguiente
+            </button>
+          )}
+        </div>
+        {loading ? "Cargando..." : null}
       </div>
-      {loading ? "Cargando..." : null}
-    </div>
+    </>
   );
 };
 

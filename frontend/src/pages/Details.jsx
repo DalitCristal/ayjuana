@@ -1,7 +1,13 @@
 import ItemDetailContainer from "../components/DetailProducts/ItemDetailContainer";
+import Header from "../components/Header/Header";
 
 const Details = () => {
-  return <ItemDetailContainer />;
+  return (
+    <>
+      <Header />
+      <ItemDetailContainer />
+    </>
+  );
 };
 
 export default Details;

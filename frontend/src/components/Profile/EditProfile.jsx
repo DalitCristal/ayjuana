@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Header from "../Header/Header";
 import "./editProfile.css";
 
 const EditProfile = () => {
@@ -82,53 +83,56 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="containerEditProfile">
-      <h1 className="titleEditProfile">Cambiar Contraseña</h1>
-      {tokenValid ? (
-        <form onSubmit={handleSavePassword} className="formEditProfile">
-          <label className="labelEditProfile">
-            Nueva Contraseña:
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className="inputEditProfile"
-            />
-          </label>
+    <>
+      <Header />
+      <div className="containerEditProfile">
+        <h1 className="titleEditProfile">Cambiar Contraseña</h1>
+        {tokenValid ? (
+          <form onSubmit={handleSavePassword} className="formEditProfile">
+            <label className="labelEditProfile">
+              Nueva Contraseña:
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={handlePasswordChange}
+                className="inputEditProfile"
+              />
+            </label>
 
-          <label className="labelEditProfile">
-            Confirmar Contraseña:
-            <input
-              type="password"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              className="inputEditProfile"
-            />
-          </label>
+            <label className="labelEditProfile">
+              Confirmar Contraseña:
+              <input
+                type="password"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                className="inputEditProfile"
+              />
+            </label>
 
-          <button type="submit" className="btnEditProfile">
-            Guardar Contraseña
-          </button>
+            <button type="submit" className="btnEditProfile">
+              Guardar Contraseña
+            </button>
 
-          {error && <p className="errorEditProfile">{error}</p>}
-        </form>
-      ) : (
-        <div>
-          <p>
-            El enlace ha expirado. Por favor, genera un nuevo correo de
-            restablecimiento.
-          </p>
-          <button
-            onClick={() => navigate("/login/forgot-password")}
-            className="btnForgotPassword"
-          >
-            Generar nuevo correo de restablecimiento
-          </button>
-        </div>
-      )}
-    </div>
+            {error && <p className="errorEditProfile">{error}</p>}
+          </form>
+        ) : (
+          <div>
+            <p>
+              El enlace ha expirado. Por favor, genera un nuevo correo de
+              restablecimiento.
+            </p>
+            <button
+              onClick={() => navigate("/login/forgot-password")}
+              className="btnForgotPassword"
+            >
+              Generar nuevo correo de restablecimiento
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

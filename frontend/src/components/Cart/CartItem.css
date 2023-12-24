@@ -1,0 +1,21 @@
+.productCart {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+.tituloCart {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.detailsCompra {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detailsCompra li {
+  margin-bottom: 5px;
+}

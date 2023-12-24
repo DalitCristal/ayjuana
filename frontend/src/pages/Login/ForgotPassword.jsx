@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from "../../components/Header/Header";
 import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
@@ -36,33 +37,36 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="containerForgotPassword">
-      <h1 className="titleForgotPassword">Recuperar Contraseña</h1>
-      <p className="parrafoForgotPassword">
-        Ingrese su correo electrónico y le enviaremos instrucciones para
-        restablecer su contraseña.
-      </p>
+    <>
+      <Header />
+      <div className="containerForgotPassword">
+        <h1 className="titleForgotPassword">Recuperar Contraseña</h1>
+        <p className="parrafoForgotPassword">
+          Ingrese su correo electrónico y le enviaremos instrucciones para
+          restablecer su contraseña.
+        </p>
 
-      <label className="labelForgotPassword">
-        Correo Electrónico:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="inputForgotPassword"
-        />
-      </label>
+        <label className="labelForgotPassword">
+          Correo Electrónico:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="inputForgotPassword"
+          />
+        </label>
 
-      <button
-        onClick={handleForgotPassword}
-        disabled={loading}
-        className="btnForgotPassword"
-      >
-        Enviar Correo Electrónico
-      </button>
+        <button
+          onClick={handleForgotPassword}
+          disabled={loading}
+          className="btnForgotPassword"
+        >
+          Enviar Correo Electrónico
+        </button>
 
-      {message && <p className="messageForgotPassword">{message}</p>}
-    </div>
+        {message && <p className="messageForgotPassword">{message}</p>}
+      </div>
+    </>
   );
 };
 

@@ -40,7 +40,7 @@ const NavAdmin = () => {
       >
         Usuarios
       </NavLink>
-      <ProductActionsDropdown />;
+      <ProductActionsDropdown />
     </ul>
   );
 };

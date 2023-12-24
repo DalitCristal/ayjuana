@@ -30,26 +30,12 @@
   margin-bottom: 5px;
 }
 
-.card h4 {
+/* .card h4 {
   color: var(--color-secundario);
   margin-bottom: 10px;
-}
+} */
 
 .card p {
   color: var(--color-black);
   margin-bottom: 10px;
-}
-
-.finalizarCompra {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: var(--color-principal);
-  color: var(--color-white);
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.finalizarCompra:hover {
-  background-color: var(--color-opacity-principal);
 }

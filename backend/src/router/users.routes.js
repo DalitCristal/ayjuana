@@ -18,7 +18,7 @@ userRouter.get(
 userRouter.get(
   "/api/users/:id",
   passportError("jwt"),
-  authorization(["admin", "premium"]),
+  authorization(["admin", "premium", "user"]),
   usersCtrls.getUserById
 );
 
@@ -27,6 +27,9 @@ userRouter.post("/api/users/mail", usersCtrls.postMail);
 
 //Restablecer contraseña de usuario
 userRouter.put(`/api/users/:userId`, usersCtrls.putPasswordUser);
+
+//Editar todos los campos del usuario
+userRouter.put(`/api/users/profile/:userId`, usersCtrls.putUser);
 
 //Edita rol de un usuario
 userRouter.put(
@@ -44,9 +47,9 @@ userRouter.post(
 
 //Elimina un usuario
 userRouter.delete(
-  "/api/users/:id",
+  "/api/users/:userId",
   passportError("jwt"),
-  authorization("admin"),
+  authorization(["admin", "premium", "user"]),
   usersCtrls.deleteUser
 );
 

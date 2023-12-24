@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { getCookiesByName } from "../../utils/formsUtils.js";
+import Header from "../Header/Header.jsx";
 import "./NewProduct.css";
 
 const NewProduct = () => {
@@ -31,6 +32,7 @@ const NewProduct = () => {
 
   return (
     <>
+      <Header />
       <h1 className="titleFormu">Crear nuevo producto</h1>
       <form onSubmit={handleSubmit} ref={formuRef} className="containerFormu">
         <label className="labelNewProduct">

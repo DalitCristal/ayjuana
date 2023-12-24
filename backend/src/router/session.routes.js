@@ -23,7 +23,7 @@ sessionRouter.post(
 sessionRouter.get("/api/session/logout", sessionsCtrls.getLogOut);
 
 //Registrarse a través de github
-sessionRouter.get(
+sessionRouter.post(
   "/api/session/github",
   passport.authenticate("github", { scope: [`user:email`] }),
   sessionsCtrls.getGithub
@@ -47,7 +47,7 @@ sessionRouter.get(
 sessionRouter.get(
   "/api/session/current",
   passportError("jwt"),
-  authorization("admin"),
+  authorization(["admin", "premium", "user"]),
   (req, res) => {
     res.send(req.user);
   }
