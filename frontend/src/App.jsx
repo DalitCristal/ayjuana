@@ -24,7 +24,7 @@ import UsersListContainer from "./components/UsersAdmin/UsersListContainer.jsx";
 import EditUser from "./components/UsersAdmin/EditUser.jsx";
 import DeleteUser from "./components/UsersAdmin/DeleteUser.jsx";
 import Contact from "./pages/Contact.jsx";
-
+import "./App.css";
 const App = () => {
   return (
     <>

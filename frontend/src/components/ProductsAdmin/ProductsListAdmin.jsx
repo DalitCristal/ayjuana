@@ -21,6 +21,7 @@ ProductsListAdmin.propTypes = {
       stock: PropTypes.number.isRequired,
       category: PropTypes.string.isRequired,
       status: PropTypes.bool.isRequired,
+      thumbnails: PropTypes.array.isRequired,
       code: PropTypes.string.isRequired,
       owner: PropTypes.string.isRequired,
     })

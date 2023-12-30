@@ -132,3 +132,6 @@ io.on("connection", (socket) => {
 
 //RUTAS
 app.use("/", router);
+app.use((req, res) => {
+  res.status(404).json({ status: false, errors: "Ruta no encontrada" });
+});

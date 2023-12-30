@@ -12,6 +12,7 @@ const ProductCardAdmin = ({ product }) => {
     stock,
     category,
     status,
+    thumbnails,
     code,
     owner,
   } = product;
@@ -33,8 +34,14 @@ const ProductCardAdmin = ({ product }) => {
 
   return (
     <div className="product-card">
-      <img src={"thumbnails"} alt={title} className="product-thumbnail" />
-
+      {thumbnails.map((thumbnail, index) => (
+        <img
+          key={index}
+          src={thumbnail}
+          alt={`${title} - Thumbnail`}
+          className="product-thumbnail"
+        />
+      ))}
       <div className="product-details">
         <h2>Título: {title}</h2>
         <p>Descripción: {description}</p>
@@ -71,6 +78,7 @@ ProductCardAdmin.propTypes = {
     stock: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
     status: PropTypes.bool.isRequired,
+    thumbnails: PropTypes.arrayOf(PropTypes.string).isRequired,
     code: PropTypes.string.isRequired,
     owner: PropTypes.string.isRequired,
   }),

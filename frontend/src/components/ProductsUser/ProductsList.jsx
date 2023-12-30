@@ -20,6 +20,7 @@ ProductsList.propTypes = {
       price: PropTypes.number.isRequired,
       stock: PropTypes.number.isRequired,
       category: PropTypes.string.isRequired,
+      thumbnails: PropTypes.array.isRequired,
       code: PropTypes.string.isRequired,
     })
   ).isRequired,

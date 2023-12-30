@@ -6,10 +6,10 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div>
+      <>
         <Carrousel />
         <ProductsListContainer />
-      </div>
+      </>
     </>
   );
 };

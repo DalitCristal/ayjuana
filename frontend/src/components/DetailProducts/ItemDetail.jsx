@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import ItemCount from "../ItemCount/ItemCount";
 
 const ItemDetail = ({ product }) => {
-  const { _id, title, img, category, description, price, stock, code } =
+  const { _id, title, thumbnails, category, description, price, stock, code } =
     product;
   const [userId, setUserId] = useState(null);
   const [quantityAdded, setQuantityAdded] = useState(0);
@@ -52,7 +52,14 @@ const ItemDetail = ({ product }) => {
     <>
       <div className="card">
         <div>
-          <img src={img} alt={title} />
+          {thumbnails.map((thumbnail, index) => (
+            <img
+              key={index}
+              src={thumbnail}
+              alt={`${title} - Thumbnail`}
+              className="product-thumbnail"
+            />
+          ))}{" "}
           <div>
             <h3>{title}</h3>
             <p>
@@ -87,11 +94,11 @@ ItemDetail.propTypes = {
   product: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    img: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     stock: PropTypes.number.isRequired,
+    thumbnails: PropTypes.arrayOf(PropTypes.string).isRequired,
     code: PropTypes.string.isRequired,
   }).isRequired,
 };
