@@ -37,3 +37,23 @@ export const getUserId = () => {
 
   return null;
 };
+
+export const getUserFirstName = () => {
+  // Obtener el token desde las cookies
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("jwtCookie="))
+    ?.split("=")[1];
+
+  if (token) {
+    try {
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+
+      return decodedToken.user.first_name;
+    } catch (error) {
+      console.error("Error al decodificar el token:", error);
+    }
+  }
+
+  return null;
+};

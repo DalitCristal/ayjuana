@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils";
-import Header from "../Header/Header";
 import "./DeleteUser.css";
 
 const DeleteUser = () => {
@@ -47,7 +46,6 @@ const DeleteUser = () => {
 
   return (
     <>
-      <Header />
       <div className="delete-user-container">
         <h1>Eliminar Usuario</h1>
         <p>

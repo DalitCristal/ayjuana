@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchUserData, updateUser } from "../../utils/fetchUserData.js";
-import Header from "../Header/Header.jsx";
 import "./EditUser.css";
 
 const EditUser = () => {
@@ -55,7 +54,6 @@ const EditUser = () => {
 
   return (
     <>
-      <Header />
       <div className="containerEditUser">
         <h1 className="tituloEditUser">Editar Usuario</h1>
         <div>

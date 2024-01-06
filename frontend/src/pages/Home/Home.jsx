@@ -6,10 +6,9 @@ const Home = () => {
   return (
     <>
       <Header />
-      <>
-        <Carrousel />
-        <ProductsListContainer />
-      </>
+
+      <Carrousel />
+      <ProductsListContainer />
     </>
   );
 };

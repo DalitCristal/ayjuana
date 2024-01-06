@@ -114,6 +114,30 @@ productCtrls.getProductById = async (req, res) => {
   }
 };
 
+// ------ Buscar producto por nombre ------
+productCtrls.getProductByName = async (req, res) => {
+  const { productName } = req.body;
+
+  try {
+    const products = await productModel.find({
+      title: { $regex: new RegExp(productName, "i") }, // búsqueda insensible a mayúsculas y minúsculas
+    });
+
+    if (products.length > 0) {
+      res.status(200).send({ status: "OK", data: products });
+    } else {
+      res.status(404).send({
+        status: "Error en consultar Producto",
+        message: "No encontrado",
+      });
+    }
+  } catch (error) {
+    res
+      .status(400)
+      .send({ status: "Error en consultar producto", message: error.message });
+  }
+};
+
 // ------ Crear un nuevo producto ------
 productCtrls.postProduct = async (req, res) => {
   const {
@@ -124,7 +148,7 @@ productCtrls.postProduct = async (req, res) => {
     category,
     status,
     code,
-    thumbnail,
+    thumbnails,
   } = req.body;
 
   try {
@@ -138,7 +162,7 @@ productCtrls.postProduct = async (req, res) => {
       category,
       status,
       code,
-      thumbnail,
+      thumbnails,
       owner: userIdFromToken,
     });
     res.status(200).send({ respuesta: "OK", mensaje: prod });

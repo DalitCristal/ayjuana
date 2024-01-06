@@ -1,4 +1,3 @@
-import Header from "../../components/Header/Header";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchUserData } from "../../utils/fetchUserData";
@@ -45,7 +44,7 @@ const CartListContainer = () => {
     const cid = cart._id;
     try {
       const response = await fetch(
-        `http://localhost:8080/api/carts/${cid}/products/${productId}` /* de donde saco productId */,
+        `http://localhost:8080/api/carts/${cid}/products/${productId}`,
         {
           method: "POST",
           headers: {
@@ -72,7 +71,6 @@ const CartListContainer = () => {
   }
   return (
     <>
-      <Header />
       <div className="cartContainer">
         <h2 className="cartTitle">Detalles del Carrito</h2>
         <p className="cartId">ID: {cart._id}</p>

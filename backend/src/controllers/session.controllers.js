@@ -22,7 +22,6 @@ sessionsCtrls.postLogin = async (req, res) => {
 };
 
 sessionsCtrls.postSignUp = async (req, res) => {
-  console.log(req.user);
   try {
     if (!req.user) {
       return res.status(401).send({
@@ -70,22 +69,4 @@ sessionsCtrls.getGithubCallback = async (req, res) => {
   }
 };
 
-/* sessionsCtrls.verifyToken = async (req, res) => {
-  const { token } = req.cookies;
-  if (!token) return res.send(false);
-
-  jwt.verify(token, process.env.JWT_SECRET, async (error, user) => {
-    if (error) return res.sendStatus(401);
-
-    const userFound = await user.findById(user.id);
-    if (!userFound) return res.sendStatus(401);
-
-    return res.json({
-      id: userFound._id,
-      username: userFound.username,
-      email: userFound.email,
-    });
-  });
-};
- */
 export default sessionsCtrls;

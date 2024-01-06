@@ -16,12 +16,12 @@ const CartWidget = () => {
   }, []);
 
   return (
-    <>
+    <div className="cartMenu">
       <Link to={`/cart/${userId}`}>
         <ShoppingCartIcon />
+        {totalQuantity}
       </Link>
-      {totalQuantity}
-    </>
+    </div>
   );
 };
 

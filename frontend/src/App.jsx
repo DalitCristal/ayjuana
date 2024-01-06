@@ -1,30 +1,38 @@
+//REACT
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+//CONTEXT
 import { CartProvider } from "./context/CartContext.jsx";
+
 //PAGES
-import Register from "./pages/Register/Register.jsx";
-import Login from "./pages/Login/Login.jsx";
-import ForgotPassword from "./pages/Login/ForgotPassword.jsx";
 import Home from "./pages/Home/Home.jsx";
-import Details from "./pages/Details.jsx";
+import SignUp from "./pages/SignUp/SignUp.jsx";
+import SignIn from "./pages/SignIn/SignIn.jsx";
+import RecoverPassword from "./pages/RecoverPassword/RecoverPassword.jsx";
+import SignOff from "./pages/SignOff/SignOff.jsx";
+import Details from "./pages/Products/Details.jsx";
+import Category from "./pages/Products/Category.jsx";
+import PutPassword from "./pages/Profile/PutPassword.jsx";
+//import Contact from "./pages/Contact.jsx";
+import Unauthorized from "./pages/Unauthorized/Unauthorized.jsx";
 import Error from "./pages/Error.jsx";
-import Profile from "./pages/Profile/Profile.jsx";
-import Logout from "./pages/Logout.jsx";
-import DeleteMyAccount from "./pages/Profile/deleteProfile.jsx";
-import Cart from "./pages/Cart/Cart.jsx";
-//COMPONENTS
-import EditProfile from "./components/Profile/EditProfile.jsx";
-import ProductsListContainerAdmin from "./components/ProductsAdmin/ProductsListContainerAdmin.jsx";
-import NewProduct from "./components/ProductsAdmin/NewProduct.jsx";
-import EditProduct from "./components/ProductsAdmin/EditProduct.jsx";
+
+//PÁGINAS PROTEGIDAS
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
-import DeleteProduct from "./components/ProductsAdmin/DeleteProduct.jsx";
-import Unauthorized from "./components/ProtectedRoute/Unauthorized.jsx";
-import ProductsByCategory from "./components/ProductsUser/ProductsByCategory.jsx";
-import UsersListContainer from "./components/UsersAdmin/UsersListContainer.jsx";
-import EditUser from "./components/UsersAdmin/EditUser.jsx";
-import DeleteUser from "./components/UsersAdmin/DeleteUser.jsx";
-import Contact from "./pages/Contact.jsx";
+import Cart from "./pages/Cart/Cart.jsx";
+import AdminProducts from "./pages/Products/AdminProducts.jsx";
+import NewProduct from "./pages/Products/NewProduct.jsx";
+import EditProd from "./pages/Products/EditProd.jsx";
+import DeleteProd from "./pages/Products/DeleteProd.jsx";
+import GetUsersAdmin from "./pages/UsersAdmin/GetUsersAdmin.jsx";
+import EditRol from "./pages/UsersAdmin/EditRol.jsx";
+import DeleteUsersAdmin from "./pages/UsersAdmin/DeleteUsersAdmin.jsx";
+import GetProfile from "./pages/Profile/GetProfile.jsx";
+import DeleteProfile from "./pages/Profile/deleteProfile.jsx";
+
+//STYLES
 import "./App.css";
+
 const App = () => {
   return (
     <>
@@ -32,18 +40,21 @@ const App = () => {
         <CartProvider>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/product/:id" element={<Details />} />
-            <Route
-              path="/category/:categoryName"
-              element={<ProductsByCategory />}
-            />
-            <Route path="/login/forgot-password" element={<ForgotPassword />} />
-            <Route path="/edit-profile/:userId" element={<EditProfile />} />
-            <Route path="/contact" element={<Contact />} />
 
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/register" element={<SignUp />} />
+            <Route
+              path="/login/forgot-password"
+              element={<RecoverPassword />}
+            />
+            <Route path="/logout" element={<SignOff />} />
+
+            <Route path="/product/:id" element={<Details />} />
+            <Route path="/category/:categoryName" element={<Category />} />
+
+            <Route path="/edit-profile/:userId" element={<PutPassword />} />
+            {/*             <Route path="/contact" element={<Contact />} />
+             */}
             <Route
               path="/cart/:userId"
               element={
@@ -56,7 +67,7 @@ const App = () => {
               path="/products"
               element={
                 <ProtectedRoute role={["admin", "premium"]}>
-                  <ProductsListContainerAdmin />
+                  <AdminProducts />
                 </ProtectedRoute>
               }
             />
@@ -72,7 +83,7 @@ const App = () => {
               path="/products/edit/:productId"
               element={
                 <ProtectedRoute role={["admin", "premium"]}>
-                  <EditProduct />
+                  <EditProd />
                 </ProtectedRoute>
               }
             />
@@ -80,7 +91,7 @@ const App = () => {
               path="/products/delete/:productId"
               element={
                 <ProtectedRoute role={["admin", "premium"]}>
-                  <DeleteProduct />
+                  <DeleteProd />
                 </ProtectedRoute>
               }
             />
@@ -88,7 +99,7 @@ const App = () => {
               path="/users"
               element={
                 <ProtectedRoute role={"admin"}>
-                  <UsersListContainer />
+                  <GetUsersAdmin />
                 </ProtectedRoute>
               }
             />
@@ -96,7 +107,7 @@ const App = () => {
               path="/users/edit/:id"
               element={
                 <ProtectedRoute role={"admin"}>
-                  <EditUser />
+                  <EditRol />
                 </ProtectedRoute>
               }
             />
@@ -104,7 +115,7 @@ const App = () => {
               path="/users/delete/:userId"
               element={
                 <ProtectedRoute role={"admin"}>
-                  <DeleteUser />
+                  <DeleteUsersAdmin />
                 </ProtectedRoute>
               }
             />
@@ -112,7 +123,7 @@ const App = () => {
               path="/profile/:userId"
               element={
                 <ProtectedRoute role={["admin", "premium", "user"]}>
-                  <Profile />
+                  <GetProfile />
                 </ProtectedRoute>
               }
             />
@@ -120,7 +131,7 @@ const App = () => {
               path="/profile/delete/:userId"
               element={
                 <ProtectedRoute role={["admin", "premium", "user"]}>
-                  <DeleteMyAccount />
+                  <DeleteProfile />
                 </ProtectedRoute>
               }
             />

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { getCookiesByName } from "../../utils/formsUtils";
-import Header from "../Header/Header";
 import UsersList from "./UsersList";
 
 const UsersListContainer = () => {
@@ -39,7 +38,6 @@ const UsersListContainer = () => {
 
   return (
     <>
-      <Header />
       <div>
         <h1>Lista de Usuarios</h1>
         {loading ? <p>Cargando...</p> : <UsersList users={users} />}

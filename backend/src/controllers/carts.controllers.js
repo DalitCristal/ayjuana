@@ -198,7 +198,7 @@ cartsCtrls.getTotalPrice = async (req, res) => {
     }
 
     res.status(200).send({
-      respuesta: "Suma exitosa del total de todos los productos",
+      respuesta: "Suma sa del total de todos los productos",
       mensaje: total,
     });
   } catch (error) {
@@ -261,7 +261,7 @@ cartsCtrls.finalizarCompra = async (req, res) => {
     });
 
     res.status(200).send({
-      mensaje: "Compra finalizada exitosamente",
+      mensaje: "Compra finalizada samente",
       ticket: newTicket,
     });
   } catch (error) {

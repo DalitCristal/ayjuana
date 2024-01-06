@@ -3,22 +3,24 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserRole } from "./rolDelUsuario";
-import { getCookiesByName } from "../../utils/formsUtils";
+import { getCookiesByName, isTokenExpired } from "../../utils/formsUtils";
 
 const ProtectedRoute = ({ role, children }) => {
   const navigate = useNavigate();
   const userRole = getUserRole();
   const token = getCookiesByName("jwtCookie");
 
-  // isAuthorized es una función interna que no cambia después de la primera renderización
   const isAuthorized = () => {
     return Array.isArray(role) ? role.includes(userRole) : role === userRole;
   };
 
   useEffect(() => {
-    if (!token) {
-      // Si no hay token
-      navigate("/login", { replace: true });
+    if (isTokenExpired(token)) {
+      document.cookie =
+        "jwtCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+      navigate("/login");
+      return;
     } else if (!isAuthorized()) {
       // Si el usuario no está autorizado
       navigate("/unauthorized", { replace: true });

@@ -12,6 +12,9 @@ productRouter.get("/api/products", productCtrls.getProducts);
 //Obtener un producto
 productRouter.get("/api/products/:id", productCtrls.getProductById);
 
+//Obtener un producto por su nombre
+productRouter.post("/api/products/search", productCtrls.getProductByName);
+
 //Crear nuevo producto
 productRouter.post(
   "/api/products",

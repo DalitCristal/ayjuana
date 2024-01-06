@@ -32,7 +32,8 @@ const ProductActionsDropdown = () => {
       position: "absolute",
       backgroundColor: "#ffe1eb",
       boxShadow: "0px 8px 16px 0px rgba(0, 0, 0, 0.2)",
-      zIndex: 1,
+      zIndex: 10,
+      width: "190px",
     },
     hidden: {
       textDecoration: "none",

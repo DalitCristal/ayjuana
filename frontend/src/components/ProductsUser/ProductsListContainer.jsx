@@ -8,6 +8,32 @@ const ProductsListContainer = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Obtener los mensajes de éxito desde localStorage
+    const loginUser = localStorage.getItem("loginUser");
+    const logout = localStorage.getItem("logout");
+
+    if (loginUser) {
+      setMessage(loginUser);
+      const timeoutId = setTimeout(() => {
+        setMessage("");
+        localStorage.removeItem("loginUser");
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+    if (logout) {
+      setMessage(logout);
+      const timeoutId = setTimeout(() => {
+        setMessage("");
+        localStorage.removeItem("logout");
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -16,7 +42,6 @@ const ProductsListContainer = () => {
         const allProducts = await getProducts({
           page: currentPage,
           pageSize: 12,
-          status: true,
           sort: "asc",
         });
 
@@ -40,7 +65,27 @@ const ProductsListContainer = () => {
 
   return (
     <div>
+      {message && (
+        <div className="message-container">
+          <p>{message}</p>
+        </div>
+      )}
+
       <h1 className="title-page-products">Lista de Productos</h1>
+
+      <div className="pagination">
+        {currentPage > 1 && (
+          <button onClick={() => handlePageChange(currentPage - 1)}>
+            Anterior
+          </button>
+        )}
+        {hasMore && (
+          <button onClick={() => handlePageChange(currentPage + 1)}>
+            Siguiente
+          </button>
+        )}
+      </div>
+
       <ProductsList products={products} />
 
       <div className="pagination">

@@ -6,14 +6,13 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="product-card">
-      {thumbnails.map((thumbnail, index) => (
+      {thumbnails.length > 0 && (
         <img
-          key={index}
-          src={thumbnail}
+          src={thumbnails[0]}
           alt={`${title} - Thumbnail`}
           className="product-thumbnail"
         />
-      ))}
+      )}
       <div className="product-details">
         <h2>TITULO: {title}</h2>
         <p>{description}</p>
