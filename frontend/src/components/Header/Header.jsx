@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getUserRole, getUserId } from "../ProtectedRoute/rolDelUsuario.js";
 import ProductSearchForm from "../ProductsUser/ProductSearchForm.jsx";
-import CartWidget from "../Cart/CartWidget.jsx";
+import CartWidget from "../CartMP/CartWidget.jsx";
 import logo from "/ay-juana-logo.png";
 import Navbar from "../Navigation/NavBar.jsx";
 import ProfileMenu from "../Navigation/ProfileMenu.jsx";

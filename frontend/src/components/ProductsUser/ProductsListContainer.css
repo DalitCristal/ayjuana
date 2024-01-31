@@ -72,3 +72,10 @@
 .pagination button:hover:not(:disabled) {
   background-color: darken(var(--color-principal), 10%);
 }
+
+.containerByCategory ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}

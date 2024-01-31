@@ -17,11 +17,10 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    console.log("FILE MULTER", file);
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
 const uploader = multer({ storage });
-console.log("MULTER DEVUELVE", uploader);
+
 export default uploader;

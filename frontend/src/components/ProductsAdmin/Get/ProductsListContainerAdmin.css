@@ -45,21 +45,3 @@
 .option:hover {
   background-color: #0056b3;
 }
-
-.message-container {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  padding: 10px;
-  background-color: #4caf50;
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-}
-
-.message-container p {
-  margin: 0;
-}

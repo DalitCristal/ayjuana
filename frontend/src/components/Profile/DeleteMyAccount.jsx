@@ -2,12 +2,13 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils";
+import { HOST, PORT_BACK } from "../../config/config";
+import Swal from "sweetalert2";
 import "./DeleteMyAccount.css";
 
 const DeleteMyAccount = () => {
   const { userId } = useParams();
   const [confirmation, setConfirmation] = useState(false);
-  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -17,22 +18,24 @@ const DeleteMyAccount = () => {
       const { user: tokenUser } = JSON.parse(atob(token.split(".")[1]));
 
       if (userId !== tokenUser._id) {
-        setMessage("Acceso no autorizado");
+        Swal.fire({
+          title: `Acceso no autorizado`,
+          icon: "info",
+          showConfirmButton: false,
+          timer: 2000,
+        });
 
         navigate("/");
 
         return;
       }
-      const response = await fetch(
-        `http://localhost:8080/api/users/${userId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${HOST}${PORT_BACK}/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
       const deleteCookie = (name) => {
         document.cookie = getCookiesByName(name);
@@ -40,18 +43,32 @@ const DeleteMyAccount = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        localStorage.setItem("deleteMessage", "Cuenta eliminada exitosamente");
+        Swal.fire({
+          title: `Cuenta eliminada exitosamente ${data.first_name} `,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
-        setMessage(`Cuenta eliminada exitosamente ${data.first_name} `);
         deleteCookie("jwtCookie");
 
         navigate("/register");
       } else {
         const data = await response.json();
-        setMessage(`Error al eliminar la cuenta: ${data.mensaje}`);
+        Swal.fire({
+          title: `Error al eliminar la cuenta: ${data.mensaje} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     } catch (error) {
-      setMessage(`Error inesperado al eliminar la cuenta ${error}`);
+      Swal.fire({
+        title: `Error inesperado al eliminar la cuenta, ${error} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 
@@ -90,7 +107,6 @@ const DeleteMyAccount = () => {
             Eliminar mi cuenta
           </button>
         )}
-        {message && <p className="message">{message}</p>}{" "}
       </div>
     </>
   );

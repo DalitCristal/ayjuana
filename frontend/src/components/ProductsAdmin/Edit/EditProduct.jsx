@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCookiesByName, isTokenExpired } from "../../../utils/formsUtils";
+import Swal from "sweetalert2";
+import { HOST, PORT_BACK } from "../../../config/config.js";
 import "./EditProduct.css";
 
 const EditProduct = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const formuRef = useRef(null);
-  const [message, setMessage] = useState(null);
 
   const [productData, setProductData] = useState({
     title: "",
@@ -24,12 +25,17 @@ const EditProduct = () => {
     const fetchProductData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/products/${productId}`
+          `${HOST}${PORT_BACK}/api/products/${productId}`
         );
         const data = await response.json();
         setProductData(data.mensaje);
       } catch (error) {
-        console.error("Error al obtener los detalles del producto", error);
+        Swal.fire({
+          title: `Error al obtener los detalles del producto, ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     };
 
@@ -39,18 +45,10 @@ const EditProduct = () => {
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
 
-    // Manejo de cambios en el array de thumbnails
-    if (name === "thumbnails") {
-      setProductData((prevData) => ({
-        ...prevData,
-        [name]: value.split(","),
-      }));
-    } else {
-      setProductData((prevData) => ({
-        ...prevData,
-        [name]: type === "checkbox" ? e.target.checked : value,
-      }));
-    }
+    setProductData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? e.target.checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -62,20 +60,30 @@ const EditProduct = () => {
     if (isTokenExpired(token)) {
       document.cookie =
         "jwtCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      localStorage.setItem("tokenMessage", "Sesión expirada");
+      Swal.fire({
+        title: `Sesión expirada`,
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1500,
+      });
 
       navigate("/login");
       return;
     }
 
     if (typeof data.title !== "string" || !isNaN(Number(data.title))) {
-      setMessage("Título debe ser una cadena de texto.");
+      Swal.fire({
+        title: `Título debe ser una cadena de texto.`,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       return;
     }
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/products/${productId}`,
+        `${HOST}${PORT_BACK}/api/products/${productId}`,
         {
           method: "PUT",
           headers: {
@@ -88,26 +96,36 @@ const EditProduct = () => {
       );
 
       if (response.status === 200) {
-        localStorage.setItem("updateMessage", "Producto actualizado");
+        Swal.fire({
+          title: `Producto actualizado`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         navigate("/products");
       } else {
         const errorData = await response.json();
-        setMessage(`Error en la actualización: ${errorData.mensaje}`);
+        Swal.fire({
+          title: `Error en la actualización, ${errorData.mensaje} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     } catch (error) {
-      setMessage(`Error en la solicitud: ${error.message}`);
+      Swal.fire({
+        title: `Error en la solicitud, ${error.mensaje} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 
   return (
     <div className="containerEditProduct">
       <h1 className="titleEditProduct">Editar Producto</h1>
-
-      {message && (
-        <div className="message-error-container">
-          <p>{message}</p>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} ref={formuRef} className="formEditProduct">
         <label className="labelEditProduct">
@@ -179,16 +197,6 @@ const EditProduct = () => {
             value={productData.category}
             onChange={handleInputChange}
             className="inputEditProduct"
-          />
-        </label>
-        <label className="labelEditProduct">
-          URL de las imágenes (separadas por comas):
-          <textarea
-            type="text"
-            name="thumbnails"
-            value={productData.thumbnails}
-            onChange={handleInputChange}
-            className="textareaEditProduct"
           />
         </label>
 

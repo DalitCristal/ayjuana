@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { validateForm } from "./ValidateForm.jsx";
+import { HOST, PORT_BACK } from "../../config/config.js";
+import Swal from "sweetalert2";
 import "./Register.css";
 
 const Register = () => {
@@ -14,23 +16,8 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  useEffect(() => {
-    // Obtener el mensaje de éxito desde localStorage
-    const deleteMessage = localStorage.getItem("deleteMessage");
-    if (deleteMessage) {
-      setMessage(deleteMessage);
-      const timeoutId = setTimeout(() => {
-        setMessage("");
-        localStorage.removeItem("deleteMessage");
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -42,12 +29,17 @@ const Register = () => {
     const errorMessage = await validateForm(formData);
 
     if (errorMessage) {
-      setMessage(errorMessage);
+      Swal.fire({
+        title: `${errorMessage} `,
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 2500,
+      });
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/session/signup", {
+      const response = await fetch(`${HOST}${PORT_BACK}/api/session/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,29 +49,37 @@ const Register = () => {
       });
 
       if (response.status === 201) {
-        localStorage.setItem(
-          "registerMessage",
-          "Usuario registrado exitosamente"
-        );
-
-        setMessage("");
+        Swal.fire({
+          title: `Usuario registrado exitosamente`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
         navigate("/login");
       } else if (response.status === 401) {
-        setMessage("Email ya existente");
+        Swal.fire({
+          title: "Email ya existente",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else {
         const responseData = await response.json();
-        localStorage.setItem(
-          "registerResponseErrorMessage",
-          `Error al registrar usuario: ${responseData.mensaje}`
-        );
+        Swal.fire({
+          title: `Error al registrar usuario: ${responseData.mensaje}`,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     } catch (error) {
-      localStorage.setItem(
-        "registerErrorMessage",
-        `Error inesperado al registrar usuario: ${error}`
-      );
-      setMessage(`Error inesperado al registrar usuario: ${error}`);
+      Swal.fire({
+        title: `Error inesperado al registrar usuario: ${error}`,
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -87,12 +87,6 @@ const Register = () => {
     <>
       <div className="pageBox">
         <h1 className="titleFormu">Registro</h1>
-
-        {message && (
-          <div className="deleteMessageContainer">
-            <p>{message}</p>
-          </div>
-        )}
 
         <form onSubmit={onSubmit} className="containerFormu">
           <input

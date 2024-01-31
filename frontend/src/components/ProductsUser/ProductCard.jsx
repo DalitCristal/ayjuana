@@ -1,22 +1,21 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { HOST, PORT_BACK } from "../../config/config";
 
 const ProductCard = ({ product }) => {
   const { id, title, description, price, thumbnails } = product;
 
   return (
     <div className="product-card">
-      {thumbnails.length > 0 && (
-        <img
-          src={thumbnails[0]}
-          alt={`${title} - Thumbnail`}
-          className="product-thumbnail"
-        />
-      )}
+      <img
+        src={`${HOST}${PORT_BACK}/static/products/img/${thumbnails[0].name}`}
+        alt={`${title}-${id}`}
+      />
+
       <div className="product-details">
-        <h2>TITULO: {title}</h2>
+        <h2>{title}</h2>
         <p>{description}</p>
-        <p>Price: ${price}</p>
+        <p>Precio: ${price}</p>
       </div>
       <Link to={`/product/${id}`} className="option">
         Más detalles
@@ -31,7 +30,7 @@ ProductCard.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    thumbnails: PropTypes.arrayOf(PropTypes.string).isRequired,
+    thumbnails: PropTypes.array.isRequired,
   }).isRequired,
 };
 

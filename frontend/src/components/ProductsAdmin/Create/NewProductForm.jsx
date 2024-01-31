@@ -2,19 +2,18 @@ import PropTypes from "prop-types";
 import { useRef } from "react";
 import { getCookiesByName } from "../../../utils/formsUtils.js";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import NewProductMessage from "./NewProductMessage.jsx";
 import { isTokenExpired } from "../../../utils/formsUtils.js";
 import { validateData } from "./ValidateDataProduct.jsX";
 import postProduct from "./FetchPost.jsx";
 import InputForm from "./InputForm.jsx";
+import Swal from "sweetalert2";
 //STYLES
 import "./NewProduct.css";
 
 const NewProductForm = ({ onSubmit }) => {
   const formuRef = useRef(null);
+
   const navigate = useNavigate();
-  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +23,12 @@ const NewProductForm = ({ onSubmit }) => {
     const errorMessage = await validateData(data);
 
     if (errorMessage) {
-      setMessage(errorMessage);
+      Swal.fire({
+        title: `${errorMessage} `,
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 2000,
+      });
       return;
     }
 
@@ -33,7 +37,13 @@ const NewProductForm = ({ onSubmit }) => {
     if (isTokenExpired(token)) {
       document.cookie =
         "jwtCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      localStorage.setItem("tokenMessage", "Sesión expirada");
+
+      Swal.fire({
+        title: "Sesión expirada",
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1500,
+      });
 
       navigate("/login");
       return;
@@ -42,16 +52,29 @@ const NewProductForm = ({ onSubmit }) => {
     const fetchPost = async () => {
       try {
         const product = await postProduct({ token: token, data: data });
-
-        localStorage.setItem("newProductMessage", "Producto creado con éxito");
-        setMessage(`¡Producto creado con éxito: ${product}`);
+        Swal.fire({
+          title: `Producto creado con éxito, ${product.title} `,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
         navigate("/products");
       } catch (error) {
         if (error.includes("código ya existente")) {
-          setMessage(`El código ya existe. Por favor, elige otro.`);
+          Swal.fire({
+            title: `El código ya existe. Por favor, elige otro.`,
+            icon: "warning",
+            showConfirmButton: false,
+            timer: 2000,
+          });
         } else {
-          setMessage(`Error al crear el producto: ${error}`);
+          Swal.fire({
+            title: `Error al crear el producto: ${error} `,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }
       }
     };
@@ -62,9 +85,6 @@ const NewProductForm = ({ onSubmit }) => {
   return (
     <>
       <h1 className="titleFormu">Crear nuevo producto</h1>
-
-      <NewProductMessage message={message} />
-
       <form
         onSubmit={(e) => onSubmit(e, handleSubmit)}
         ref={formuRef}
@@ -130,11 +150,13 @@ const NewProductForm = ({ onSubmit }) => {
           </select>
         </label>
         <label className="labelNewProduct">
-          URL de las imágenes (separadas por comas)
+          URL de las imágenes
           <textarea
             type="text"
             name="thumbnails"
             className="textareaNewProduct"
+            placeholder="Estamos trabajando en esta funcionalidad, muy pronto estará habilitada para su uso, gracias!"
+            disabled
           />
         </label>
 

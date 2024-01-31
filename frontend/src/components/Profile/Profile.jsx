@@ -2,7 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils.js";
 import EditIcon from "@mui/icons-material/Edit";
+import { HOST, PORT_BACK } from "../../config/config.js";
 import "./Profile.css";
+import Swal from "sweetalert2";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -14,7 +16,6 @@ const Profile = () => {
     email: false,
     password: false,
   });
-  const [updateMessage, setUpdateMessage] = useState(null);
 
   // Nuevos estados para campos editables
   const [newFirstName, setNewFirstName] = useState("");
@@ -27,7 +28,7 @@ const Profile = () => {
     async (token) => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/users/${userId}`,
+          `${HOST}${PORT_BACK}/api/users/${userId}`,
           {
             method: "GET",
             headers: {
@@ -41,10 +42,20 @@ const Profile = () => {
           const data = await response.json();
           setUserData(data.mensaje);
         } else {
-          console.error("Error fetching user data:", response);
+          Swal.fire({
+            title: `Error en la solicitud, ${response} `,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        Swal.fire({
+          title: `Error en la solicitud, ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     },
     [userId, setUserData]
@@ -55,7 +66,13 @@ const Profile = () => {
     const { user } = JSON.parse(atob(token.split(".")[1]));
 
     if (user._id !== userId) {
-      console.error("Acceso no autorizado");
+      Swal.fire({
+        title: `Acceso no autorizado `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
       return;
     }
 
@@ -100,7 +117,7 @@ const Profile = () => {
       if (editableFields.password) updatedFields.password = newPassword;
 
       const response = await fetch(
-        `http://localhost:8080/api/users/profile/${userId}`,
+        `${HOST}${PORT_BACK}/api/users/profile/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -123,22 +140,29 @@ const Profile = () => {
           email: false,
           password: false,
         });
-        setUpdateMessage("Cambios guardados exitosamente.");
-
-        setTimeout(() => {
-          setUpdateMessage(null);
-        }, 3000);
+        Swal.fire({
+          title: `Cambios guardados exitosamente.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 2000,
+        });
 
         fetchProfile();
       } else {
-        setUpdateMessage(
-          "Error al guardar los cambios. Por favor, inténtalo de nuevo."
-        );
+        Swal.fire({
+          title: `Error al guardar los cambios. Por favor, inténtalo de nuevo.`,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     } catch (error) {
-      setUpdateMessage(
-        "Error inesperado. Por favor, inténtalo de nuevo más tarde."
-      );
+      Swal.fire({
+        title: `Error inesperado. Por favor, inténtalo de nuevo más tarde. ${error} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 
@@ -146,12 +170,6 @@ const Profile = () => {
     <>
       <div className="divContainerProfile">
         <h2 className="h2Profile">Mi perfil</h2>
-
-        {updateMessage && (
-          <div className="messageContainerProfile">
-            <p className="messageProfile">{updateMessage}</p>{" "}
-          </div>
-        )}
 
         {userData ? (
           <div>

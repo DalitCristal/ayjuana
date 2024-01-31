@@ -1,3 +1,4 @@
+import { userModel } from "../models/users.models.js";
 import { generateToken } from "../utils/jwt.js";
 import "dotenv/config";
 
@@ -17,8 +18,8 @@ sessionsCtrls.postLogin = async (req, res) => {
       maxAge: 43200000,
     });
 
-    res.status(200).send({ payload: req.user });
-    //res.status(200).send({ token });
+    //res.status(200).send({ payload: req.user });
+    res.status(200).send({ token });
   } catch (error) {
     res.status(500).send({ mensaje: `Error al iniciar sesion ${error}` });
   }
@@ -52,19 +53,22 @@ sessionsCtrls.postSignUp = async (req, res) => {
 
 sessionsCtrls.getLogOut = async (req, res) => {
   try {
-    // Verifica si el usuario está autenticado
+    // Verificar si el usuario está autenticado
     if (!req.user) {
       return res.status(401).send({ mensaje: "Usuario no autenticado" });
     }
-    req.user.last_connection = new Date();
-    await req.user.save();
+    const user = await userModel.findById(req.user.user._id);
 
-    // Elimina la cookie de JWT
+    // Actualizar last_connection
+    user.last_connection = new Date();
+    await user.save();
+
+    // Eliminar la cookie de JWT
     res.clearCookie("jwtCookie");
 
     res.status(200).send({ resultado: "Usuario deslogueado" });
   } catch (error) {
-    console.error(error);
+    req.logger.error("Error al cerrar sesión:", error);
     res.status(500).send({ mensaje: "Error al cerrar sesión" });
   }
 };

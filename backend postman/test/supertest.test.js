@@ -1,10 +1,11 @@
 import chai from "chai";
 import mongoose from "mongoose";
 import supertest from "supertest";
+import { HOST, PORT_BACK } from "../src/config/config";
 
 const expect = chai.expect;
 
-const requester = supertest("http://localhost:8080");
+const requester = supertest(`${HOST}${PORT_BACK}`);
 
 await mongoose.connect(
   `mongodb+srv://dalacristal:Isr44J0TEEu5kSJ1@cluster0.qpsi8nz.mongodb.net/?`

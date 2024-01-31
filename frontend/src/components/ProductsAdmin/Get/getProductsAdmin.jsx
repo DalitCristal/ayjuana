@@ -1,3 +1,6 @@
+import { HOST, PORT_BACK } from "../../../config/config";
+import Swal from "sweetalert2";
+
 const getProducts = async ({
   page = 1,
   pageSize = 12,
@@ -6,7 +9,7 @@ const getProducts = async ({
   sort,
 }) => {
   try {
-    let apiUrl = `http://localhost:8080/api/products?page=${page}&pageSize=${pageSize}`;
+    let apiUrl = `${HOST}${PORT_BACK}/api/products?page=${page}&pageSize=${pageSize}`;
 
     // Agregar filtros
     if (category) {
@@ -29,31 +32,25 @@ const getProducts = async ({
 
       return productsArray;
     } else {
-      console.error("Error al recuperar productos:", response.status);
+      Swal.fire({
+        title: `Error ${response.status} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
       return [];
     }
   } catch (error) {
-    console.error("Error al recuperar productos:", error);
+    Swal.fire({
+      title: `Error ${error} `,
+      icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
     return [];
   }
 };
 
 export default getProducts;
-
-/* const getProductsAdmin = async (page) => {
-  try {
-    const response = await fetch(
-      `http://localhost:8080/api/products?page=${page}` 
-    );
-    const data = await response.json();
-    const productsArray = data.mensaje;
-
-    return productsArray;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-};
-
-export default getProductsAdmin;
- */

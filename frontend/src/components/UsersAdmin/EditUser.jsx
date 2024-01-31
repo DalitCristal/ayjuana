@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchUserData, updateUser } from "../../utils/fetchUserData.js";
 import "./EditUser.css";
+import Swal from "sweetalert2";
 
 const EditUser = () => {
   const { id } = useParams();
@@ -19,13 +20,20 @@ const EditUser = () => {
           setUserData(response.data);
           setSelectedRole(response.data.rol);
         } else {
-          console.error(
-            "Error al obtener los detalles del usuario:",
-            response.error
-          );
+          Swal.fire({
+            title: `Error al obtener los detalles del usuario: ${response.error} `,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }
       } catch (error) {
-        console.error("Error al obtener los detalles del usuario:", error);
+        Swal.fire({
+          title: `Error al obtener los detalles del usuario: ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     };
 
@@ -42,13 +50,28 @@ const EditUser = () => {
       const response = await updateUser(id, updatedUserData);
 
       if (response.respuesta) {
-        console.log(response.mensaje);
+        Swal.fire({
+          title: `${response.mensaje} `,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate(`/users`);
       } else {
-        console.error("Error al actualizar el usuario:", response.error);
+        Swal.fire({
+          title: `Error al actualizar usuario: ${response.error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     } catch (error) {
-      console.error("Error al actualizar el usuario:", error);
+      Swal.fire({
+        title: `Error en la solicitud ${error} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 

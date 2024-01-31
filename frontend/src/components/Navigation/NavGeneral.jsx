@@ -29,13 +29,6 @@ const NavGeneral = () => {
       >
         Remeras
       </NavLink>
-
-      <NavLink
-        to={"/contact"}
-        className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-      >
-        Contacto
-      </NavLink>
     </ul>
   );
 };

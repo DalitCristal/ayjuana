@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import { HOST, PORT_BACK } from "../../config/config";
+import Swal from "sweetalert2";
 
 const ProductSearchForm = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,17 +21,14 @@ const ProductSearchForm = () => {
       if (!searchTerm.trim()) {
         return;
       }
-      const response = await fetch(
-        "http://localhost:8080/api/products/search",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ productName: searchTerm }),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${HOST}${PORT_BACK}/api/products/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productName: searchTerm }),
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -37,7 +36,12 @@ const ProductSearchForm = () => {
         setSearched(true);
         setIsDropdownVisible(true);
       } else {
-        console.error("Error al buscar productos:", response.statusText);
+        Swal.fire({
+          title: `Error al buscar productos: ${response.statusText} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
         if (response.status === 404) {
           setSearchResults([]);
           setSearched(true);
@@ -45,7 +49,12 @@ const ProductSearchForm = () => {
         }
       }
     } catch (error) {
-      console.error("Error al buscar productos:", error.message);
+      Swal.fire({
+        title: `Error al buscar productos: ${error} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 
@@ -81,7 +90,10 @@ const ProductSearchForm = () => {
                   onClick={handleLinkClick}
                 >
                   <Link to={`/product/${result._id}`}>
-                    <img src={result.thumbnails[0]} alt={result.title} />
+                    <img
+                      src={`${HOST}${PORT_BACK}/static/products/img/${result.thumbnails[0].name}`}
+                      alt={`${result.title}-${result.id}`}
+                    />
                     <h3>{result.title}</h3>
                     <h3>${result.price}</h3>
                   </Link>

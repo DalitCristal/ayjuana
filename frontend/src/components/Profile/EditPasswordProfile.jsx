@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { HOST, PORT_BACK } from "../../config/config";
+import Swal from "sweetalert2";
 import "./editProfile.css";
 
 const EditPasswordProfile = () => {
@@ -23,7 +25,7 @@ const EditPasswordProfile = () => {
       try {
         const token = document.cookie.replace("token=", "");
         const response = await fetch(
-          `http://localhost:8080/api/validate-reset-token/${userId}`,
+          `${HOST}${PORT_BACK}/api/validate-reset-token/${userId}`,
           {
             method: "POST",
             headers: {
@@ -36,7 +38,13 @@ const EditPasswordProfile = () => {
           setTokenValid(false);
         }
       } catch (error) {
-        console.error("Error al validar el token:", error);
+        Swal.fire({
+          title: `Error al validar credenciales, ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
         setTokenValid(false);
       }
     };
@@ -58,19 +66,22 @@ const EditPasswordProfile = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/users/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ password }),
-        }
-      );
+      const response = await fetch(`${HOST}${PORT_BACK}/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
 
       if (response.status === 200) {
-        console.log("Contraseña actualizada exitosamente");
+        Swal.fire({
+          title: `Contraseña actualizada exitosamente `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         navigate("/login");
       } else {
         const data = await response.json();

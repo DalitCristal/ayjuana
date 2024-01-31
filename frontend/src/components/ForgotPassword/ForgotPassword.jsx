@@ -1,16 +1,17 @@
 import { useState } from "react";
+import { HOST, PORT_BACK } from "../../config/config";
 import "./ForgotPassword.css";
+import Swal from "sweetalert2";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleForgotPassword = async () => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:8080/api/users/mail", {
+      const response = await fetch(`${HOST}${PORT_BACK}/api/users/mail`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -19,7 +20,12 @@ const ForgotPassword = () => {
       });
 
       if (!response.status === 200) {
-        console.error("Hubo un problema al enviar el correo electrónico.");
+        Swal.fire({
+          title: ` Hubo un problema al enviar el correo electrónico.   Intente más tarde.`,
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
 
       const data = await response.json();
@@ -27,9 +33,19 @@ const ForgotPassword = () => {
         +1 * 60 * 60 * 1000
       }; path=/; samesite=strict`;
 
-      setMessage("Se ha enviado un correo electrónico con instrucciones.");
+      Swal.fire({
+        title: `Se ha enviado un correo electrónico con instrucciones.`,
+        icon: "info",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     } catch (error) {
-      setMessage(error.message || "Hubo un error en el proceso.");
+      Swal.fire({
+        title: `Hubo un error en el proceso, ${error} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     } finally {
       setLoading(false);
     }
@@ -61,8 +77,6 @@ const ForgotPassword = () => {
         >
           Enviar Correo Electrónico
         </button>
-
-        {message && <p className="messageForgotPassword">{message}</p>}
       </div>
     </>
   );

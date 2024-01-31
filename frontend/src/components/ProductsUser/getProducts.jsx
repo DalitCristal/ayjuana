@@ -1,8 +1,10 @@
 import { getUserRole } from "../ProtectedRoute/rolDelUsuario";
+import { HOST, PORT_BACK } from "../../config/config";
+import Swal from "sweetalert2";
 
 const getProducts = async ({ page = 1, pageSize = 12, category, sort }) => {
   try {
-    let apiUrl = `http://localhost:8080/api/products?page=${page}&pageSize=${pageSize}`;
+    let apiUrl = `${HOST}${PORT_BACK}/api/products?page=${page}&pageSize=${pageSize}`;
     const userRole = getUserRole();
 
     // Agregar filtros
@@ -27,11 +29,23 @@ const getProducts = async ({ page = 1, pageSize = 12, category, sort }) => {
 
       return productsArray;
     } else {
-      console.error("Error al recuperar productos:", response.status);
+      Swal.fire({
+        title: `Error en la solitud, ${response.status} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
       return [];
     }
   } catch (error) {
-    console.error("Error al recuperar productos:", error);
+    Swal.fire({
+      title: `Error ${error} `,
+      icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
     return [];
   }
 };

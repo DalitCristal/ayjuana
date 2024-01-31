@@ -28,12 +28,7 @@ const NavPremium = () => {
       >
         Remeras
       </NavLink>
-      <NavLink
-        to={"/contact"}
-        className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-      >
-        Contacto
-      </NavLink>
+
       <ProductActionsDropdown />
     </ul>
   );

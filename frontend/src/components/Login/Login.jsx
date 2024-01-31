@@ -1,65 +1,27 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { HOST, PORT_BACK } from "../../config/config";
 import { getUserFirstName } from "../ProtectedRoute/rolDelUsuario";
 import "../GlobalStyles/Formularios.css";
+import Swal from "sweetalert2";
 import "./Login.css";
 
 const Login = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    // Obtener los mensajes desde localStorage
-    const registerMessage = localStorage.getItem("registerMessage");
-    const registerErrorMessage = localStorage.getItem("registerErrorMessage");
-    const registerResponseErrorMessage = localStorage.getItem(
-      "registerResponseErrorMessage"
-    );
-
-    if (registerMessage) {
-      setMessage(registerMessage);
-      const timeoutId = setTimeout(() => {
-        setMessage("");
-        localStorage.removeItem("registerMessage");
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    }
-
-    if (registerResponseErrorMessage) {
-      setErrorMessage(registerResponseErrorMessage);
-      const timeoutId = setTimeout(() => {
-        setErrorMessage("");
-        localStorage.removeItem("registerResponseErrorMessage");
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    }
-
-    if (registerErrorMessage) {
-      setErrorMessage(registerErrorMessage);
-      const timeoutId = setTimeout(() => {
-        setErrorMessage("");
-        localStorage.removeItem("registerErrorMessage");
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const datForm = new FormData(formRef.current);
     const data = Object.fromEntries(datForm);
 
-    const response = await fetch("http://localhost:8080/api/session/signin", {
+    const response = await fetch(`${HOST}${PORT_BACK}/api/session/signin`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify(data),
+      credentials: "include",
     });
 
     if (response.status === 200) {
@@ -69,15 +31,28 @@ const Login = () => {
       ).toUTCString()}; path=/`;
 
       const nameUser = getUserFirstName();
-      localStorage.setItem("loginUser", `¡Hola ${nameUser}!`);
+      Swal.fire({
+        position: "top",
+        title: `¡Hola ${nameUser}!`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
 
       navigate("/");
     } else if (response.status === 401) {
-      setErrorMessage(
-        `${response.statusText}, Correo electrónico o contraseña incorrecta`
-      );
+      Swal.fire({
+        title: `Correo electrónico o contraseña incorrecta`,
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else {
-      setErrorMessage(`${response.mensaje}`);
+      Swal.fire({
+        title: `${response.mensaje}`,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -85,18 +60,6 @@ const Login = () => {
     <>
       <div className="pageBox">
         <h1 className="titleFormu">Iniciar sesión</h1>
-
-        {errorMessage && (
-          <div className="messageContainer error">
-            <p>{errorMessage}</p>
-          </div>
-        )}
-
-        {message && (
-          <div className="messageContainer success">
-            <p>{message}</p>
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} ref={formRef} className="containerFormu">
           <input

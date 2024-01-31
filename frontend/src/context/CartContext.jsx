@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { createContext, useState } from "react";
+import Swal from "sweetalert2";
 
 export const CartContext = createContext({
   cart: [],
@@ -11,9 +12,19 @@ export const CartProvider = ({ children }) => {
   const addItem = (item, quantity) => {
     if (!isInCart(item._id)) {
       setCart((prev) => [...prev, { item, quantity }]);
-      console.log("producto agregado");
+      Swal.fire({
+        title: `producto agregado`,
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else {
-      console.error("El producto ya fue agregado");
+      Swal.fire({
+        title: `El producto ya fue agregado `,
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 

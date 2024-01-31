@@ -12,15 +12,18 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mercadopago/sdk-react": "^0.0.16",
     "@mui/icons-material": "^5.14.15",
     "@mui/material": "^5.14.15",
-    "axios": "^1.6.0",
+    "classnames": "^2.5.1",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
     "react-router-dom": "^6.17.0",
+    "spinners-react": "^1.0.7",
+    "sweetalert2": "^11.10.4",
     "swiper": "^9.0.3"
   },
   "devDependencies": {

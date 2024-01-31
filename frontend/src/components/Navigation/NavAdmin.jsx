@@ -28,12 +28,7 @@ const NavAdmin = () => {
       >
         Remeras
       </NavLink>
-      <NavLink
-        to={"/contact"}
-        className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}
-      >
-        Contacto
-      </NavLink>
+
       <NavLink
         to={"/users"}
         className={({ isActive }) => (isActive ? "ActiveOption" : "Option")}

@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { HOST, PORT_BACK } from "../../config/config";
+import Swal from "sweetalert2";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -7,26 +9,38 @@ const Logout = () => {
   useEffect(() => {
     const logout = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/session/logout",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${HOST}${PORT_BACK}/api/session/logout`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
         if (response.status === 200) {
-          localStorage.setItem("logout", `Sesión cerrada con éxito`);
+          Swal.fire({
+            position: "top-center",
+            title: `Sesión cerrada con éxito.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
 
-          navigate("/");
+          navigate("/", { replace: true });
         } else {
-          console.error("Error al cerrar sesión:", response.statusText);
+          Swal.fire({
+            title: `Error al cerrar sesión: ${response.mensaje} `,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }
       } catch (error) {
-        console.error("Error al cerrar sesión:", error.message);
+        Swal.fire({
+          title: `Error en la solicitud: ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     };
 

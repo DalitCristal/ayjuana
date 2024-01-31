@@ -39,23 +39,3 @@
 .btnCancel:hover {
   background-color: #c4c7cb;
 }
-
-/* Estilo para mensajes de error */
-.message-error-container {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  padding: 10px;
-  background-color: #ff0000;
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-}
-
-/* Estilo para el mensaje */
-.message-error-container p {
-  margin: 0;
-}

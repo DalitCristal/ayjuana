@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import getProducts from "./getProducts";
 import ProductCard from "./ProductCard";
+import Swal from "sweetalert2";
 
 const ProductsByCategory = () => {
   const { categoryName } = useParams();
@@ -28,7 +29,12 @@ const ProductsByCategory = () => {
 
         setProducts(categoryProducts);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        Swal.fire({
+          title: `Error en la solid ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       } finally {
         setLoading(false);
       }
@@ -39,7 +45,7 @@ const ProductsByCategory = () => {
 
   return (
     <>
-      <div>
+      <div className="container containerByCategory">
         <h2>Categoria {categoryName}</h2>
         <div className="pagination">
           {currentPage > 1 && (

@@ -48,15 +48,9 @@ export async function validateData(data) {
 
   // Validación de Imágenes
   if (!data.thumbnails) {
-    data.thumbnails = [
-      "https://firebasestorage.googleapis.com/v0/b/my-ecommerce-947aa.appspot.com/o/producto-sin-foto.jpg?alt=media&token=6b5f7454-d7c3-464b-8ddf-cab6cfaa83df",
-    ];
-  } else if (typeof data.thumbnails === "string") {
-    data.thumbnails = data.thumbnails.split(",").map((url) => url.trim());
-  } else if (Array.isArray(data.thumbnails)) {
-    data.thumbnails = data.thumbnails.map((url) => url.trim());
-  } else {
-    return "El campo de imágenes no tiene el formato esperado.";
+    data.thumbnails = {
+      name: `producto-sin-foto.jpg`,
+    };
   }
 
   // Validación de estado del producto

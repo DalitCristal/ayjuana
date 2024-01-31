@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils";
 import "./DeleteUser.css";
+import { HOST, PORT_BACK } from "../../config/config";
+import Swal from "sweetalert2";
 
 const DeleteUser = () => {
   const { userId } = useParams();
@@ -14,27 +16,40 @@ const DeleteUser = () => {
       setLoading(true);
       const token = getCookiesByName("jwtCookie");
 
-      const response = await fetch(
-        `http://localhost:8080/api/users/${userId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${HOST}${PORT_BACK}/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
 
       if (response.status === 200) {
         const responseData = await response.json();
-        console.log(responseData);
+        Swal.fire({
+          title: `Se elimino correctamente, ${responseData} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         navigate("/users");
       } else {
         const errorData = await response.json();
-        console.error("Error al eliminar el usuario:", errorData);
+        Swal.fire({
+          title: `Error al eliminar el usuario: ${errorData} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     } catch (error) {
-      console.error("Error en la solicitud DELETE:", error);
+      Swal.fire({
+        title: `Error en la solicitud, ${error} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } finally {
       setLoading(false);
     }

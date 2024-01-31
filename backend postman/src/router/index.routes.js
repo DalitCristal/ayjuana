@@ -6,12 +6,13 @@ import productRouter from "./products.routes.js";
 import cartRouter from "./carts.routes.js";
 import sessionRouter from "./session.routes.js";
 import loggerRouter from "./loggerTest.routes.js";
+import paymentRouter from "./payment.routes.js";
 
 const router = Router();
-//Home
+// Home
 router.get("/static", viewsCtrls.renderHome);
 
-//Chat
+// Chat
 router.get(
   "/static/chat",
   passportError("jwt"),
@@ -24,5 +25,6 @@ router.use("/", productRouter);
 router.use("/", userRouter);
 router.use("/", sessionRouter);
 router.use("/", loggerRouter);
+router.use("/", paymentRouter);
 
 export default router;

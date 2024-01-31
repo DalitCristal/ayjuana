@@ -1,11 +1,11 @@
-import CartListContainer from "../../components/Cart/CartListContainer";
+import PaymentMP from "../../components/CartMP/PaymentMP.jsx";
 import Header from "../../components/Header/Header";
 
 const Cart = () => {
   return (
     <>
       <Header />
-      <CartListContainer />
+      <PaymentMP />
     </>
   );
 };

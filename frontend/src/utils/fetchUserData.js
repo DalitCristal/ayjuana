@@ -1,12 +1,13 @@
 import { getCookiesByName } from "./formsUtils";
+import { HOST, PORT_BACK } from "../config/config";
+import Swal from "sweetalert2";
 
 // Función para obtener los detalles del usuario por Id
-//TITULAR Y ROL
 export const fetchUserData = async (id) => {
   try {
     const token = getCookiesByName("jwtCookie");
 
-    const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+    const response = await fetch(`${HOST}${PORT_BACK}/api/users/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -19,13 +20,24 @@ export const fetchUserData = async (id) => {
       return { data: data.mensaje };
     } else {
       const errorData = await response.json();
-      console.error("Error al obtener datos del usuario:", errorData.mensaje);
+      Swal.fire({
+        title: `Error al obtener información, ${errorData.mensaje} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
 
       return { error: errorData.mensaje };
     }
   } catch (error) {
-    console.error("Error en la solicitud de datos del usuario:", error.message);
-    return { error: error.message };
+    Swal.fire({
+      title: `Error en la solicitud, ${error} `,
+      icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
+    return;
   }
 };
 
@@ -35,7 +47,7 @@ export const updateUser = async (id, updatedUserData) => {
     const token = getCookiesByName("jwtCookie");
 
     const response = await fetch(
-      `http://localhost:8080/api/users/premium/${id}`,
+      `${HOST}${PORT_BACK}/api/users/premium/${id}`,
       {
         method: "PUT",
         headers: {
@@ -52,9 +64,19 @@ export const updateUser = async (id, updatedUserData) => {
       return data;
     } else {
       const errorData = await response.json();
-      console.error(errorData.mensaje);
+      Swal.fire({
+        title: `${errorData.mensaje} `,
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   } catch (error) {
-    console.error("Error al actualizar los datos del usuario:", error.message);
+    Swal.fire({
+      title: `Error al actualizar los datos del usuario: ${error} `,
+      icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   }
 };

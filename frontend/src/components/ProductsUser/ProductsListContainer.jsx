@@ -2,38 +2,13 @@ import { useState, useEffect } from "react";
 import ProductsList from "./ProductsList.jsx";
 import getProducts from "./getProducts.jsx";
 import "./ProductsListContainer.css";
+import Swal from "sweetalert2";
 
 const ProductsListContainer = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    // Obtener los mensajes de éxito desde localStorage
-    const loginUser = localStorage.getItem("loginUser");
-    const logout = localStorage.getItem("logout");
-
-    if (loginUser) {
-      setMessage(loginUser);
-      const timeoutId = setTimeout(() => {
-        setMessage("");
-        localStorage.removeItem("loginUser");
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    }
-    if (logout) {
-      setMessage(logout);
-      const timeoutId = setTimeout(() => {
-        setMessage("");
-        localStorage.removeItem("logout");
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,7 +25,12 @@ const ProductsListContainer = () => {
 
         setProducts(allProducts);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        Swal.fire({
+          title: `Error en la solicitud ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       } finally {
         setLoading(false);
       }
@@ -65,12 +45,6 @@ const ProductsListContainer = () => {
 
   return (
     <div>
-      {message && (
-        <div className="message-container">
-          <p>{message}</p>
-        </div>
-      )}
-
       <h1 className="title-page-products">Lista de Productos</h1>
 
       <div className="pagination">

@@ -1,48 +1,58 @@
 import PropTypes from "prop-types";
 import { getCookiesByName } from "../../utils/formsUtils";
-import { CartContext } from "../../context/CartContext";
 //REACT ROUTER DOM
 import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import ItemCount from "../ItemCount/ItemCount";
+import { useEffect, useState } from "react";
+import AddToCartButton from "../CartMP/AddToCartButton";
+import "./ItemCount.css";
+import { HOST, PORT_BACK } from "../../config/config";
+import Swal from "sweetalert2";
 
 const ItemDetail = ({ product }) => {
   const { _id, title, thumbnails, category, description, price, stock, code } =
     product;
   const [userId, setUserId] = useState(null);
-  const [quantityAdded, setQuantityAdded] = useState(0);
-
-  const { addItem } = useContext(CartContext);
-
-  const handleOnAdd = (quantity) => {
-    setQuantityAdded(quantity);
-
-    const item = {
-      _id,
-      title,
-      price,
-      stock,
-      quantity,
-    };
-
-    addItem(item, quantity);
-  };
+  const [quantity, setQuantity] = useState(1);
+  const [addToCartClicked, setAddToCartClicked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = getCookiesByName("jwtCookie");
+
+        if (!token) return;
+
         const { user } = JSON.parse(atob(token.split(".")[1]));
         const userId = user._id;
 
         setUserId(userId);
       } catch (error) {
-        console.error("Error al obtener el usuario:", error);
+        Swal.fire({
+          title: `Error al obtener información, ${error} `,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
     };
 
     fetchData();
-  }, [product]);
+  }, []);
+
+  const increment = () => {
+    if (quantity < stock) {
+      setQuantity(quantity + 1);
+    }
+  };
+  const decrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleAddToCart = () => {
+    setAddToCartClicked(true);
+  };
 
   if (!product) {
     return null;
@@ -51,40 +61,59 @@ const ItemDetail = ({ product }) => {
   return (
     <>
       <div className="card">
-        <div>
+        <div className="image-box">
           {thumbnails.map((thumbnail, index) => (
             <img
               key={index}
-              src={thumbnail}
-              alt={`${title} - Thumbnail`}
-              className="product-thumbnail"
+              src={`${HOST}${PORT_BACK}/static/products/img/${thumbnail.name}`}
+              alt={`${title}-${index}`}
             />
-          ))}{" "}
-          <div>
-            <h3>{title}</h3>
-            <p>
-              <strong> Descripción: </strong>
-              {description}
-            </p>
-            <h4>
-              <strong>Categoría:</strong> {category}
-            </h4>
-            <p>
-              <strong>Precio:</strong> ${price}
-            </p>
-            <p>
-              <strong>Stock:</strong> {stock}
-            </p>
-            <p>
-              <strong>Código:</strong> {code}
-            </p>
-          </div>
+          ))}
         </div>
-        {quantityAdded > 0 ? (
-          <Link to={`/cart/${userId}`}>Ver Carrito</Link>
-        ) : (
-          <ItemCount initial={1} stock={stock} onAdd={handleOnAdd} />
-        )}
+
+        <div className="oneCard">
+          <h3>{title}</h3>
+          <p>
+            <strong> Descripción: </strong>
+            {description}
+          </p>
+          <h4>
+            <strong>Categoría:</strong> {category}
+          </h4>
+          <p>
+            <strong>Precio:</strong> ${price}
+          </p>
+          <p>
+            <strong>Stock:</strong> {stock}
+          </p>
+          <p>
+            <strong>Código:</strong> {code}
+          </p>
+          <div className="counter">
+            <div className="controls">
+              <button onClick={decrement} className="btnItemCount">
+                -
+              </button>
+              <h4 className="numberItemCount">{quantity}</h4>
+              <button onClick={increment} className="btnItemCount">
+                +
+              </button>
+            </div>
+          </div>
+
+          {addToCartClicked ? (
+            <>
+              <Link to={`/cart/${userId}`}>Ver Carrito</Link>
+              <Link to={`/`}>Ver más productos</Link>
+            </>
+          ) : (
+            <AddToCartButton
+              productId={_id}
+              quantity={quantity}
+              onClick={() => handleAddToCart()}
+            />
+          )}
+        </div>
       </div>
     </>
   );
@@ -98,7 +127,7 @@ ItemDetail.propTypes = {
     description: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     stock: PropTypes.number.isRequired,
-    thumbnails: PropTypes.arrayOf(PropTypes.string).isRequired,
+    thumbnails: PropTypes.array.isRequired,
     code: PropTypes.string.isRequired,
   }).isRequired,
 };
