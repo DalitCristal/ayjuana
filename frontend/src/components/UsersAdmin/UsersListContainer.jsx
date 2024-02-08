@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getCookiesByName } from "../../utils/formsUtils";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import UsersList from "./UsersList";
 import "./usersStyles.css";
 import Swal from "sweetalert2";
@@ -16,7 +16,7 @@ const UsersListContainer = () => {
       try {
         const token = getCookiesByName("jwtCookie");
 
-        const response = await fetch(`${HOST}${PORT_BACK}/api/users`, {
+        const response = await fetch(`${HOST}/api/users`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -37,12 +37,7 @@ const UsersListContainer = () => {
           });
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud, ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la solicitud, ${error} `);
       } finally {
         setLoading(false);
       }
@@ -71,7 +66,7 @@ const UsersListContainer = () => {
       const token = getCookiesByName("jwtCookie");
 
       // Construye la URL con los IDs de los usuarios a eliminar como parámetros de consulta
-      const url = new URL(`${HOST}${PORT_BACK}/api/users`);
+      const url = new URL(`${HOST}/api/users`);
       selectedUsers.forEach((userId) => {
         url.searchParams.append("userId", userId);
       });
@@ -107,12 +102,7 @@ const UsersListContainer = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error en la solicitud, ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`Error en la solicitud, ${error} `);
     }
   };
 

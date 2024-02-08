@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { Context } from "./ContextProvider";
 import { getCookiesByName } from "../../utils/formsUtils";
 import { Link } from "react-router-dom";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import Swal from "sweetalert2";
 
 const Checkout = ({ onClick }) => {
@@ -31,7 +31,7 @@ const Checkout = ({ onClick }) => {
         try {
           const token = getCookiesByName("jwtCookie");
           if (!cid) return;
-          const response = await fetch(`${HOST}${PORT_BACK}/api/carts/${cid}`, {
+          const response = await fetch(`${HOST}/api/carts/${cid}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -42,20 +42,10 @@ const Checkout = ({ onClick }) => {
           });
 
           const result = await response.json();
-          Swal.fire({
-            position: "center-start",
-            title: ` ${result.respuesta} `,
-            icon: "info",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+
+          console.log(result.respuesta);
         } catch (error) {
-          Swal.fire({
-            title: `Hubo un error al actualizar, ${error} `,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(`Hubo un error al actualizar, ${error} `);
         }
       };
       fetchData();
@@ -129,7 +119,7 @@ const Checkout = ({ onClick }) => {
   const removeProduct = async (productId) => {
     try {
       const response = await fetch(
-        `${HOST}${PORT_BACK}/api/carts/${cid}/products/${productId}`,
+        `${HOST}/api/carts/${cid}/products/${productId}`,
         {
           method: "DELETE",
           headers: {
@@ -162,26 +152,16 @@ const Checkout = ({ onClick }) => {
         });
       } else {
         const errorData = await response.json();
-        Swal.fire({
-          title: `Error al eliminar producto: ${errorData} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error al eliminar producto: ${errorData} `);
       }
     } catch (error) {
-      Swal.fire({
-        title: `${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`${error} `);
     }
   };
 
   const emptyCart = async () => {
     try {
-      const response = await fetch(`${HOST}${PORT_BACK}/api/carts/${cid}`, {
+      const response = await fetch(`${HOST}/api/carts/${cid}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -206,20 +186,10 @@ const Checkout = ({ onClick }) => {
         });
       } else {
         const errorData = await response.json();
-        Swal.fire({
-          title: `Error al vaciar el carrito: ${errorData} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error al vaciar el carrito: ${errorData} `);
       }
     } catch (error) {
-      Swal.fire({
-        title: `${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`${error} `);
     }
   };
 
@@ -249,7 +219,7 @@ const Checkout = ({ onClick }) => {
                               <img
                                 className="img-fluid mx-auto d-block image"
                                 alt="Image of a product"
-                                src={`${HOST}${PORT_BACK}/static/products/img/${product.img}`}
+                                src={`${HOST}/static/products/img/${product.img}`}
                               />
                             </div>
                             <div className="col-md-4 product-detail">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Header from "../Header/Header";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import Swal from "sweetalert2";
 import { getCookiesByName } from "../../utils/formsUtils";
 
@@ -33,7 +33,7 @@ const PaymentSuccess = () => {
               if (!paymentData) return;
 
               const postTicketResponse = await fetch(
-                `${HOST}${PORT_BACK}/api/payment/success`,
+                `${HOST}/api/payment/success`,
                 {
                   method: "POST",
                   headers: {
@@ -52,7 +52,7 @@ const PaymentSuccess = () => {
 
               if (postTicketResponse.status === 201) {
                 Swal.fire({
-                  title: `Ticket enviado con éxito`,
+                  title: `En un momento le enviaremos el ticket por su correo electrónico`,
                   icon: "success",
                   showConfirmButton: false,
                   timer: 2000,
@@ -63,7 +63,7 @@ const PaymentSuccess = () => {
                 const user = JSON.parse(atob(token.split(".")[1])).user;
 
                 const deleteCart = await fetch(
-                  `${HOST}${PORT_BACK}/api/carts/${user.cart} `,
+                  `${HOST}/api/carts/${user.cart} `,
                   {
                     method: "DELETE",
                     headers: {
@@ -78,20 +78,12 @@ const PaymentSuccess = () => {
                   console.log("Carrito vacio");
                 }
               } else {
-                Swal.fire({
-                  title: `Error en la solicitud, ${postTicketResponse.statusText}`,
-                  icon: "error",
-                  showConfirmButton: false,
-                  timer: 2000,
-                });
+                console.error(
+                  `Error en la solicitud, ${postTicketResponse.statusText}`
+                );
               }
             } catch (error) {
-              Swal.fire({
-                title: `Error al crear ticket, ${error} `,
-                icon: "error",
-                showConfirmButton: false,
-                timer: 1500,
-              });
+              console.error(`Error al crear ticket, ${error} `);
             }
           }
           /* FIN TICKET */
@@ -104,7 +96,7 @@ const PaymentSuccess = () => {
           ) {
             try {
               const postEmailResponse = await fetch(
-                `${HOST}${PORT_BACK}/api/payment/mail`,
+                `${HOST}/api/payment/mail`,
                 {
                   method: "POST",
                   headers: {
@@ -116,6 +108,7 @@ const PaymentSuccess = () => {
               );
 
               if (postEmailResponse.ok) {
+                console.log();
                 Swal.fire({
                   title: `Correo electrónico enviado con éxito.`,
                   icon: "success",
@@ -123,39 +116,19 @@ const PaymentSuccess = () => {
                   timer: 1500,
                 });
               } else {
-                Swal.fire({
-                  title: `Error al enviar el correo electrónico`,
-                  icon: "error",
-                  showConfirmButton: false,
-                  timer: 2000,
-                });
+                console.error(`Error al enviar el correo electrónico`);
               }
             } catch (error) {
-              Swal.fire({
-                title: `${error} `,
-                icon: "error",
-                showConfirmButton: false,
-                timer: 2000,
-              });
+              console.error(`${error} `);
             }
           }
 
           /* FIN DE EMAIL */
         } else {
-          Swal.fire({
-            title: `Error en la solicitud, ${response.statusText} `,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(`Error en la solicitud, ${response.statusText} `);
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud, ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la solicitud, ${error} `);
       }
     };
 

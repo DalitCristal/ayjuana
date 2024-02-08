@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils";
 import "./DeleteUser.css";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import Swal from "sweetalert2";
 
 const DeleteUser = () => {
@@ -16,7 +16,7 @@ const DeleteUser = () => {
       setLoading(true);
       const token = getCookiesByName("jwtCookie");
 
-      const response = await fetch(`${HOST}${PORT_BACK}/api/users/${userId}`, {
+      const response = await fetch(`${HOST}/api/users/${userId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,12 +44,7 @@ const DeleteUser = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error en la solicitud, ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      console.error(`Error en la solicitud, ${error} `);
     } finally {
       setLoading(false);
     }

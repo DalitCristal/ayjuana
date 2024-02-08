@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { getCookiesByName, isTokenExpired } from "../../../utils/formsUtils.js";
-import { HOST, PORT_BACK } from "../../../config/config.js";
+import { HOST } from "../../../config/config.js";
 import Swal from "sweetalert2";
 import "./DeleteProduct.css";
 
@@ -31,16 +31,13 @@ const DeleteProduct = () => {
         return;
       }
 
-      const response = await fetch(
-        `${HOST}${PORT_BACK}/api/products/${productId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${HOST}/api/products/${productId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
 
       if (response.status === 200) {
         Swal.fire({
@@ -62,12 +59,7 @@ const DeleteProduct = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error en la solicitud, ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`Error en la solicitud, ${error} `);
     } finally {
       setLoading(false);
     }

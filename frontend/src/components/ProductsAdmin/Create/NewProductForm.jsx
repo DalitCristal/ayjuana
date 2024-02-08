@@ -53,7 +53,7 @@ const NewProductForm = ({ onSubmit }) => {
       try {
         const product = await postProduct({ token: token, data: data });
         Swal.fire({
-          title: `Producto creado con éxito, ${product.title} `,
+          title: `El producto "${product.title}" fue creado con éxito,  `,
           icon: "success",
           showConfirmButton: false,
           timer: 1500,

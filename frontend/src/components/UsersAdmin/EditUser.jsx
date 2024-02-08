@@ -28,12 +28,7 @@ const EditUser = () => {
           });
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error al obtener los detalles del usuario: ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error al obtener los detalles del usuario: ${error} `);
       }
     };
 
@@ -66,12 +61,7 @@ const EditUser = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error en la solicitud ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`Error en la solicitud ${error} `);
     }
   };
 

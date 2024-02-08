@@ -1,9 +1,8 @@
-import { HOST, PORT_BACK } from "../../../config/config";
-import Swal from "sweetalert2";
+import { HOST } from "../../../config/config";
 
 const postProduct = async ({ token, data }) => {
   try {
-    let apiUrl = `${HOST}${PORT_BACK}/api/products`;
+    let apiUrl = `${HOST}/api/products`;
 
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -17,12 +16,7 @@ const postProduct = async ({ token, data }) => {
 
     if (!response.ok) {
       if (response.status >= 500) {
-        Swal.fire({
-          title: `Error del servidor: ${response.status}, ${response} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error del servidor: ${response.status}, ${response} `);
       }
     }
 
@@ -31,20 +25,10 @@ const postProduct = async ({ token, data }) => {
       const product = responseData.mensaje;
       return product;
     } catch (error) {
-      Swal.fire({
-        title: ` ${error}, código ya existente.`,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`${error}, código ya existente.`);
     }
   } catch (error) {
-    Swal.fire({
-      title: `Error en la solicitud al servidor: ${error} `,
-      icon: "error",
-      showConfirmButton: false,
-      timer: 2000,
-    });
+    console.error(`Error en la solicitud al servidor: ${error} `);
   }
 };
 

@@ -2,8 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchUserData } from "../../../utils/fetchUserData";
-import { HOST, PORT_BACK } from "../../../config/config";
-import Swal from "sweetalert2";
+import { HOST } from "../../../config/config";
 
 const ProductCardAdmin = ({ product }) => {
   const {
@@ -27,12 +26,7 @@ const ProductCardAdmin = ({ product }) => {
         const user = await fetchUserData(owner);
         setUserData(user);
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud, ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la solicitud, ${error} `);
       }
     };
 
@@ -42,7 +36,7 @@ const ProductCardAdmin = ({ product }) => {
   return (
     <div className="product-card">
       <img
-        src={`${HOST}${PORT_BACK}/static/products/img/${thumbnails[0].name}`}
+        src={`${HOST}/static/products/img/${thumbnails[0].name}`}
         alt={`${title}-${id}`}
       />
       <div className="product-details">

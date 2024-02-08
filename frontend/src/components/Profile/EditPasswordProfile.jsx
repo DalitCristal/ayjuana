@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import Swal from "sweetalert2";
 import "./editProfile.css";
 
@@ -25,7 +25,7 @@ const EditPasswordProfile = () => {
       try {
         const token = document.cookie.replace("token=", "");
         const response = await fetch(
-          `${HOST}${PORT_BACK}/api/validate-reset-token/${userId}`,
+          `${HOST}/api/validate-reset-token/${userId}`,
           {
             method: "POST",
             headers: {
@@ -38,12 +38,7 @@ const EditPasswordProfile = () => {
           setTokenValid(false);
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error al validar credenciales, ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error al validar credenciales, ${error} `);
 
         setTokenValid(false);
       }
@@ -66,7 +61,7 @@ const EditPasswordProfile = () => {
     }
 
     try {
-      const response = await fetch(`${HOST}${PORT_BACK}/api/users/${userId}`, {
+      const response = await fetch(`${HOST}/api/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +71,7 @@ const EditPasswordProfile = () => {
 
       if (response.status === 200) {
         Swal.fire({
-          title: `Contraseña actualizada exitosamente `,
+          title: `Contraseña actualizada exitosamente.`,
           icon: "error",
           showConfirmButton: false,
           timer: 1500,

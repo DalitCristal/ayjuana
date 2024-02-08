@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import Swal from "sweetalert2";
 
 const ProductSearchForm = () => {
@@ -21,7 +21,7 @@ const ProductSearchForm = () => {
       if (!searchTerm.trim()) {
         return;
       }
-      const response = await fetch(`${HOST}${PORT_BACK}/api/products/search`, {
+      const response = await fetch(`${HOST}/api/products/search`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,12 +49,7 @@ const ProductSearchForm = () => {
         }
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error al buscar productos: ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`Error al buscar productos: ${error} `);
     }
   };
 
@@ -91,7 +86,7 @@ const ProductSearchForm = () => {
                 >
                   <Link to={`/product/${result._id}`}>
                     <img
-                      src={`${HOST}${PORT_BACK}/static/products/img/${result.thumbnails[0].name}`}
+                      src={`${HOST}/static/products/img/${result.thumbnails[0].name}`}
                       alt={`${result.title}-${result.id}`}
                     />
                     <h3>{result.title}</h3>

@@ -5,8 +5,7 @@ import ItemDetail from "./ItemDetail.jsx";
 //HOOKS
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { HOST, PORT_BACK } from "../../config/config.js";
-import Swal from "sweetalert2";
+import { HOST } from "../../config/config.js";
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
@@ -19,26 +18,18 @@ const ItemDetailContainer = () => {
 
     const fetchProductDetails = async () => {
       try {
-        const response = await fetch(`${HOST}${PORT_BACK}/api/products/${id}`);
+        const response = await fetch(`${HOST}/api/products/${id}`);
 
         if (response.status === 200) {
           const productData = await response.json();
           setProduct(productData.mensaje);
         } else {
-          Swal.fire({
-            title: `Error en la solicitud de información: ${response.status} `,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(
+            `Error en la solicitud de información: ${response.status} `
+          );
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud de información: ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la solicitud de información: ${error} `);
       } finally {
         setLoading(false);
       }

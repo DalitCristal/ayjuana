@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddToCartButton from "../CartMP/AddToCartButton";
 import "./ItemCount.css";
-import { HOST, PORT_BACK } from "../../config/config";
-import Swal from "sweetalert2";
+import { HOST } from "../../config/config";
 
 const ItemDetail = ({ product }) => {
   const { _id, title, thumbnails, category, description, price, stock, code } =
@@ -27,12 +26,7 @@ const ItemDetail = ({ product }) => {
 
         setUserId(userId);
       } catch (error) {
-        Swal.fire({
-          title: `Error al obtener información, ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error al obtener información, ${error} `);
       }
     };
 
@@ -65,7 +59,7 @@ const ItemDetail = ({ product }) => {
           {thumbnails.map((thumbnail, index) => (
             <img
               key={index}
-              src={`${HOST}${PORT_BACK}/static/products/img/${thumbnail.name}`}
+              src={`${HOST}/static/products/img/${thumbnail.name}`}
               alt={`${title}-${index}`}
             />
           ))}

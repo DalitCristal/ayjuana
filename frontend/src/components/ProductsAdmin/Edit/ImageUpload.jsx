@@ -2,7 +2,7 @@ import { useRef } from "react";
 import PropTypes from "prop-types";
 import { getCookiesByName, isTokenExpired } from "../../../utils/formsUtils";
 import { useNavigate } from "react-router-dom";
-import { HOST, PORT_BACK } from "../../../config/config";
+import { HOST } from "../../../config/config";
 import Swal from "sweetalert2";
 
 const ImageUpload = ({ productId }) => {
@@ -35,7 +35,7 @@ const ImageUpload = ({ productId }) => {
         }
 
         const response = await fetch(
-          `${HOST}${PORT_BACK}/api/products/${productId}/thumbnails`,
+          `${HOST}/api/products/${productId}/thumbnails`,
           {
             method: "POST",
             headers: {
@@ -66,12 +66,7 @@ const ImageUpload = ({ productId }) => {
           });
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud, ${error}`,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        console.error(`Error en la solicitud, ${error}`);
       }
     }
   };

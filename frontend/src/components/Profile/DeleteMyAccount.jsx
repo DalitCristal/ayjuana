@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import Swal from "sweetalert2";
 import "./DeleteMyAccount.css";
 
@@ -29,7 +29,7 @@ const DeleteMyAccount = () => {
 
         return;
       }
-      const response = await fetch(`${HOST}${PORT_BACK}/api/users/${userId}`, {
+      const response = await fetch(`${HOST}/api/users/${userId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -63,12 +63,7 @@ const DeleteMyAccount = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error inesperado al eliminar la cuenta, ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`Error inesperado al eliminar la cuenta, ${error} `);
     }
   };
 

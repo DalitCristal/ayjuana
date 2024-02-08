@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getCookiesByName } from "../../utils/formsUtils.js";
 import EditIcon from "@mui/icons-material/Edit";
-import { HOST, PORT_BACK } from "../../config/config.js";
+import { HOST } from "../../config/config.js";
 import "./Profile.css";
 import Swal from "sweetalert2";
 
@@ -27,35 +27,22 @@ const Profile = () => {
   const fetchProfile = useCallback(
     async (token) => {
       try {
-        const response = await fetch(
-          `${HOST}${PORT_BACK}/api/users/${userId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${HOST}/api/users/${userId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        });
 
         if (response.status === 200) {
           const data = await response.json();
           setUserData(data.mensaje);
         } else {
-          Swal.fire({
-            title: `Error en la solicitud, ${response} `,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(`Error en la solicitud, ${response} `);
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud, ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la solicitud, ${error} `);
       }
     },
     [userId, setUserData]
@@ -116,18 +103,15 @@ const Profile = () => {
       if (editableFields.email) updatedFields.email = newEmail;
       if (editableFields.password) updatedFields.password = newPassword;
 
-      const response = await fetch(
-        `${HOST}${PORT_BACK}/api/users/profile/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updatedFields),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${HOST}/api/users/profile/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedFields),
+        credentials: "include",
+      });
 
       if (response.status === 200) {
         const data = await response.json();
@@ -157,12 +141,9 @@ const Profile = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error inesperado. Por favor, inténtalo de nuevo más tarde. ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(
+        `Error inesperado. Por favor, inténtalo de nuevo más tarde. ${error} `
+      );
     }
   };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import "./ForgotPassword.css";
 import Swal from "sweetalert2";
 
@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
 
-      const response = await fetch(`${HOST}${PORT_BACK}/api/users/mail`, {
+      const response = await fetch(`${HOST}/api/users/mail`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
 
       if (!response.status === 200) {
         Swal.fire({
-          title: ` Hubo un problema al enviar el correo electrónico.   Intente más tarde.`,
+          title: `Hubo un problema al enviar el correo electrónico.   Intente más tarde.`,
           icon: "warning",
           showConfirmButton: false,
           timer: 2000,

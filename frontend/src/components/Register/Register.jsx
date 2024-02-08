@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { validateForm } from "./ValidateForm.jsx";
-import { HOST, PORT_BACK } from "../../config/config.js";
+import { HOST } from "../../config/config.js";
 import Swal from "sweetalert2";
 import "./Register.css";
 
@@ -39,7 +39,7 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(`${HOST}${PORT_BACK}/api/session/signup`, {
+      const response = await fetch(`${HOST}/api/session/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,12 +74,7 @@ const Register = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error inesperado al registrar usuario: ${error}`,
-        icon: "success",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      console.error(`Error inesperado al registrar usuario: ${error}`);
     }
   };
 

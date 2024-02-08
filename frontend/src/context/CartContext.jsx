@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
       });
     } else {
       Swal.fire({
-        title: `El producto ya fue agregado `,
+        title: `El producto ya fue agregado`,
         icon: "warning",
         showConfirmButton: false,
         timer: 2000,

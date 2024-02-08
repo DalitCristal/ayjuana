@@ -7,9 +7,8 @@ import Checkout from "./Checkout.jsx";
 import Footer from "./Footer.jsx";
 import InternalProvider from "./ContextProvider.jsx";
 import { SpinnerCircular } from "spinners-react";
-import { HOST, PORT_BACK } from "../../config/config.js";
+import { HOST } from "../../config/config.js";
 import "./PaymentMP.css";
-import Swal from "sweetalert2";
 
 initMercadoPago("TEST-407be8c1-5b10-4b61-9b70-8373e6ee14f4", {
   locale: "es-AR",
@@ -32,7 +31,7 @@ const PaymentMP = () => {
         const userData = await fetchUserData(userId);
         const cid = userData.data.cart;
 
-        const response = await fetch(`${HOST}${PORT_BACK}/api/carts/${cid}`, {
+        const response = await fetch(`${HOST}/api/carts/${cid}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -67,20 +66,10 @@ const PaymentMP = () => {
             })),
           }));
         } else {
-          Swal.fire({
-            title: `${data.mensaje} `,
-            icon: "warning",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(`${data.mensaje} `);
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error inesperado, ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error inesperado, ${error} `);
       }
     };
 
@@ -89,7 +78,7 @@ const PaymentMP = () => {
 
   const createPreference = async () => {
     setIsLoading(true);
-    fetch(`${HOST}${PORT_BACK}/api/payment/create-order`, {
+    fetch(`${HOST}/api/payment/create-order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,12 +92,7 @@ const PaymentMP = () => {
         return data;
       })
       .catch((error) => {
-        Swal.fire({
-          title: `${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`${error}`);
       })
       .finally(() => {
         setIsLoading(false);

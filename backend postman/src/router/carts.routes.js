@@ -30,28 +30,28 @@ cartRouter.post(
 cartRouter.delete(
   "/api/carts/:cid/products/:pid",
   passportError("jwt"),
-  authorization(["user", "premium"]),
+  authorization(["user", "premium", "admin"]),
   cartsCtrls.deleteProd
 );
 
 cartRouter.put(
   "/api/carts/:cid",
   passportError("jwt"),
-  authorization(["user", "premium"]),
+  authorization(["user", "premium", "admin"]),
   cartsCtrls.putProds
 );
 
 cartRouter.put(
   "/api/carts/:cid/products/:pid",
   passportError("jwt"),
-  authorization(["user", "premium"]),
+  authorization(["user", "premium", "admin"]),
   cartsCtrls.putQuantity
 );
 
 cartRouter.delete(
   "/api/carts/:cid",
   passportError("jwt"),
-  authorization(["user", "premium"]),
+  authorization(["user", "premium", "admin"]),
   cartsCtrls.deleteProds
 );
 

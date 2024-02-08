@@ -1,11 +1,8 @@
-import { HOST, PORT_BACK } from "../config/config";
-import Swal from "sweetalert2";
+import { HOST } from "../config/config";
 
 export const getInfoProduct = async (productId) => {
   try {
-    const response = await fetch(
-      `${HOST}${PORT_BACK}/api/products/${productId}`
-    );
+    const response = await fetch(`${HOST}/api/products/${productId}`);
     if (response.status === 200) {
       const data = await response.json();
       return data.mensaje;
@@ -13,19 +10,9 @@ export const getInfoProduct = async (productId) => {
       return null;
     } else {
       const errorData = await response.json();
-      Swal.fire({
-        title: `Error al obtener producto: ${errorData} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`Error al obtener producto: ${errorData} `);
     }
   } catch (error) {
-    Swal.fire({
-      title: `Error en la solicitud, ${error} `,
-      icon: "error",
-      showConfirmButton: false,
-      timer: 2000,
-    });
+    console.error(`Error en la solicitud, ${error} `);
   }
 };

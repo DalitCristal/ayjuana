@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCookiesByName, isTokenExpired } from "../../../utils/formsUtils";
 import Swal from "sweetalert2";
-import { HOST, PORT_BACK } from "../../../config/config.js";
+import { HOST } from "../../../config/config.js";
 import "./EditProduct.css";
 
 const EditProduct = () => {
@@ -24,9 +24,7 @@ const EditProduct = () => {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response = await fetch(
-          `${HOST}${PORT_BACK}/api/products/${productId}`
-        );
+        const response = await fetch(`${HOST}/api/products/${productId}`);
         const data = await response.json();
         setProductData(data.mensaje);
       } catch (error) {
@@ -60,6 +58,7 @@ const EditProduct = () => {
     if (isTokenExpired(token)) {
       document.cookie =
         "jwtCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
       Swal.fire({
         title: `Sesión expirada`,
         icon: "info",
@@ -82,18 +81,15 @@ const EditProduct = () => {
     }
 
     try {
-      const response = await fetch(
-        `${HOST}${PORT_BACK}/api/products/${productId}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(data),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${HOST}/api/products/${productId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
 
       if (response.status === 200) {
         Swal.fire({
@@ -106,20 +102,10 @@ const EditProduct = () => {
         navigate("/products");
       } else {
         const errorData = await response.json();
-        Swal.fire({
-          title: `Error en la actualización, ${errorData.mensaje} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la actualización, ${errorData.mensaje} `);
       }
     } catch (error) {
-      Swal.fire({
-        title: `Error en la solicitud, ${error.mensaje} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(`Error en la solicitud, ${error.mensaje} `);
     }
   };
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getCookiesByName } from "../../utils/formsUtils";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import { getInfoProduct } from "../../utils/getInfoProduct";
 import Swal from "sweetalert2";
 
@@ -18,42 +18,31 @@ const AddToCartButton = ({ productId, quantity, onClick }) => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        if (!user.cart) return;
+        if (!user) return;
 
-        const response = await fetch(
-          `${HOST}${PORT_BACK}/api/carts/${user.cart}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${HOST}/api/carts/${user.cart}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
         const data = await response.json();
 
         if (response.status === 200) {
           setCartProducts(data.mensaje.products);
         } else {
-          Swal.fire({
-            title: `Error al obtener datos del carrito: ${data.mensaje} `,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(`Error al obtener datos del carrito: ${data.mensaje} `);
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error inesperado al obtener datos del carrito: ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(
+          `Error inesperado al obtener datos del carrito: ${error} `
+        );
       }
     };
 
     fetchCart();
-  }, [user.cart]);
+  }, [user]);
 
   const handleAddToCart = async () => {
     try {
@@ -81,7 +70,7 @@ const AddToCartButton = ({ productId, quantity, onClick }) => {
 
             try {
               const response = await fetch(
-                `${HOST}${PORT_BACK}/api/carts/${user.cart}/products/${productId}`,
+                `${HOST}/api/carts/${user.cart}/products/${productId}`,
                 {
                   method: "PUT",
                   headers: {
@@ -104,20 +93,12 @@ const AddToCartButton = ({ productId, quantity, onClick }) => {
               } else {
                 // Manejar otros casos si es necesario
                 const errorData = await response.json();
-                Swal.fire({
-                  title: `Error al actualizar la cantidad del producto en el carrito: ${errorData} `,
-                  icon: "error",
-                  showConfirmButton: false,
-                  timer: 2000,
-                });
+                console.error(
+                  `Error al actualizar la cantidad del producto en el carrito: ${errorData} `
+                );
               }
             } catch (error) {
-              Swal.fire({
-                title: `${error} `,
-                icon: "error",
-                showConfirmButton: false,
-                timer: 2000,
-              });
+              console.error(`${error} `);
             }
           }
         });
@@ -136,7 +117,7 @@ const AddToCartButton = ({ productId, quantity, onClick }) => {
         }
 
         const response = await fetch(
-          `${HOST}${PORT_BACK}/api/carts/${user.cart}/products/${productId}`,
+          `${HOST}/api/carts/${user.cart}/products/${productId}`,
           {
             method: "POST",
             headers: {
@@ -151,7 +132,6 @@ const AddToCartButton = ({ productId, quantity, onClick }) => {
         if (response.status === 200) {
           // Producto agregado exitosamente al carrito
           Swal.fire({
-            position: "top-end",
             icon: "success",
             title: "Producto agregado exitosamente al carrito",
             showConfirmButton: false,
@@ -164,21 +144,11 @@ const AddToCartButton = ({ productId, quantity, onClick }) => {
         } else {
           // Manejar otros casos si es necesario
           const errorData = await response.json();
-          Swal.fire({
-            title: `Error al agregar producto al carrito: ${errorData} `,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(`Error al agregar producto al carrito: ${errorData} `);
         }
       }
     } catch (error) {
-      Swal.fire({
-        title: ` ${error} `,
-        icon: "error",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.error(` ${error} `);
     } finally {
       setLoading(false);
     }

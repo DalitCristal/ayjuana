@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import ProductsList from "./ProductsList.jsx";
 import getProducts from "./getProducts.jsx";
 import "./ProductsListContainer.css";
-import Swal from "sweetalert2";
 
 const ProductsListContainer = () => {
   const [products, setProducts] = useState([]);
@@ -25,12 +24,7 @@ const ProductsListContainer = () => {
 
         setProducts(allProducts);
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la solicitud ${error} `);
       } finally {
         setLoading(false);
       }
@@ -44,21 +38,8 @@ const ProductsListContainer = () => {
   };
 
   return (
-    <div>
-      <h1 className="title-page-products">Lista de Productos</h1>
-
-      <div className="pagination">
-        {currentPage > 1 && (
-          <button onClick={() => handlePageChange(currentPage - 1)}>
-            Anterior
-          </button>
-        )}
-        {hasMore && (
-          <button onClick={() => handlePageChange(currentPage + 1)}>
-            Siguiente
-          </button>
-        )}
-      </div>
+    <div className="containerListProducts">
+      <h1 className="titlePageProducts">Nuestros productos</h1>
 
       <ProductsList products={products} />
 
@@ -68,6 +49,33 @@ const ProductsListContainer = () => {
             Anterior
           </button>
         )}
+
+        {currentPage > 2 && (
+          <button onClick={() => handlePageChange(currentPage - 2)}>
+            {currentPage - 2}
+          </button>
+        )}
+
+        {currentPage > 1 && (
+          <button onClick={() => handlePageChange(currentPage - 1)}>
+            {currentPage - 1}
+          </button>
+        )}
+
+        <span>{currentPage}</span>
+
+        {hasMore && (
+          <button onClick={() => handlePageChange(currentPage + 1)}>
+            {currentPage + 1}
+          </button>
+        )}
+
+        {hasMore && (
+          <button onClick={() => handlePageChange(currentPage + 2)}>
+            {currentPage + 2}
+          </button>
+        )}
+
         {hasMore && (
           <button onClick={() => handlePageChange(currentPage + 1)}>
             Siguiente

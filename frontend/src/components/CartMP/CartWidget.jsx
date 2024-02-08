@@ -2,8 +2,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCookiesByName } from "../../utils/formsUtils";
-import { HOST, PORT_BACK } from "../../config/config";
-import Swal from "sweetalert2";
+import { HOST } from "../../config/config";
 
 const CartWidget = () => {
   const [totalQuantity, setTotalQuantity] = useState(null);
@@ -20,7 +19,7 @@ const CartWidget = () => {
         const cid = user.cart;
         setUserId(user._id);
 
-        const response = await fetch(`${HOST}${PORT_BACK}/api/carts/${cid}`, {
+        const response = await fetch(`${HOST}/api/carts/${cid}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -37,20 +36,14 @@ const CartWidget = () => {
             )
           );
         } else {
-          Swal.fire({
-            title: `Error al obtener la cantidad total del carrito: ${data.mensaje} `,
-            icon: "warning",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(
+            `Error al obtener la cantidad total del carrito: ${data.mensaje} `
+          );
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error inesperado al obtener la cantidad total del carrito: ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(
+          `Error inesperado al obtener la cantidad total del carrito: ${error} `
+        );
       }
     };
 

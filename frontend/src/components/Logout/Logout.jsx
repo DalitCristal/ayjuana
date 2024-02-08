@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { HOST, PORT_BACK } from "../../config/config";
+import { HOST } from "../../config/config";
 import Swal from "sweetalert2";
 
 const Logout = () => {
@@ -9,7 +9,7 @@ const Logout = () => {
   useEffect(() => {
     const logout = async () => {
       try {
-        const response = await fetch(`${HOST}${PORT_BACK}/api/session/logout`, {
+        const response = await fetch(`${HOST}/api/session/logout`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -27,20 +27,10 @@ const Logout = () => {
 
           navigate("/", { replace: true });
         } else {
-          Swal.fire({
-            title: `Error al cerrar sesión: ${response.mensaje} `,
-            icon: "error",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+          console.error(`Error al cerrar sesión: ${response.mensaje} `);
         }
       } catch (error) {
-        Swal.fire({
-          title: `Error en la solicitud: ${error} `,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        console.error(`Error en la solicitud: ${error}`);
       }
     };
 
